@@ -2,78 +2,96 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>SYSTEM AUDIT | TERMINAL</title>
+    <title>SYSTEM AUDIT | NEURAL LINK</title>
     <style>
         :root {
-            --neon-red: #ff3131;
-            --neon-blue: #00d4ff;
-            --bg-dark: #050505;
+            --tech-green: #00ff41;
+            --dim-green: rgba(0, 255, 65, 0.15);
+            --interface-bg: rgba(5, 15, 5, 0.9);
         }
 
         * { box-sizing: border-box; cursor: crosshair; }
         body { 
-            background: var(--bg-dark); 
+            background: #000; 
             margin: 0; 
             padding: 10px; 
             font-family: 'Impact', sans-serif; 
-            overflow-x: hidden;
-            color: white;
+            overflow: hidden; /* Keeps the terminal tight */
+            color: var(--tech-green);
         }
 
+        /* THE GRID: FILLING THE SCREEN */
         .grid {
             display: grid;
-            grid-template-columns: repeat(10, 1fr);
-            gap: 8px;
-            perspective: 1000px;
+            grid-template-columns: repeat(12, 1fr); /* 12 wide for more density */
+            gap: 5px;
+            width: 100vw;
+            height: 100vh;
         }
 
-        /* THE BOX: REDESIGNED FOR SYMMETRY */
+        /* THE SMALL BOXES */
         .box {
             position: relative;
-            background: rgba(255, 255, 255, 0.03);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            height: 110px;
+            background: var(--dim-green);
+            border: 1px solid rgba(0, 255, 65, 0.3);
+            height: 80px;
             display: flex;
             flex-direction: column;
-            justify-content: center;
+            justify-content: space-between;
             align-items: center;
-            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            overflow: visible;
-            user-select: none;
+            transition: all 0.2s ease;
+            text-decoration: none;
+            padding-bottom: 2px;
         }
 
-        /* CLICK TO DELETE EFFECT */
-        .box:active {
-            transform: scale(0.1);
-            opacity: 0;
+        .box:hover {
+            background: rgba(0, 255, 65, 0.4);
+            box-shadow: 0 0 15px var(--tech-green);
+            z-index: 10;
         }
 
-        /* HOVER POPUP (THE GHOST) */
+        /* THE TRACTOR BEAM EFFECT */
+        .box:hover::before {
+            content: "";
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at center, transparent 10%, var(--dim-green) 90%);
+            clip-path: polygon(50% 50%, 0% 0%, 100% 0%, 100% 100%, 0% 100%); /* Adjust for 'beam' look */
+            z-index: 99;
+            pointer-events: none;
+            animation: pulse 1s infinite;
+        }
+
+        /* THE LARGE HUD POPUP */
         .box::after {
-            content: attr(data-full);
+            content: attr(data-detail);
             position: fixed;
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%) scale(0);
-            width: 400px;
-            padding: 40px;
-            background: #111;
-            border: 4px solid white;
+            width: 60vw;
+            height: 40vh;
+            background: var(--interface-bg);
+            border: 2px solid var(--tech-green);
             color: white;
-            z-index: 1000;
+            z-index: 100;
             opacity: 0;
-            transition: all 0.2s ease;
-            pointer-events: none; /* Mouse passes through it so no re-hovering */
-            text-align: center;
-            box-shadow: 0 0 100px rgba(0,0,0,0.9), 0 0 20px var(--neon-blue);
-            font-size: 24px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 40px;
+            text-align: left;
+            font-family: 'Courier New', monospace; /* Robotic readout style */
+            font-size: 22px;
+            pointer-events: none;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 0 50px rgba(0, 255, 65, 0.2);
+            transition: transform 0.4s cubic-bezier(0.19, 1, 0.22, 1), opacity 0.3s;
             white-space: pre-wrap;
-        }
-
-        .box:hover {
-            background: rgba(255, 255, 255, 0.1);
-            border-color: var(--neon-blue);
-            z-index: 5;
+            border-radius: 20px;
         }
 
         .box:hover::after {
@@ -81,97 +99,61 @@
             opacity: 1;
         }
 
-        /* DATA STYLING */
+        /* TYPOGRAPHY */
         .big-val {
-            font-size: 44px;
-            line-height: 0.8;
+            font-size: 38px;
             letter-spacing: -2px;
-            text-shadow: 0 0 10px rgba(255,255,255,0.3);
-            margin-bottom: 5px;
+            line-height: 0.8;
+            margin-top: 5px;
+            font-stretch: extra-condensed;
         }
 
         .label {
             font-size: 9px;
-            background: white;
+            background: var(--tech-green);
             color: black;
-            padding: 2px 5px;
             width: 100%;
             text-align: center;
-            text-transform: uppercase;
-            font-weight: 900;
+            font-weight: bold;
+            padding: 2px 0;
         }
 
-        .source {
-            font-size: 7px;
-            opacity: 0.4;
-            margin-top: 5px;
-            font-family: monospace;
+        @keyframes pulse {
+            0% { opacity: 0.2; }
+            50% { opacity: 0.5; }
+            100% { opacity: 0.2; }
         }
     </style>
 </head>
 <body>
 
-    <div class="grid" id="audit-grid">
-        <div class="box" data-full="104,801 NON-HUMAN PRIMATES&#10;In active testing across 42 state facilities.&#10;SOURCE: USDA APHIS 2023" onclick="this.remove()">
+    <div class="grid" id="main-grid">
+        <div class="box" data-detail="[SYSTEM DECRYPTION: PRIMATE TESTING]&#10;&#10;DATA: 104,801 Non-human primates currently held in U.S. labs.&#10;IMPACT: This includes Rhesus Macaques and Marmosets used in invasive neurological and biological mapping.&#10;SOURCE: USDA APHIS 2023 Report" onclick="this.remove()">
             <span class="big-val">104K</span>
-            <span class="label">PRIMATES IN TEST</span>
-            <span class="source">USDA-2023</span>
+            <span class="label">PRIMATE TEST</span>
         </div>
 
-        <div class="box" data-full="1.03M ABORTIONS&#10;U.S. Annual Statistical Total.&#10;SOURCE: Guttmacher Institute 2024" onclick="this.remove()">
+        <div class="box" data-detail="[SYSTEM DECRYPTION: REPRODUCTIVE STATS]&#10;&#10;DATA: 1,031,000 estimated procedures in 2023.&#10;IMPACT: Represents an 11% increase since 2020 despite legal shifts.&#10;SOURCE: Guttmacher Institute Analysis" onclick="this.remove()">
             <span class="big-val">1.03M</span>
-            <span class="label">ANNUAL ABORTIONS</span>
-            <span class="source">GUTT-2024</span>
+            <span class="label">ANNUAL ABORT</span>
         </div>
 
-        <div class="box" data-full="34,000 KITCHENS CLOSED&#10;Projected closures due to CFR 114 implementation.&#10;SOURCE: Regulatory Impact Audit" onclick="this.remove()">
-            <span class="big-val">34K</span>
+        <div class="box" data-detail="[SYSTEM DECRYPTION: REGULATORY CLOSURE]&#10;&#10;DATA: 34,000 Small-scale kitchens.&#10;IMPACT: Potential mass-closure under CFR 114 strict industrial compliance mandates.&#10;SOURCE: Federal Regulatory Impact Study" onclick="this.remove()">
+            <span class="big-val">34,000</span>
             <span class="label">CFR 114 IMPACT</span>
-            <span class="source">FED-AUDIT</span>
         </div>
-
-        <div class="box" data-full="$1.1T TAX GAP&#10;Underreported or unpaid federal tax obligations.&#10;SOURCE: IRS Commissioner 2024" onclick="this.remove()">
-            <span class="big-val">$1.1T</span>
-            <span class="label">ANNUAL TAX GAP</span>
-            <span class="source">IRS-2024</span>
-        </div>
-
-        <div class="box" data-full="15,803 PAIN CASES&#10;Research primates undergoing pain without relief.&#10;SOURCE: APHIS Category E" onclick="this.remove()">
-            <span class="big-val">15.8K</span>
-            <span class="label">PRIMATE PAIN CL-E</span>
-            <span class="source">USDA-E</span>
-        </div>
-
-        <div class="box" data-full="$68B CIVIL FORFEITURE&#10;Total assets seized by law enforcement.&#10;SOURCE: Inst. for Justice" onclick="this.remove()"><span class="big-val">$68B</span><span class="label">CIVIL FORFEITURE</span><span class="source">IFJ-2024</span></div>
-        <div class="box" data-full="$12K LICENSE AVG&#10;Average state/fed licensing cost for small biz.&#10;SOURCE: SBA Audit" onclick="this.remove()"><span class="big-val">$12K</span><span class="label">AVG LICENSE FEE</span><span class="source">SBA-REG</span></div>
-        <div class="box" data-full="90,402 REG PAGES&#10;Total pages in the Federal Register 2023.&#10;SOURCE: National Archives" onclick="this.remove()"><span class="big-val">90.4K</span><span class="label">NEW REG PAGES</span><span class="source">FED-REG</span></div>
-        <div class="box" data-full="$870B DEBT INT&#10;Annual interest payments on US National Debt.&#10;SOURCE: CBO 2024" onclick="this.remove()"><span class="big-val">$870B</span><span class="label">DEBT INTEREST</span><span class="source">CBO-AUDIT</span></div>
-        <div class="box" data-full="23,400 DEALERS&#10;USDA licensed animal dealers/breeders.&#10;SOURCE: APHIS 2024" onclick="this.remove()"><span class="big-val">23.4K</span><span class="label">USDA LICENSES</span><span class="source">APHIS-LIC</span></div>
 
         </div>
 
     <script>
-        const grid = document.getElementById('audit-grid');
-        const topics = [
-            {v: "322:1", l: "CEO PAY RATIO", s: "AFL-CIO"},
-            {v: "1.9M", l: "INCARCERATED", s: "BJS-2024"},
-            {v: "$247B", l: "IMPROPER PMTS", s: "GAO-AUDIT"},
-            {v: "107K", l: "OD DEATHS", s: "CDC-2024"},
-            {v: "3.2M", l: "TOTAL TEST ANI", s: "USDA-APHIS"},
-            {v: "1 in 6", l: "CHILD POVERTY", s: "CDF-DATA"},
-            {v: "$70B", l: "UNCLAIMED", s: "NAUPA-2024"},
-            {v: "$150B", l: "WAGE THEFT", s: "EPI-FACTS"},
-            {v: "18%", l: "CORP TAX RT", s: "GAO-CORP"}
-        ];
-
-        // Fill remaining 40 boxes
-        for(let i=0; i<40; i++) {
-            const t = topics[i % topics.length];
+        const grid = document.getElementById('main-grid');
+        // This loop fills the screen with empty tech-looking boxes
+        for(let i=0; i<117; i++) {
             const b = document.createElement('div');
             b.className = 'box';
-            b.setAttribute('data-full', `${t.v} ${t.l}\nAudit Segment ${i+10}\nSOURCE: ${t.s}`);
+            b.setAttribute('data-detail', `[DATA SEGMENT ${1000 + i}]&#10;&#10;STATUS: ENCRYPTED&#10;SECTOR: UNKNOWN&#10;ACTION: Click box to purge from audit.`);
             b.onclick = function() { this.remove(); };
-            b.innerHTML = `<span class="big-val">${t.v}</span><span class="label">${t.l}</span><span class="source">${t.s}</span>`;
+            b.innerHTML = `<span class="big-val">---</span><span class="label">BUFFERING...</span>`;
             grid.appendChild(b);
         }
     </script>
