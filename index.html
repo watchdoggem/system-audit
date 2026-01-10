@@ -1,376 +1,65 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Federal Allowance & Spending Tracker (FAST)</title>
+    <title>Watchdog Grid</title>
     <style>
-        :root {
-            --bg-color: #0f172a;
-            --sidebar-bg: #1e293b;
-            --text-color: #e2e8f0;
-            --accent-color: #38bdf8; /* Cyan for "Data" feel */
-            --danger-color: #ef4444; /* Red for "Warning/Allowance" */
-            --table-header: #334155;
-            --border-color: #475569;
+        body { background: #000; color: white; font-family: sans-serif; margin: 0; padding: 10px; }
+        
+        /* This creates the 10-across grid */
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(10, 1fr); /* 10 columns */
+            gap: 5px;
         }
 
-        body {
-            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-            background-color: var(--bg-color);
-            color: var(--text-color);
-            margin: 0;
-            display: flex;
-            height: 100vh;
+        /* This is the "Micro Box" */
+        .box {
+            background: #222;
+            border: 1px solid #444;
+            height: 60px;
+            font-size: 10px;
+            padding: 5px;
             overflow: hidden;
-        }
-
-        /* Sidebar Navigation */
-        #sidebar {
-            width: 260px;
-            background-color: var(--sidebar-bg);
-            border-right: 1px solid var(--border-color);
-            overflow-y: auto;
-            display: flex;
-            flex-direction: column;
-            flex-shrink: 0;
-        }
-
-        .brand {
-            padding: 20px;
-            font-size: 1.2rem;
-            font-weight: bold;
-            border-bottom: 1px solid var(--border-color);
-            color: var(--accent-color);
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-
-        .nav-group {
-            padding: 10px 0;
-            border-bottom: 1px solid var(--border-color);
-        }
-
-        .nav-group-title {
-            padding: 5px 20px;
-            font-size: 0.75rem;
-            color: #94a3b8;
-            text-transform: uppercase;
-            font-weight: bold;
-        }
-
-        .nav-item {
-            padding: 10px 20px;
+            transition: all 0.2s ease; /* This makes it "smooth" */
             cursor: pointer;
-            transition: background 0.2s;
-            font-size: 0.9rem;
-            border-left: 3px solid transparent;
         }
 
-        .nav-item:hover {
-            background-color: #334155;
+        /* Expand slightly on hover */
+        .box:hover {
+            transform: scale(1.1);
+            background: #cc0000; /* Turns red when you hover */
+            z-index: 10;
         }
 
-        .nav-item.active {
-            background-color: #334155;
-            border-left: 3px solid var(--accent-color);
-            color: white;
-        }
-
-        .nav-item.alert {
-            border-left: 3px solid var(--danger-color);
-            color: #fca5a5;
-        }
-
-        /* Main Content */
-        #main {
-            flex-grow: 1;
-            padding: 30px;
-            overflow-y: auto;
-        }
-
-        header {
-            margin-bottom: 30px;
-            border-bottom: 1px solid var(--border-color);
-            padding-bottom: 20px;
-        }
-
-        h1 { margin: 0; font-size: 2rem; }
-        h2 { color: var(--accent-color); margin-top: 0; }
-        h3 { border-bottom: 1px solid var(--border-color); padding-bottom: 10px; margin-top: 30px;}
-
-        .badge {
-            display: inline-block;
-            padding: 4px 8px;
-            border-radius: 4px;
-            font-size: 0.8rem;
-            font-weight: bold;
-            margin-left: 10px;
-        }
-        .badge-spend { background-color: #166534; color: #dcfce7; }
-        .badge-allow { background-color: #991b1b; color: #fee2e2; }
-
-        /* Data Tables */
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 20px;
-            background-color: #1e293b;
-            border-radius: 6px;
-            overflow: hidden;
-        }
-
-        th, td {
-            padding: 12px 15px;
-            text-align: left;
-            border-bottom: 1px solid var(--border-color);
-        }
-
-        th {
-            background-color: var(--table-header);
-            text-transform: uppercase;
-            font-size: 0.85rem;
-            letter-spacing: 0.5px;
-        }
-
-        tr:hover { background-color: #334155; }
-
-        /* Content Sections */
-        .tab-content { display: none; animation: fadeIn 0.3s; }
-        .tab-content.active { display: block; }
-
-        .metric-card {
-            background: #1e293b;
-            padding: 20px;
-            border-radius: 8px;
-            margin-bottom: 20px;
-            border: 1px solid var(--border-color);
-        }
-
-        .warning-box {
-            background: rgba(239, 68, 68, 0.1);
-            border: 1px solid var(--danger-color);
-            color: #fca5a5;
-            padding: 15px;
-            border-radius: 6px;
-            margin-bottom: 20px;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
+        /* Expand big when clicked */
+        .box:active, .box:focus {
+            grid-column: span 3;
+            grid-row: span 3;
+            height: auto;
+            font-size: 14px;
+            background: #444;
+            z-index: 100;
         }
     </style>
 </head>
 <body>
 
-    <div id="sidebar">
-        <div class="brand">FAST <span style="font-size:0.8rem; color:#94a3b8; display:block;">Federal Allowance & Spending Tracker</span></div>
-        
-        <div class="nav-group">
-            <div class="nav-group-title">Core Data</div>
-            <div class="nav-item active" onclick="showTab(1)">Tab 1: Overview & Mission</div>
+    <h1>Government Harm Watchdog</h1>
+    <div class="grid">
+        <div class="box" tabindex="0">
+            <strong>CODE 050</strong><br>
+            Defense Spending: $1.001T. Audit the Golden Dome replenishment.
         </div>
-
-        <div class="nav-group">
-            <div class="nav-group-title">Phase 1: Influence</div>
-            <div class="nav-item" onclick="showTab(2)">Tab 2: Lobbying & FARA</div>
-            <div class="nav-item" onclick="showTab(3)">Tab 3: Dark Money 501(c)(4)</div>
-            <div class="nav-item" onclick="showTab(4)">Tab 4: Straw Donors & LLCs</div>
-            <div class="nav-item" onclick="showTab(5)">Tab 5: Asset & Net Worth</div>
-        </div>
-
-        <div class="nav-group">
-            <div class="nav-group-title">Phase 2: The Allowances</div>
-            <div class="nav-item" onclick="showTab(6)">Tab 6: Defense (050)</div>
-            <div class="nav-item" onclick="showTab(7)">Tab 7: Int. Affairs (150)</div>
-            <div class="nav-item" onclick="showTab(8)">Tab 8: Science & Space (250)</div>
-            <div class="nav-item" onclick="showTab(9)">Tab 9: Energy (270)</div>
-            <div class="nav-item" onclick="showTab(10)">Tab 10: Environment (300)</div>
-            <div class="nav-item" onclick="showTab(11)">Tab 11: Agriculture (350)</div>
-            <div class="nav-item" onclick="showTab(12)">Tab 12: Commerce (370)</div>
-            <div class="nav-item" onclick="showTab(13)">Tab 13: Transportation (400)</div>
-            <div class="nav-item" onclick="showTab(14)">Tab 14: Community Dev (450)</div>
-            <div class="nav-item" onclick="showTab(15)">Tab 15: Education (500)</div>
-            <div class="nav-item alert" onclick="showTab(19)">Tab 19: Health (550)</div>
-            <div class="nav-item" onclick="showTab(20)">Tab 20: Medicare (570)</div>
-            <div class="nav-item" onclick="showTab(21)">Tab 21: Income Security (600)</div>
-            <div class="nav-item" onclick="showTab(22)">Tab 22: Social Security (650)</div>
-            <div class="nav-item" onclick="showTab(23)">Tab 23: Veterans (700)</div>
-            <div class="nav-item" onclick="showTab(24)">Tab 24: Justice (750)</div>
-            <div class="nav-item" onclick="showTab(25)">Tab 25: Gen. Gov (800)</div>
-            <div class="nav-item" onclick="showTab(26)">Tab 26: Net Interest (900)</div>
-            <div class="nav-item" onclick="showTab(27)">Tab 27: Undistributed (950)</div>
-            <div class="nav-item" onclick="showTab(28)">Tab 28: Full Dataset</div>
-        </div>
+        <div class="box" tabindex="0"><strong>CODE 550</strong><br>NIH Transition Gap.</div>
+        <div class="box" tabindex="0"><strong>FARA</strong><br>Foreign Agents $4B.</div>
+        <div class="box" tabindex="0"><strong>GRAS</strong><br>Self-Certified Chemicals.</div>
+        <div class="box" tabindex="0"><strong>NHP</strong><br>Primate Supply Chain.</div>
+        <div class="box" tabindex="0"><strong>SOI</strong><br>Bleached Flour Gas.</div>
+        <div class="box" tabindex="0"><strong>CFR 114</strong><br>Acidified Food Killer.</div>
+        <div class="box" tabindex="0"><strong>CODE 900</strong><br>$1T Interest Debt.</div>
+        <div class="box" tabindex="0"><strong>EPA</strong><br>Fluoride Mandates.</div>
+        <div class="box" tabindex="0"><strong>USDA</strong><br>Meat Glue Standards.</div>
     </div>
 
-    <div id="main">
-        
-        <div id="tab-1" class="tab-content active">
-            <header>
-                <h1>Mission Statement</h1>
-                <p style="color: #94a3b8;">Tracking not just what they spend, but what they <strong style="color:white">ALLOW</strong>.</p>
-            </header>
-            
-            <div class="metric-card">
-                <h3>The Core Thesis</h3>
-                <p>Historically, government oversight focused on the flow of tax dollars (The Budget). However, the true cost of governance is often found in the "Allowances"—regulatory loopholes, mandates, and "GRAS" (Generally Recognized As Safe) exemptions that permit industrial harm under the guise of safety.</p>
-                <p><strong>This tool tracks two distinct economies:</strong></p>
-                <ul>
-                    <li><span style="color:var(--accent-color)">The Budget:</span> Where tax dollars go (Defense, Health, etc.).</li>
-                    <li><span style="color:var(--danger-color)">The Allowances:</span> Permitted regulatory harm (e.g., NHP testing, food additives, industrial farming).</li>
-                </ul>
-            </div>
-
-            <h3>The 2026 Projections</h3>
-            <table>
-                <thead>
-                    <tr>
-                        <th>Category</th>
-                        <th>Description</th>
-                        <th>Est. Cost / Impact</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td><strong>Political Influence</strong></td>
-                        <td>Lobbying, Dark Money, & Campaign Receipts</td>
-                        <td>$24.0 Billion</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Federal Spending</strong></td>
-                        <td>Defense, Health, Social Security, etc.</td>
-                        <td>$6,800 Billion</td>
-                    </tr>
-                    <tr>
-                        <td style="color:var(--danger-color)"><strong>Allowances</strong></td>
-                        <td>Cost of permitted regulatory harm (Health/Env)</td>
-                        <td><em>Tracking...</em></td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-
-        <div id="tab-19" class="tab-content">
-            <header>
-                <h1>Health (Code 550) & Allowances</h1>
-                <span class="badge badge-spend">Spend: $991B</span>
-                <span class="badge badge-allow">Allow: Unlimited</span>
-            </header>
-
-            <div class="warning-box">
-                <strong>⚠️ AUDIT ALERT:</strong> The transition of NIH into the "Administration for a Healthy America" (AHA) has created a gap where Non-Human Primate (NHP) inventory and funding are being obscured.
-            </div>
-
-            <h3>1. The "Allowed" Harm: Non-Human Primate (NHP) Testing</h3>
-            <p>Tracking the government-mandated usage of monkeys in research. While direct spending is high, the <em>allowance</em> for private pharma to use these inventories is the larger issue.</p>
-            
-            <table>
-                <thead>
-                    <tr>
-                        <th>Institution / Lab</th>
-                        <th>NHP Inventory</th>
-                        <th>Direct NIH Funding</th>
-                        <th>The Audit Hook / Allowance</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td><strong>Charles River Labs (CRL)</strong></td>
-                        <td>19,363</td>
-                        <td>$160.4M</td>
-                        <td>Only ~10% gov-paid; rest are "allowed" by FDA mandate.</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Emory University</strong></td>
-                        <td>3,400</td>
-                        <td>$640.0M</td>
-                        <td>100% Taxpayer. Highest "cost per monkey" in system.</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Labcorp / Envigo</strong></td>
-                        <td>8,604</td>
-                        <td>$88.0M</td>
-                        <td>Acts as a "buffer." Allowed to sell to private pharma if NIH funds drop.</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Tulane University</strong></td>
-                        <td>5,800</td>
-                        <td>$480.0M</td>
-                        <td>$92M specifically for Primate Center maintenance.</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Univ. of Washington</strong></td>
-                        <td>1,200</td>
-                        <td>$612.0M</td>
-                        <td>High turnover. Audit the $13.7M base grant.</td>
-                    </tr>
-                </tbody>
-            </table>
-
-            <h3>2. Regulatory "Hammers" (What is Allowed)</h3>
-            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-top: 20px;">
-                <div class="metric-card">
-                    <h4 style="margin-top:0; color:var(--danger-color)">Food Supply (GRAS Loophole)</h4>
-                    <p><strong>FDA "GRAS" (Generally Recognized As Safe):</strong> Allows companies to self-certify additives like <em>Hexane-extracted oils</em> and <em>Sodium Benzoate</em> without independent safety studies.</p>
-                    <p><strong>Standard of Identity (21 CFR 131):</strong> Allows <em>Polysorbate</em> and <em>Calcium Chloride</em> in dairy while still labeling it "Milk."</p>
-                </div>
-                <div class="metric-card">
-                    <h4 style="margin-top:0; color:var(--danger-color)">Public Health Mandates</h4>
-                    <p><strong>Fluoride:</strong> Active addition of compounds to public water supplies (Code 550 spending) vs. simple filtration.</p>
-                    <p><strong>The "Kitchen Killer" (21 CFR 114):</strong> "Acidified Food" regs that impose high "Process Authority" costs, banning small local kitchens while allowing large corporate production.</p>
-                </div>
-            </div>
-        </div>
-
-        <div id="tab-generic" class="tab-content">
-            <header>
-                <h1 id="gen-title">Budget Function</h1>
-            </header>
-            <div class="metric-card">
-                <p>Data for this budget function is currently being aggregated from USASpending.gov and OMB reports.</p>
-            </div>
-        </div>
-
-        <div id="tab-6" class="tab-content">
-            <header><h1>National Defense (Function 050)</h1></header>
-            <table>
-                <thead><tr><th>Program</th><th>Appropriation</th><th>Notes</th></tr></thead>
-                <tbody>
-                    <tr><td>DOD Military Personnel</td><td>$181B</td><td>Active/Reserve pay</td></tr>
-                    <tr><td>Operations & Maintenance</td><td>$320B</td><td>Base upkeep & deployment</td></tr>
-                    <tr><td>Procurement</td><td>$170B</td><td>Weapons systems</td></tr>
-                </tbody>
-            </table>
-        </div>
-
-    </div>
-
-    <script>
-        function showTab(tabIndex) {
-            // Hide all tabs
-            const tabs = document.querySelectorAll('.tab-content');
-            tabs.forEach(tab => tab.classList.remove('active'));
-
-            // Remove active class from nav
-            const navItems = document.querySelectorAll('.nav-item');
-            navItems.forEach(item => item.classList.remove('active'));
-
-            // Show specific tab
-            const selectedTab = document.getElementById('tab-' + tabIndex);
-            if (selectedTab) {
-                selectedTab.classList.add('active');
-            } else {
-                // If tab doesn't exist in HTML yet, show generic
-                document.getElementById('tab-generic').classList.add('active');
-                document.getElementById('gen-title').innerText = "Tab " + tabIndex + ": Data Pending";
-            }
-
-            // Highlight nav (this is a simple approximation, normally we'd ID the nav items)
-            // For the sake of this paste-able code, we rely on click context or just simple logic
-            event.target.classList.add('active');
-        }
-    </script>
 </body>
 </html>
