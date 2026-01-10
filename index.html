@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>System Audit | Data Link</title>
+    <title>WATCHDOG | TERMINAL</title>
     <style>
         :root {
             --glow: #64ffda;
@@ -19,7 +19,7 @@
             overflow-x: hidden;
         }
 
-        /* SEARCH BAR TERMINAL */
+        /* SEARCH BAR */
         #search-container {
             display: flex;
             align-items: center;
@@ -27,21 +27,17 @@
             border: 1px solid rgba(100, 255, 218, 0.2);
             padding: 10px 20px;
             margin-bottom: 20px;
-            width: 100%;
         }
-        #search-container span { margin-right: 15px; font-size: 14px; opacity: 0.7; }
         #filter-input {
             background: transparent; border: none; outline: none;
             color: #fff; font-family: 'Impact', sans-serif;
-            font-size: 20px; width: 100%; letter-spacing: 1px;
+            font-size: 20px; width: 100%; letter-spacing: 2px;
         }
 
-        /* GRID LAYOUT - 5 ACROSS */
         .grid {
             display: grid;
             grid-template-columns: repeat(5, 1fr);
             gap: 15px;
-            width: 100%;
         }
 
         .box {
@@ -53,20 +49,16 @@
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            transition: 0.2s;
+            transition: opacity 0.3s;
         }
 
-        .box:hover {
-            background: rgba(100, 255, 218, 0.15);
-            border-color: var(--glow);
-        }
+        /* Hides boxes when filtering */
+        .hidden { display: none; }
 
-        .redacted { opacity: 0.1; filter: blur(1px); pointer-events: none; }
-
-        .big-val { font-size: 50px; line-height: 0.8; letter-spacing: -1px; pointer-events: none; }
+        .big-val { font-size: 50px; line-height: 0.8; pointer-events: none; }
         .label-text { font-size: 18px; margin-top: 10px; opacity: 0.8; pointer-events: none; }
 
-        /* THE HUD POPUP */
+        /* HUD POPUP */
         #hud {
             position: fixed;
             top: 50%; left: 50%;
@@ -83,36 +75,42 @@
             pointer-events: none;
             transition: transform 0.2s ease-out;
             backdrop-filter: blur(15px);
-            box-shadow: 0 0 50px #000;
         }
 
         .hud-section { border-bottom: 1px solid rgba(100, 255, 218, 0.15); padding-bottom: 8px; }
         .hud-section:last-child { border: none; }
-        .hud-title { font-size: 11px; opacity: 0.5; display: block; margin-bottom: 4px; letter-spacing: 2px; }
-        .hud-body { font-size: 24px; color: #fff; display: block; line-height: 1.1; }
+        .hud-title { font-size: 11px; opacity: 0.5; display: block; margin-bottom: 4px; }
+        .hud-body { font-size: 24px; color: #fff; display: block; }
 
-        /* THE TRACTOR BEAM SVG */
+        /* TRACTOR BEAMS */
         #connector {
             position: fixed;
             top: 0; left: 0;
             width: 100vw; height: 100vh;
             pointer-events: none;
             z-index: 900;
-            stroke: var(--glow);
-            stroke-width: 1.5;
             opacity: 0;
-            transition: opacity 0.1s;
+            transition: opacity 0.2s;
         }
+        .beam { stroke: var(--glow); stroke-width: 1; stroke-dasharray: 4; }
     </style>
 </head>
 <body>
 
     <div id="search-container">
-        <span>QUERY:></span>
-        <input type="text" id="filter-input" placeholder="SEARCH SYSTEM AUDIT..." onkeyup="filterGrid()">
+        <input type="text" id="filter-input" placeholder="SEARCH SYSTEM..." onkeyup="filterGrid()">
     </div>
 
-    <svg id="connector"><line id="line1" /><line id="line2" /></svg>
+    <svg id="connector">
+        <defs>
+            <linearGradient id="fade" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" style="stop-color:var(--glow);stop-opacity:1" />
+                <stop offset="100%" style="stop-color:var(--glow);stop-opacity:0.2" />
+            </linearGradient>
+        </defs>
+        <line id="l1" class="beam" /><line id="l2" class="beam" />
+        <line id="l3" class="beam" /><line id="l4" class="beam" />
+    </svg>
 
     <div id="hud">
         <div class="hud-section"><span class="hud-title">DATA</span><span id="h-data" class="hud-body"></span></div>
@@ -122,7 +120,7 @@
     </div>
 
     <div class="grid" id="audit-grid">
-        <div class="box" data-val="104K" data-lab="NHP TESTING"
+        <div class="box" data-search="NHP TEST MONKEYS" 
              data-d="104,801 RESEARCH SUBJECTS" 
              data-i="MONKEY EXPOSURE TRIALS" 
              data-in="MACQUES, RHESES, MARMOSETS" 
@@ -132,50 +130,46 @@
             <span class="label-text">NHP TESTING</span>
         </div>
 
-        <div class="box" data-val="1.1T" data-lab="TAX GAP"
-             data-d="$1.1 TRILLION UNPAID" 
-             data-i="ANNUAL REVENUE LEAKAGE" 
-             data-in="UNDERREPORTED & UNCOLLECTED" 
-             data-s="IRS COMMISSIONER 2024"
-             onmouseenter="showHud(this)" onmouseleave="hideHud()" onclick="this.remove()">
-            <span class="big-val">$1.1T</span>
-            <span class="label-text">TAX GAP</span>
+        <div class="box" data-search="EMPTY" onmouseenter="showHud(this)" onmouseleave="hideHud()" onclick="this.remove()">
+            <span class="big-val">---</span><span class="label-text">EMPTY 2</span>
         </div>
 
-        <div class="box" data-val="23K" data-lab="USDA LIC"
-             data-d="23,400 ACTIVE PERMITS" 
-             data-i="BREEDER & DEALER OVERSIGHT" 
-             data-in="CLASS A, B, AND C LICENSES" 
-             data-s="USDA ANIMAL CARE AUDIT"
-             onmouseenter="showHud(this)" onmouseleave="hideHud()" onclick="this.remove()">
-            <span class="big-val">23K</span>
-            <span class="label-text">USDA LIC</span>
+        <div class="box" data-search="EMPTY" onmouseenter="showHud(this)" onmouseleave="hideHud()" onclick="this.remove()">
+            <span class="big-val">---</span><span class="label-text">EMPTY 3</span>
         </div>
     </div>
 
     <script>
         const hud = document.getElementById('hud');
         const connector = document.getElementById('connector');
-        const line1 = document.getElementById('line1');
-        const line2 = document.getElementById('line2');
+        const lines = [document.getElementById('l1'), document.getElementById('l2'), document.getElementById('l3'), document.getElementById('l4')];
 
         function showHud(el) {
-            document.getElementById('h-data').innerText = el.getAttribute('data-d');
-            document.getElementById('h-impact').innerText = el.getAttribute('data-i');
-            document.getElementById('h-includes').innerText = el.getAttribute('data-in');
-            document.getElementById('h-source').innerText = el.getAttribute('data-s');
+            document.getElementById('h-data').innerText = el.getAttribute('data-d') || "PENDING";
+            document.getElementById('h-impact').innerText = el.getAttribute('data-i') || "PENDING";
+            document.getElementById('h-includes').innerText = el.getAttribute('data-in') || "PENDING";
+            document.getElementById('h-source').innerText = el.getAttribute('data-s') || "PENDING";
             
             hud.style.transform = "translate(-50%, -50%) scale(1)";
-            connector.style.opacity = "0.4";
+            connector.style.opacity = "1";
             
-            const rect = el.getBoundingClientRect();
-            const hRect = hud.getBoundingClientRect();
+            const r = el.getBoundingClientRect();
+            const h = hud.getBoundingClientRect();
             
-            line1.setAttribute('x1', rect.left); line1.setAttribute('y1', rect.top);
-            line1.setAttribute('x2', hRect.left); line1.setAttribute('y2', hRect.top);
-            
-            line2.setAttribute('x1', rect.right); line2.setAttribute('y1', rect.top);
-            line2.setAttribute('x2', hRect.right); line2.setAttribute('y2', hRect.top);
+            // Top Left to Top Left
+            setL(lines[0], r.left, r.top, h.left, h.top);
+            // Top Right to Top Right
+            setL(lines[1], r.right, r.top, h.right, h.top);
+            // Bottom Left to Bottom Left
+            setL(lines[2], r.left, r.bottom, h.left, h.bottom);
+            // Bottom Right to Bottom Right
+            setL(lines[3], r.right, r.bottom, h.right, h.bottom);
+        }
+
+        function setL(l, x1, y1, x2, y2) {
+            l.setAttribute('x1', x1); l.setAttribute('y1', y1);
+            l.setAttribute('x2', x2); l.setAttribute('y2', y2);
+            l.setAttribute('stroke', "url(#fade)");
         }
 
         function hideHud() {
@@ -184,28 +178,21 @@
         }
 
         function filterGrid() {
-            let input = document.getElementById('filter-input').value.toUpperCase();
+            let q = document.getElementById('filter-input').value.toUpperCase();
             let boxes = document.getElementsByClassName('box');
-            for (let box of boxes) {
-                let content = box.innerText.toUpperCase() + box.getAttribute('data-d').toUpperCase();
-                if (content.includes(input)) {
-                    box.classList.remove('redacted');
-                } else {
-                    box.classList.add('redacted');
-                }
+            for (let b of boxes) {
+                let txt = b.getAttribute('data-search') + b.innerText;
+                b.classList.toggle('hidden', !txt.toUpperCase().includes(q));
             }
         }
 
-        // Fill remaining grid (approx 40 more boxes)
+        // Add placeholders
         const grid = document.getElementById('audit-grid');
-        for(let i=0; i<42; i++) {
+        for(let i=4; i<=50; i++) {
             const b = document.createElement('div');
             b.className = 'box';
-            b.innerHTML = `<span class="big-val">---</span><span class="label-text">EMPTY ${i+1}</span>`;
-            b.setAttribute('data-d', 'BUFFERING DATA...');
-            b.setAttribute('data-i', 'SECTOR UNKNOWN');
-            b.setAttribute('data-in', 'NO ATTRIBUTES');
-            b.setAttribute('data-s', 'N/A');
+            b.setAttribute('data-search', 'EMPTY');
+            b.innerHTML = `<span class="big-val">---</span><span class="label-text">EMPTY ${i}</span>`;
             b.onmouseenter = function() { showHud(this); };
             b.onmouseleave = hideHud;
             b.onclick = function() { this.remove(); };
