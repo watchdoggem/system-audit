@@ -2,96 +2,107 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>SYSTEM AUDIT | NEURAL LINK</title>
+    <title>SYSTEM AUDIT | VERSION 4.0</title>
     <style>
         :root {
-            --tech-green: #00ff41;
-            --dim-green: rgba(0, 255, 65, 0.15);
-            --interface-bg: rgba(5, 15, 5, 0.9);
+            /* The "Soft Glow" Palette */
+            --glow-green: #64ffda;
+            --box-bg: rgba(100, 255, 218, 0.05);
+            --border-soft: rgba(100, 255, 218, 0.3);
+            --hud-bg: rgba(5, 15, 12, 0.95);
         }
 
         * { box-sizing: border-box; cursor: crosshair; }
         body { 
-            background: #000; 
-            margin: 0; 
-            padding: 10px; 
+            background: #020806; 
+            margin: 0; padding: 10px; 
             font-family: 'Impact', sans-serif; 
-            overflow: hidden; /* Keeps the terminal tight */
-            color: var(--tech-green);
+            overflow: hidden; 
+            color: var(--glow-green);
         }
 
-        /* THE GRID: FILLING THE SCREEN */
         .grid {
             display: grid;
-            grid-template-columns: repeat(12, 1fr); /* 12 wide for more density */
-            gap: 5px;
+            grid-template-columns: repeat(10, 1fr);
+            gap: 6px;
             width: 100vw;
             height: 100vh;
         }
 
-        /* THE SMALL BOXES */
+        /* THE "BLUEPRINT" BOX FROM YOUR SKETCH */
         .box {
             position: relative;
-            background: var(--dim-green);
-            border: 1px solid rgba(0, 255, 65, 0.3);
-            height: 80px;
+            background: var(--box-bg);
+            border: 1px solid var(--border-soft);
+            height: 100px;
             display: flex;
             flex-direction: column;
-            justify-content: space-between;
-            align-items: center;
-            transition: all 0.2s ease;
-            text-decoration: none;
-            padding-bottom: 2px;
+            transition: all 0.3s ease;
         }
 
-        .box:hover {
-            background: rgba(0, 255, 65, 0.4);
-            box-shadow: 0 0 15px var(--tech-green);
-            z-index: 10;
-        }
-
-        /* THE TRACTOR BEAM EFFECT */
-        .box:hover::before {
-            content: "";
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            width: 100%;
-            height: 100%;
-            background: radial-gradient(circle at center, transparent 10%, var(--dim-green) 90%);
-            clip-path: polygon(50% 50%, 0% 0%, 100% 0%, 100% 100%, 0% 100%); /* Adjust for 'beam' look */
-            z-index: 99;
-            pointer-events: none;
-            animation: pulse 1s infinite;
-        }
-
-        /* THE LARGE HUD POPUP */
-        .box::after {
-            content: attr(data-detail);
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%) scale(0);
-            width: 60vw;
-            height: 40vh;
-            background: var(--interface-bg);
-            border: 2px solid var(--tech-green);
-            color: white;
-            z-index: 100;
-            opacity: 0;
+        /* TOP SECTION: THE MASSIVE VALUE */
+        .val-section {
+            flex: 2; /* Takes up top 2/3 of box */
             display: flex;
             justify-content: center;
             align-items: center;
+            font-size: 44px;
+            letter-spacing: -2px;
+            border-bottom: 1px solid var(--border-soft); /* The horizontal line */
+            line-height: 1;
+        }
+
+        /* BOTTOM SECTION: THE SPLIT TAGS */
+        .tag-section {
+            flex: 1; /* Takes up bottom 1/3 */
+            display: flex;
+            font-size: 11px;
+            text-transform: uppercase;
+        }
+
+        .tag-left {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-right: 1px solid var(--border-soft); /* The vertical line */
+        }
+
+        .tag-right {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        /* HOVER INTERACTION */
+        .box:hover {
+            background: rgba(100, 255, 218, 0.15);
+            box-shadow: 0 0 20px rgba(100, 255, 218, 0.2);
+            z-index: 10;
+        }
+
+        /* THE POPUP HUD */
+        .box::after {
+            content: attr(data-full);
+            position: fixed;
+            top: 50%; left: 50%;
+            transform: translate(-50%, -50%) scale(0);
+            width: 500px;
+            height: 300px;
+            background: var(--hud-bg);
+            border: 1px solid var(--glow-green);
+            color: #fff;
             padding: 40px;
-            text-align: left;
-            font-family: 'Courier New', monospace; /* Robotic readout style */
-            font-size: 22px;
+            z-index: 100;
+            opacity: 0;
             pointer-events: none;
-            backdrop-filter: blur(10px);
-            box-shadow: 0 0 50px rgba(0, 255, 65, 0.2);
-            transition: transform 0.4s cubic-bezier(0.19, 1, 0.22, 1), opacity 0.3s;
-            white-space: pre-wrap;
-            border-radius: 20px;
+            backdrop-filter: blur(8px);
+            transition: all 0.4s cubic-bezier(0.19, 1, 0.22, 1);
+            font-family: 'Courier New', monospace;
+            font-size: 18px;
+            line-height: 1.5;
+            box-shadow: 0 0 100px #000;
         }
 
         .box:hover::after {
@@ -99,61 +110,67 @@
             opacity: 1;
         }
 
-        /* TYPOGRAPHY */
-        .big-val {
-            font-size: 38px;
-            letter-spacing: -2px;
-            line-height: 0.8;
-            margin-top: 5px;
-            font-stretch: extra-condensed;
-        }
-
-        .label {
-            font-size: 9px;
-            background: var(--tech-green);
-            color: black;
-            width: 100%;
-            text-align: center;
-            font-weight: bold;
-            padding: 2px 0;
-        }
-
-        @keyframes pulse {
-            0% { opacity: 0.2; }
-            50% { opacity: 0.5; }
-            100% { opacity: 0.2; }
+        /* TRACTOR BEAM LIGHT EFFECT */
+        .box:hover::before {
+            content: "";
+            position: fixed;
+            top: 0; left: 0; width: 100vw; height: 100vh;
+            background: radial-gradient(circle at center, transparent 20%, rgba(100, 255, 218, 0.05) 100%);
+            z-index: 50;
+            pointer-events: none;
         }
     </style>
 </head>
 <body>
 
-    <div class="grid" id="main-grid">
-        <div class="box" data-detail="[SYSTEM DECRYPTION: PRIMATE TESTING]&#10;&#10;DATA: 104,801 Non-human primates currently held in U.S. labs.&#10;IMPACT: This includes Rhesus Macaques and Marmosets used in invasive neurological and biological mapping.&#10;SOURCE: USDA APHIS 2023 Report" onclick="this.remove()">
-            <span class="big-val">104K</span>
-            <span class="label">PRIMATE TEST</span>
+    <div class="grid" id="audit-grid">
+        <div class="box" onclick="this.remove()" data-full="[SYSTEM DECRYPTION: NHP AUDIT]&#10;&#10;TOPIC: Non-Human Primate Testing&#10;VALUE: 104,801 Research Subjects&#10;IMPACT: In U.S. labs as of 2023. This includes invasive testing protocols.&#10;SOURCE: USDA APHIS ANNUAL RPT">
+            <div class="val-section">104K</div>
+            <div class="tag-section">
+                <div class="tag-left">NHP</div>
+                <div class="tag-right">TEST</div>
+            </div>
         </div>
 
-        <div class="box" data-detail="[SYSTEM DECRYPTION: REPRODUCTIVE STATS]&#10;&#10;DATA: 1,031,000 estimated procedures in 2023.&#10;IMPACT: Represents an 11% increase since 2020 despite legal shifts.&#10;SOURCE: Guttmacher Institute Analysis" onclick="this.remove()">
-            <span class="big-val">1.03M</span>
-            <span class="label">ANNUAL ABORT</span>
+        <div class="box" onclick="this.remove()" data-full="[SYSTEM DECRYPTION: REPRO AUDIT]&#10;&#10;TOPIC: Annual Pregnancy Termination&#10;VALUE: 1,031,000 Procedures&#10;IMPACT: Statistical analysis of U.S. clinical records (2023).&#10;SOURCE: GUTTMACHER 2024">
+            <div class="val-section">1.03M</div>
+            <div class="tag-section">
+                <div class="tag-left">ABRT</div>
+                <div class="tag-right">STAT</div>
+            </div>
         </div>
 
-        <div class="box" data-detail="[SYSTEM DECRYPTION: REGULATORY CLOSURE]&#10;&#10;DATA: 34,000 Small-scale kitchens.&#10;IMPACT: Potential mass-closure under CFR 114 strict industrial compliance mandates.&#10;SOURCE: Federal Regulatory Impact Study" onclick="this.remove()">
-            <span class="big-val">34,000</span>
-            <span class="label">CFR 114 IMPACT</span>
+        <div class="box" onclick="this.remove()" data-full="[SYSTEM DECRYPTION: CFR AUDIT]&#10;&#10;TOPIC: Regulatory Compliance 114&#10;VALUE: 34,000 Estimated Closures&#10;IMPACT: Small-scale food processors/kitchens unable to meet industrial code.&#10;SOURCE: FEDERAL IMPACT AUDIT">
+            <div class="val-section">34K</div>
+            <div class="tag-section">
+                <div class="tag-left">C114</div>
+                <div class="tag-right">RISK</div>
+            </div>
         </div>
 
+        <div class="box" onclick="this.remove()" data-full="[SYSTEM DECRYPTION: FISCAL AUDIT]&#10;&#10;TOPIC: Annual Federal Tax Gap&#10;VALUE: $1.1 Trillion&#10;IMPACT: Estimated unpaid, underreported, or uncollected federal revenue.&#10;SOURCE: IRS COMM. 2024">
+            <div class="val-section">$1.1T</div>
+            <div class="tag-section">
+                <div class="tag-left">TAX</div>
+                <div class="tag-right">GAP</div>
+            </div>
         </div>
+    </div>
 
     <script>
-        const grid = document.getElementById('main-grid');
-        // This loop fills the screen with empty tech-looking boxes
-        for(let i=0; i<117; i++) {
+        const grid = document.getElementById('audit-grid');
+        // Fill screen with placeholder blueprints
+        for(let i=0; i<86; i++) {
             const b = document.createElement('div');
             b.className = 'box';
-            b.setAttribute('data-detail', `[DATA SEGMENT ${1000 + i}]&#10;&#10;STATUS: ENCRYPTED&#10;SECTOR: UNKNOWN&#10;ACTION: Click box to purge from audit.`);
             b.onclick = function() { this.remove(); };
-            b.innerHTML = `<span class="big-val">---</span><span class="label">BUFFERING...</span>`;
+            b.setAttribute('data-full', `[SEGMENT ${2000+i}]&#10;&#10;STATUS: BUFFERING...&#10;SECTOR: ENCRYPTED&#10;ACTION: PURGE ON CLICK`);
+            b.innerHTML = `
+                <div class="val-section">---</div>
+                <div class="tag-section">
+                    <div class="tag-left">DATA</div>
+                    <div class="tag-right">NULL</div>
+                </div>`;
             grid.appendChild(b);
         }
     </script>
