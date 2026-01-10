@@ -10,34 +10,29 @@
         .grid {
             display: grid;
             grid-template-columns: repeat(10, 1fr);
+            grid-auto-rows: 110px;
             gap: 5px;
         }
 
         .box {
             background: #161616; 
             color: #e0e0ce; 
-            height: 110px;
             display: flex;
             flex-direction: column;
             justify-content: space-between; 
             align-items: center;
             text-align: center;
             border: 1px solid #2a2a2a;
-            transition: all 0.3s ease;
+            transition: all 0.2s ease;
             cursor: pointer;
             overflow: hidden;
-            text-decoration: none;
-            padding: 2px;
-            container-type: size; /* Crucial for scaling text to the box size */
+            padding: 5px;
+            container-type: size;
         }
 
-        .box:hover {
-            background: #222;
-            border-color: #e0e0ce;
-            z-index: 10;
-        }
+        .box:hover { background: #222; border-color: #e0e0ce; z-index: 10; transform: scale(1.05); }
 
-        /* The Expansion (3/4 Screen) */
+        /* The Expansion (Click/Focus) */
         .box:focus {
             position: fixed;
             top: 50%;
@@ -52,30 +47,31 @@
             box-shadow: 0 0 500px #000;
         }
 
-        /* DYNAMIC TEXT: Always fills the box */
+        /* TEXT SCALING: Fills without breaking */
         .big-val { 
-            font-size: 24cqw; /* Scaled to box width */
-            line-height: 0.8;
+            font-size: clamp(10px, 22cqw, 35px); /* Limits max size to prevent blowout */
+            line-height: 0.85;
             font-weight: 900;
             color: #fff;
-            margin-top: 5cqh;
+            width: 100%;
+            word-wrap: break-word;
         }
         
         .label { 
-            font-size: 6.5cqw; 
+            font-size: clamp(6px, 6.5cqw, 12px); 
             background: #000; 
             color: #666; 
             width: 100%; 
-            padding: 2cqh 0;
+            padding: 2px 0;
             text-transform: uppercase;
         }
 
         .source { 
             font-family: 'Times New Roman', serif;
-            font-size: 3.5cqw; 
+            font-size: clamp(4px, 3.5cqw, 8px); 
             font-style: italic;
             opacity: 0.5;
-            margin-bottom: 5cqh;
+            line-height: 1;
         }
     </style>
 </head>
@@ -85,14 +81,24 @@
         <div class="box" tabindex="0">
             <span class="big-val">104,801</span>
             <span class="label">NON-HUMAN PRIMATES IN TESTING</span>
-            <span class="source">Source: USDA APHIS 2023 Research Report</span>
+            <span class="source">USDA APHIS 2023 Report</span>
         </div>
 
+        <div class="box" tabindex="0">
+            <span class="big-val">1,030,800</span>
+            <span class="label">ANNUAL U.S. ABORTIONS</span>
+            <span class="source">Guttmacher Institute Study</span>
         </div>
-<div class="box" tabindex="0">
-    <span class="big-val">1,030,800</span>
-    <span class="label">ANNUAL U.S. ABORTIONS (2023)</span>
-    <span class="source">Source: Guttmacher Institute / Monthly Abortion Provision Study</span>
-</div>
+
+        <div class="box" tabindex="0"><span class="big-val">000</span><span class="label">EMPTY 3</span><span class="source">Source</span></div>
+        <div class="box" tabindex="0"><span class="big-val">000</span><span class="label">EMPTY 4</span><span class="source">Source</span></div>
+        <div class="box" tabindex="0"><span class="big-val">000</span><span class="label">EMPTY 5</span><span class="source">Source</span></div>
+        <div class="box" tabindex="0"><span class="big-val">000</span><span class="label">EMPTY 6</span><span class="source">Source</span></div>
+        <div class="box" tabindex="0"><span class="big-val">000</span><span class="label">EMPTY 7</span><span class="source">Source</span></div>
+        <div class="box" tabindex="0"><span class="big-val">000</span><span class="label">EMPTY 8</span><span class="source">Source</span></div>
+        <div class="box" tabindex="0"><span class="big-val">000</span><span class="label">EMPTY 9</span><span class="source">Source</span></div>
+        <div class="box" tabindex="0"><span class="big-val">000</span><span class="label">EMPTY 10</span><span class="source">Source</span></div>
+        </div>
+
 </body>
 </html>
