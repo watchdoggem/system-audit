@@ -6,108 +6,106 @@
     <title>WATCHDOGGEM | TERMINAL</title>
     <style>
         :root {
-            [cite_start]--bg-deep: #060a06; [cite: 2]
-            [cite_start]--accent-neon: #d4c1ff; [cite: 3]
-            [cite_start]--accent-glow: rgba(212, 193, 255, 0.4); [cite: 3]
-            [cite_start]--border: rgba(212, 193, 255, 0.15); [cite: 3]
+            --bg-deep: #060a06;
+            --accent-neon: #d4c1ff; 
+            --accent-glow: rgba(212, 193, 255, 0.4);
+            --border: rgba(212, 193, 255, 0.15);
         }
 
-        * { box-sizing: border-box; cursor: crosshair; [cite_start]} [cite: 4]
+        * { box-sizing: border-box; cursor: crosshair; }
         
         body { 
-            [cite_start]background: var(--bg-deep); [cite: 5]
+            background: var(--bg-deep);
             background-image: 
                 radial-gradient(circle at 50% 50%, #101a10 0%, #060a06 100%),
                 linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%),
-                [cite_start]linear-gradient(90deg, rgba(255, 0, 0, 0.03), rgba(0, 255, 0, 0.01), rgba(0, 0, 255, 0.03)); [cite: 6]
-            [cite_start]background-size: 100% 100%, 100% 4px, 100% 100%; [cite: 7]
+                linear-gradient(90deg, rgba(255, 0, 0, 0.03), rgba(0, 255, 0, 0.01), rgba(0, 0, 255, 0.03));
+            background-size: 100% 100%, 100% 4px, 100% 100%;
             margin: 0; padding: 20px; 
             font-family: 'Impact', sans-serif; 
-            [cite_start]color: var(--accent-neon); [cite: 7]
+            color: var(--accent-neon);
             min-height: 100vh;
             overflow-x: hidden;
         }
 
         #search-container {
-            [cite_start]display: flex; [cite: 8]
-            [cite_start]border: 1px solid var(--border); [cite: 9]
+            display: flex;
+            border: 1px solid var(--border);
             padding: 15px; margin-bottom: 30px;
-            [cite_start]background: rgba(0, 0, 0, 0.4); [cite: 9]
-            width: 100%; max-width: 600px;
-            [cite_start]backdrop-filter: blur(5px); [cite: 9]
+            background: rgba(0, 0, 0, 0.4);
+            width: calc(100% - 100px);
+            backdrop-filter: blur(5px);
         }
 
         #filter-input {
-            [cite_start]background: transparent; [cite: 10]
-            [cite_start]border: none; outline: none; [cite: 11]
-            [cite_start]color: var(--accent-neon); font-family: 'Impact', sans-serif; [cite: 11]
-            [cite_start]font-size: 24px; width: 100%; letter-spacing: 3px; [cite: 11]
+            background: transparent;
+            border: none; outline: none;
+            color: var(--accent-neon); font-family: 'Impact', sans-serif;
+            font-size: 24px; width: 100%; letter-spacing: 3px;
         }
 
-        .grid { display: block; [cite_start]} [cite: 12]
-
+        .grid { display: block; }
         .box {
-            [cite_start]border: 1px solid var(--border); [cite: 13]
-            [cite_start]height: 180px; width: 250px; [cite: 14]
+            border: 1px solid var(--border);
+            height: 180px; width: 250px;
             display: flex; flex-direction: column;
-            [cite_start]justify-content: center; align-items: center; [cite: 14]
-            [cite_start]background: linear-gradient(145deg, rgba(26, 46, 26, 0.4), rgba(10, 15, 10, 0.6)); [cite: 15]
-            [cite_start]transition: border 0.3s; [cite: 15]
+            justify-content: center; align-items: center;
+            background: linear-gradient(145deg, rgba(26, 46, 26, 0.4), rgba(10, 15, 10, 0.6));
+            transition: border 0.3s;
             cursor: pointer;
         }
-
-        .box:hover { border-color: var(--accent-neon); [cite_start]} [cite: 16]
-        .box-num { font-size: 62px; line-height: 0.8; [cite_start]} [cite: 17]
-        .box-label { font-size: 28px; margin-top: 12px; opacity: 0.6; [cite_start]} [cite: 18]
+        .box:hover { border-color: var(--accent-neon); }
+        .box-num { font-size: 62px; line-height: 0.8; }
+        .box-label { font-size: 28px; margin-top: 12px; opacity: 0.6; }
 
         #hud {
-            [cite_start]position: fixed; [cite: 19]
-            [cite_start]top: 50%; left: 50%; [cite: 20]
-            [cite_start]transform: translate(-50%, -50%) scale(0); [cite: 20]
-            [cite_start]width: 90vw; max-width: 1100px; [cite: 20]
-            /* SOLID OPACITY FIX */
-            background: rgba(5, 10, 5, 0.98); 
-            [cite_start]border: 1px solid var(--accent-neon); [cite: 21]
-            [cite_start]padding: 40px; z-index: 1000; [cite: 21]
-            [cite_start]display: flex; flex-direction: column; [cite: 21]
-            [cite_start]transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275); [cite: 21]
-            [cite_start]box-shadow: 0 0 100px rgba(0,0,0,0.9); [cite: 22]
+            position: fixed;
+            top: 50%; left: 50%;
+            transform: translate(-50%, -50%) scale(0);
+            width: 85vw; max-width: 1100px;
+            /* FIXED: SOLID BACKGROUND */
+            background: rgb(5, 8, 5); 
+            border: 1px solid var(--accent-neon);
+            padding: 40px; z-index: 1000;
+            display: flex; flex-direction: column;
+            transition: transform 0.1s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            box-shadow: 0 0 100px rgba(0,0,0,0.9);
             pointer-events: none;
             max-height: 90vh;
             overflow-y: auto;
         }
 
-        .hud-header { font-size: 38px; text-align: center; margin-bottom: 10px; [cite_start]} [cite: 22]
-        .hud-species { font-size: 22px; text-align: center; border-bottom: 1px solid var(--border); padding-bottom: 15px; margin-bottom: 30px; [cite_start]} [cite: 23]
+        .hud-header { font-size: clamp(24px, 5vw, 42px); text-align: center; margin-bottom: 10px; }
+        .hud-species { font-size: 22px; text-align: center; border-bottom: 1px solid var(--border); padding-bottom: 15px; margin-bottom: 30px; }
         
         .hud-stats-grid { 
-            display: grid; 
-            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); 
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); 
             gap: 12px; margin-bottom: 30px; 
-        [cite_start]} [cite: 24]
+        }
 
         .stat-module {
-            [cite_start]border: 1px solid var(--border); [cite: 25]
-            [cite_start]padding: 18px; [cite: 26]
-            [cite_start]background: rgba(212, 193, 255, 0.05); [cite: 26]
-            [cite_start]text-align: center; font-size: 24px; text-transform: uppercase; [cite: 26]
+            border: 1px solid var(--border);
+            padding: 18px;
+            background: rgba(212, 193, 255, 0.02);
+            text-align: center; font-size: 24px; text-transform: uppercase;
         }
 
         .hud-footer {
-            [cite_start]display: flex; justify-content: space-between; [cite: 27]
-            [cite_start]font-size: 18px; border-top: 1px solid var(--border); [cite: 28]
-            [cite_start]padding-top: 20px; font-weight: bold; [cite: 28]
+            display: flex; justify-content: space-between; flex-wrap: wrap;
+            font-size: 18px; border-top: 1px solid var(--border);
+            padding-top: 20px; font-weight: bold;
         }
 
         #beam-svg {
-            [cite_start]position: fixed; top: 0; left: 0; [cite: 29]
-            [cite_start]width: 100vw; height: 100vh; [cite: 30]
-            [cite_start]pointer-events: none; z-index: 900; [cite: 30]
-            [cite_start]opacity: 0; transition: opacity 0.2s; [cite: 30]
+            position: fixed; top: 0; left: 0;
+            width: 100vw; height: 100vh;
+            pointer-events: none; z-index: 900;
+            opacity: 0;
         }
         .beam-path { 
-            [cite_start]fill: rgba(212, 193, 255, 0.05); [cite: 31]
-            [cite_start]stroke: rgba(212, 193, 255, 0.2); [cite: 32]
+            fill: rgba(212, 193, 255, 0.05);
+            stroke: rgba(212, 193, 255, 0.2); 
             stroke-width: 1; 
         }
     </style>
@@ -122,68 +120,66 @@
         <polygon id="poly-projection" class="beam-path" />
     </svg>
 
-    <div id="hud" onclick="event.stopPropagation()">
-        [cite_start]<div class="hud-header">104,801 NON-HUMAN PRIMATES IN RESEARCH</div> [cite: 33]
-        <div class="hud-species">SUBJECTS: RHESUS MACAQUES | [cite_start]CYNOMOLGUS</div> [cite: 33]
-        
+    <div id="hud">
+        <div class="hud-header">104,801 NON-HUMAN PRIMATES IN RESEARCH</div>
+        <div class="hud-species">SUBJECTS: RHESUS MACAQUES | CYNOMOLGUS</div>
         <div class="hud-stats-grid">
-            [cite_start]<div class="stat-module">100% FATAL ANESTHETIC OVERDOSE</div> [cite: 33]
-            [cite_start]<div class="stat-module">20% CLINICAL SELF-HARM</div> [cite: 33]
-            [cite_start]<div class="stat-module">83% SOCIAL ISOLATION</div> [cite: 33]
-            [cite_start]<div class="stat-module">89% DISTRESSED PACING</div> [cite: 33]
-            [cite_start]<div class="stat-module">12% NO PAIN RELIEF (COLUMN E)</div> [cite: 33]
-            [cite_start]<div class="stat-module">100% CAGE SEQUESTRATION</div> [cite: 34]
-            [cite_start]<div class="stat-module">31,000 CAGED BY CLASS A BREEDERS</div> [cite: 34]
-            [cite_start]<div class="stat-module">13,375 CAGED BY CLASS B DEALERS</div> [cite: 34]
-            [cite_start]<div class="stat-module">$800M+ U.S. DOMESTIC REVENUE</div> [cite: 34]
-            [cite_start]<div class="stat-module">$300M+ TAXPAYER INFRASTRUCTURE</div> [cite: 34]
+            <div class="stat-module">100% FATAL ANESTHETIC OVERDOSE</div>
+            <div class="stat-module">20% CLINICAL SELF-HARM</div>
+            <div class="stat-module">83% SOCIAL ISOLATION</div>
+            <div class="stat-module">89% DISTRESSED PACING</div>
+            <div class="stat-module">12% NO PAIN RELIEF (COLUMN E)</div>
+            <div class="stat-module">100% CAGE SEQUESTRATION</div>
+            <div class="stat-module">31,000 CAGED BY CLASS A BREEDERS</div>
+            <div class="stat-module">13,375 CAGED BY CLASS B DEALERS</div>
+            <div class="stat-module">$800M+ U.S. DOMESTIC REVENUE</div>
+            <div class="stat-module">$300M+ TAXPAYER INFRASTRUCTURE</div>
         </div>
-
         <div class="hud-footer">
-            [cite_start]<span>SOURCE: USDA APHIS 2024 / NIH FINANCIALS</span> [cite: 35]
-            <span>FDA REQUIRED | NIH FUNDED | [cite_start]USDA OVERSIGHT</span> [cite: 36]
+            <span>SOURCE: USDA APHIS 2024 / NIH FINANCIALS</span>
+            <span>FDA REQUIRED | NIH FUNDED | USDA OVERSIGHT</span>
         </div>
     </div>
 
     <div class="grid">
         <div class="box" onmouseenter="showHud(this)" onmouseleave="hideHud()" onclick="event.stopPropagation(); showHud(this)">
-            [cite_start]<div class="box-num">104,801</div> [cite: 36]
-            [cite_start]<div class="box-label">NHP TESTING</div> [cite: 36]
+            <div class="box-num">104,801</div>
+            <div class="box-label">NHP TESTING</div>
         </div>
     </div>
 
     <script>
-        [cite_start]const hud = document.getElementById('hud'); [cite: 37]
-        [cite_start]const beamSvg = document.getElementById('beam-svg'); [cite: 37]
-        [cite_start]const projection = document.getElementById('poly-projection'); [cite: 37]
+        const hud = document.getElementById('hud');
+        const beamSvg = document.getElementById('beam-svg');
+        const projection = document.getElementById('poly-projection');
 
         function showHud(el) {
-            [cite_start]hud.style.transform = "translate(-50%, -50%) scale(1)"; [cite: 38]
+            hud.style.transform = "translate(-50%, -50%) scale(1)";
             hud.style.pointerEvents = "auto";
-            [cite_start]beamSvg.style.opacity = "1"; [cite: 38]
+            beamSvg.style.opacity = "1";
             
             const r = el.getBoundingClientRect(); 
             const h = hud.getBoundingClientRect();
 
-            // FIXED BEAM MATH: 8 coordinates mapping the Box corners to the HUD corners
+            // FIXED: Corrected 8-point polygon math for the beams
             const points = [
-                `${r.left},${r.top}`,       // Trigger TL
+                `${r.left},${r.top}`,       // Box TL
                 `${h.left},${h.top}`,       // HUD TL
                 `${h.right},${h.top}`,      // HUD TR
-                `${r.right},${r.top}`,      // Trigger TR
-                `${r.right},${r.bottom}`,   // Trigger BR
+                `${r.right},${r.top}`,      // Box TR
+                `${r.right},${r.bottom}`,   // Box BR
                 `${h.right},${h.bottom}`,   // HUD BR
                 `${h.left},${h.bottom}`,    // HUD BL
-                `${r.left},${r.bottom}`     // Trigger BL
+                `${r.left},${r.bottom}`     // Box BL
             ].join(' ');
-            
-            [cite_start]projection.setAttribute('points', points); [cite: 39]
+
+            projection.setAttribute('points', points);
         }
 
         function hideHud() { 
-            [cite_start]hud.style.transform = "translate(-50%, -50%) scale(0)"; [cite: 40]
+            hud.style.transform = "translate(-50%, -50%) scale(0)";
             hud.style.pointerEvents = "none";
-            [cite_start]beamSvg.style.opacity = "0"; [cite: 41]
+            beamSvg.style.opacity = "0"; 
         }
     </script>
 </body>
