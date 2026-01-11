@@ -20,21 +20,16 @@
             margin: 0; padding: 20px; 
             font-family: 'Impact', sans-serif; 
             color: var(--accent-neon);
-            overflow-x: hidden;
+            overflow: hidden;
             min-height: 100vh;
         }
 
         #avatar-stamp {
-            position: fixed;
-            top: 25px;
-            right: 25px;
-            width: 70px;
-            height: 70px;
+            position: fixed; top: 25px; right: 25px;
+            width: 70px; height: 70px;
             border: 1px solid var(--accent-neon);
             background: rgba(0,0,0,0.5);
-            z-index: 1100;
-            overflow: hidden;
-            border-radius: 4px;
+            z-index: 1100; overflow: hidden; border-radius: 4px;
             animation: pulse-glow 3s infinite;
         }
 
@@ -47,13 +42,10 @@
         #avatar-stamp img { width: 100%; height: 100%; object-fit: cover; }
 
         #search-container {
-            display: flex;
-            border: 1px solid var(--border);
-            padding: 15px;
-            margin-bottom: 30px;
+            display: flex; border: 1px solid var(--border);
+            padding: 15px; margin-bottom: 30px;
             background: rgba(255, 255, 255, 0.03);
-            backdrop-filter: blur(5px);
-            width: calc(100% - 100px);
+            backdrop-filter: blur(5px); width: calc(100% - 100px);
         }
 
         #filter-input {
@@ -62,24 +54,14 @@
             font-size: 24px; width: 100%; letter-spacing: 2px;
         }
 
-        .grid {
-            display: grid;
-            grid-template-columns: repeat(5, 1fr);
-            gap: 20px;
-        }
+        .grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 20px; }
 
         .box {
-            position: relative;
-            border: 1px solid var(--border);
-            height: 180px;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            transition: all 0.3s ease;
-            text-align: center;
-            padding: 15px;
-            background: rgba(26, 36, 24, 0.4);
+            position: relative; border: 1px solid var(--border);
+            height: 180px; display: flex; flex-direction: column;
+            justify-content: center; align-items: center;
+            transition: all 0.3s ease; text-align: center;
+            padding: 15px; background: rgba(26, 36, 24, 0.4);
         }
         
         .box:hover { border-color: var(--accent-neon); background: rgba(212, 193, 255, 0.08); }
@@ -87,67 +69,45 @@
         .box-num { font-size: 62px; line-height: 0.8; letter-spacing: -2px; }
         .box-label { font-size: 28px; line-height: 1; margin-top: 12px; opacity: 0.8; }
 
-        /* TRANSLUCENT HUD */
+        /* TRANSLUCENT POPUP */
         #hud {
-            position: fixed;
-            top: 50%; left: 50%;
+            position: fixed; top: 50%; left: 50%;
             transform: translate(-50%, -50%) scale(0);
-            width: 80vw; 
-            max-width: 1000px;
-            background: rgba(10, 15, 10, 0.7); /* Reduced opacity for transparency */
-            backdrop-filter: blur(20px); /* Increased blur for glass effect */
+            width: 80vw; max-width: 1000px;
+            background: rgba(10, 15, 10, 0.6); /* High Translucency */
+            backdrop-filter: blur(25px); /* Heavy Blur */
             border: 1px solid var(--accent-neon);
-            padding: 40px;
-            z-index: 1000;
-            display: flex;
-            flex-direction: column;
-            pointer-events: none;
-            transition: transform 0.2s ease-out;
+            padding: 40px; z-index: 1000;
+            display: flex; flex-direction: column;
+            pointer-events: none; transition: transform 0.2s ease-out;
             box-shadow: 0 0 80px rgba(0,0,0,1);
         }
 
         .hud-header { font-size: 32px; margin-bottom: 12px; text-align: center; text-transform: uppercase; white-space: nowrap; }
         .hud-species { font-size: 22px; margin-bottom: 30px; letter-spacing: 2px; text-align: center; border-bottom: 1px solid var(--border); padding-bottom: 20px; }
-        
         .hud-stats-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; margin-bottom: 30px; }
 
         .stat-module {
-            border: 1px solid var(--border);
-            padding: 20px;
+            border: 1px solid var(--border); padding: 20px;
             background: rgba(255, 255, 255, 0.05);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            text-align: center;
-            min-height: 85px;
+            display: flex; justify-content: center; align-items: center;
+            text-align: center; min-height: 85px;
         }
 
         .stat-text { font-size: 22px; text-transform: uppercase; line-height: 1.1; }
 
-        /* FOOTER: Sized up to 15px */
         .hud-footer {
-            display: flex;
-            justify-content: space-between;
-            font-size: 15px; 
-            border-top: 1px solid var(--border);
-            padding-top: 20px;
-            letter-spacing: 2px;
-            opacity: 0.8;
+            display: flex; justify-content: space-between;
+            font-size: 15px; border-top: 1px solid var(--border);
+            padding-top: 20px; letter-spacing: 2px; opacity: 0.8;
         }
 
+        /* THE BEAM */
         #beam-svg {
             position: fixed; top: 0; left: 0;
             width: 100vw; height: 100vh;
             pointer-events: none; z-index: 900;
             opacity: 0; transition: opacity 0.2s;
-        }
-
-        @media (max-width: 700px) {
-            .grid { grid-template-columns: repeat(2, 1fr); }
-            #hud { width: 95vw !important; padding: 20px !important; }
-            .hud-header { white-space: normal !important; font-size: 22px !important; }
-            .hud-stats-grid { grid-template-columns: 1fr !important; }
-            #avatar-stamp { width: 55px; height: 55px; }
         }
     </style>
 </head>
@@ -162,10 +122,7 @@
     </div>
 
     <svg id="beam-svg">
-        <polygon id="poly-top" fill="rgba(212, 193, 255, 0.06)" />
-        <polygon id="poly-bottom" fill="rgba(212, 193, 255, 0.06)" />
-        <polygon id="poly-left" fill="rgba(212, 193, 255, 0.06)" />
-        <polygon id="poly-right" fill="rgba(212, 193, 255, 0.06)" />
+        <polygon id="beam-flare" fill="rgba(212, 193, 255, 0.1)" stroke="rgba(212, 193, 255, 0.2)" stroke-width="1" />
     </svg>
 
     <div id="hud">
@@ -193,10 +150,7 @@
     <script>
         const hud = document.getElementById('hud');
         const beamSvg = document.getElementById('beam-svg');
-        const polys = {
-            top: document.getElementById('poly-top'), bottom: document.getElementById('poly-bottom'),
-            left: document.getElementById('poly-left'), right: document.getElementById('poly-right')
-        };
+        const flare = document.getElementById('beam-flare');
 
         function showHud(el, e) {
             e.stopPropagation();
@@ -219,11 +173,17 @@
             const r = el.getBoundingClientRect();
             const h = hud.getBoundingClientRect();
 
-            // Corrected "Inverted" Beam Projection: Smaller at Box, Larger at HUD
-            polys.top.setAttribute('points', `${r.left},${r.top} ${r.right},${r.top} ${h.right},${h.top} ${h.left},${h.top}`);
-            polys.bottom.setAttribute('points', `${r.left},${r.bottom} ${r.right},${r.bottom} ${h.right},${h.bottom} ${h.left},${h.bottom}`);
-            polys.left.setAttribute('points', `${r.left},${r.top} ${r.left},${r.bottom} ${h.left},${h.bottom} ${h.left},${h.top}`);
-            polys.right.setAttribute('points', `${r.right},${r.top} ${r.right},${r.bottom} ${h.right},${h.bottom} ${h.right},${h.top}`);
+            // Dynamic Flare Logic: Start at Box (Small), End at HUD (Large)
+            // Points: Box-Top-Left, Box-Top-Right, HUD-Top-Right, HUD-Top-Left... etc
+            // We use the four corners of the box connecting to the four corners of the HUD
+            const points = `
+                ${r.left},${r.top} ${r.right},${r.top} 
+                ${h.right},${h.top} ${h.right},${h.bottom} 
+                ${h.left},${h.bottom} ${h.left},${h.top}
+                ${r.left},${r.top} ${r.left},${r.bottom} 
+                ${r.right},${r.bottom} ${r.right},${r.top}
+            `;
+            flare.setAttribute('points', points);
         }
 
         function hideHud() { 
