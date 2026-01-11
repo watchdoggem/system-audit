@@ -6,105 +6,130 @@
     <title>WATCHDOGGEM | TERMINAL</title>
     <style>
         :root {
-            /* Muted Tactical Palette */
-            --bg-base: #0a0c0a;
-            --terminal-dark: #141a14;
-            --accent-muted: #9a8bbd; /* Desaturated Violet */
-            --ui-green: #2a3d2a; /* Muted Forest Green */
-            --text-main: #d1d1d1;
-            --border-subtle: rgba(154, 139, 189, 0.2);
+            --bg-deep: #060a06;
+            --accent-neon: #d4c1ff; 
+            --accent-glow: rgba(212, 193, 255, 0.4);
+            --terminal-green: #1a2e1a;
+            --border: rgba(212, 193, 255, 0.1);
         }
 
         * { box-sizing: border-box; cursor: crosshair; }
         
         body { 
-            background: var(--bg-base); 
+            background: var(--bg-deep); 
+            background-image: 
+                radial-gradient(circle at 50% 50%, #101a10 0%, #060a06 100%),
+                linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%),
+                linear-gradient(90deg, rgba(255, 0, 0, 0.03), rgba(0, 255, 0, 0.01), rgba(0, 0, 255, 0.03));
+            background-size: 100% 100%, 100% 4px, 100% 100%;
             margin: 0; padding: 20px; 
             font-family: 'Impact', sans-serif; 
-            color: var(--text-main);
+            color: var(--accent-neon);
             min-height: 100vh;
             overflow-x: hidden;
         }
 
+        #avatar-stamp {
+            position: fixed; top: 25px; right: 25px;
+            width: 70px; height: 70px;
+            border: 1px solid var(--accent-neon);
+            background: rgba(0,0,0,0.8);
+            z-index: 1100; border-radius: 2px;
+            box-shadow: 0 0 20px rgba(212, 193, 255, 0.2);
+        }
+        #avatar-stamp img { width: 100%; height: 100%; object-fit: cover; opacity: 0.8; }
+
         #search-container {
-            display: flex; 
-            border: 1px solid var(--ui-green);
+            display: flex; border: 1px solid var(--border);
             padding: 15px; margin-bottom: 30px;
-            background: rgba(0, 0, 0, 0.5);
+            background: rgba(0, 0, 0, 0.4);
             width: calc(100% - 100px);
+            backdrop-filter: blur(5px);
         }
 
         #filter-input {
             background: transparent; border: none; outline: none;
-            color: var(--accent-muted); font-family: 'Impact', sans-serif;
-            font-size: 24px; width: 100%; letter-spacing: 1px;
+            color: var(--accent-neon); font-family: 'Impact', sans-serif;
+            font-size: 24px; width: 100%; letter-spacing: 3px;
+            text-shadow: 0 0 10px var(--accent-glow);
         }
 
         .grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 20px; }
 
         .box {
-            position: relative; border: 1px solid var(--ui-green);
+            position: relative; border: 1px solid var(--border);
             height: 180px; display: flex; flex-direction: column;
             justify-content: center; align-items: center;
             text-align: center; padding: 15px; 
-            background: var(--terminal-dark);
-            z-index: 10;
+            background: linear-gradient(145deg, rgba(26, 46, 26, 0.4), rgba(10, 15, 10, 0.6));
+            transition: border 0.3s;
         }
+        .box:hover { border-color: var(--accent-neon); }
         
-        .box-num { font-size: 62px; line-height: 0.8; color: var(--accent-muted); }
-        .box-label { font-size: 28px; line-height: 1; margin-top: 12px; color: var(--ui-green); }
+        .box-num { font-size: 62px; line-height: 0.8; letter-spacing: -2px; }
+        .box-label { font-size: 28px; line-height: 1; margin-top: 12px; opacity: 0.6; }
 
         #hud {
             position: fixed; top: 50%; left: 50%;
             transform: translate(-50%, -50%) scale(0);
             width: 85vw; max-width: 1100px;
-            background: #080a08; 
-            border: 1px solid var(--accent-muted);
+            background: rgba(5, 8, 5, 0.95); 
+            border: 1px solid var(--accent-neon);
             padding: 40px; z-index: 1000;
             display: flex; flex-direction: column;
-            pointer-events: none; transition: transform 0.1s ease-out;
-            box-shadow: 0 0 60px rgba(0,0,0,1);
+            pointer-events: none; transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            box-shadow: 0 0 100px rgba(0,0,0,0.9);
         }
 
-        .hud-header { font-size: 38px; margin-bottom: 10px; text-align: center; color: var(--accent-muted); }
-        .hud-species { font-size: 20px; margin-bottom: 25px; text-align: center; color: var(--ui-green); border-bottom: 1px solid var(--ui-green); padding-bottom: 15px; }
-        
-        .hud-stats-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; margin-bottom: 25px; }
+        .hud-header { font-size: 42px; margin-bottom: 10px; text-align: center; letter-spacing: 2px; }
+        .hud-species { font-size: 20px; margin-bottom: 30px; text-align: center; opacity: 0.7; border-bottom: 1px solid var(--border); padding-bottom: 15px; }
+        .hud-stats-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; margin-bottom: 30px; }
+
         .stat-module {
-            border: 1px solid var(--ui-green); padding: 20px;
-            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid var(--border); padding: 25px;
+            background: rgba(212, 193, 255, 0.02);
+            display: flex; justify-content: center; align-items: center;
             text-align: center;
         }
-        .stat-text { font-size: 24px; text-transform: uppercase; color: var(--text-main); }
+        .stat-text { font-size: 24px; text-transform: uppercase; color: var(--accent-neon); }
 
         .hud-footer {
             display: flex; justify-content: space-between;
-            font-size: 14px; border-top: 1px solid var(--ui-green);
-            padding-top: 20px; color: var(--ui-green);
+            font-size: 14px; border-top: 1px solid var(--border);
+            padding-top: 20px; opacity: 0.5;
         }
 
         #beam-svg {
             position: fixed; top: 0; left: 0;
             width: 100vw; height: 100vh;
             pointer-events: none; z-index: 900;
-            opacity: 0;
+            opacity: 0; transition: opacity 0.2s;
         }
         
-        /* Seamless blended projection */
         .beam-path { 
-            fill: rgba(154, 139, 189, 0.04); 
-            stroke: rgba(154, 139, 189, 0.1); 
-            stroke-width: 0.5;
+            fill: url(#beamGradient); 
+            stroke: rgba(212, 193, 255, 0.2); 
+            stroke-width: 1; 
         }
     </style>
 </head>
 <body onclick="hideHud()">
+
+    <div id="avatar-stamp">
+        <img src="https://unavatar.io/x/watchdoggem" alt="WATCHDOGGEM">
+    </div>
 
     <div id="search-container" onclick="event.stopPropagation()">
         <input type="text" id="filter-input" placeholder="SEARCH / FILTER AUDIT LOG" onkeyup="filterGrid()">
     </div>
 
     <svg id="beam-svg">
+        <defs>
+            <linearGradient id="beamGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+                <stop offset="0%" style="stop-color:rgba(212,193,255,0.05);stop-opacity:1" />
+                <stop offset="100%" style="stop-color:rgba(26,46,26,0.2);stop-opacity:1" />
+            </linearGradient>
+        </defs>
         <polygon id="poly-projection" class="beam-path" />
     </svg>
 
@@ -137,6 +162,7 @@
             document.getElementById('h-header').innerText = el.getAttribute('data-head');
             const statsContainer = document.getElementById('h-stats');
             statsContainer.innerHTML = '';
+            
             el.getAttribute('data-stats').split(';').forEach((stat) => {
                 const div = document.createElement('div');
                 div.className = 'stat-module';
