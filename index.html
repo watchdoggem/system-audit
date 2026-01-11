@@ -8,7 +8,7 @@
         :root {
             --bg-deep: #060a06;
             --accent-neon: #d4c1ff; 
-            --border: rgba(212, 193, 255, 0.2);
+            --border: rgba(212, 193, 255, 0.25);
         }
 
         * { box-sizing: border-box; cursor: crosshair; }
@@ -23,7 +23,6 @@
             overflow: hidden;
         }
 
-        /* SEARCH BAR */
         #header-row { display: flex; align-items: center; gap: 12px; margin-bottom: 20px; }
         #search-container {
             flex-grow: 1; border: 1px solid var(--border);
@@ -35,76 +34,68 @@
             font-size: 20px; width: 100%; letter-spacing: 2px;
         }
 
-        /* BACKGROUND GRID - ALL NODES EMPTY */
+        /* BACKGROUND GRID - NODES ONLY */
         .grid { 
             display: grid; grid-template-columns: repeat(5, 1fr); gap: 15px;
             max-width: 1400px; margin: 0 auto;
         }
-
         .box {
             border: 1px solid var(--border); height: 130px;
             display: flex; flex-direction: column; justify-content: center; align-items: center;
             background: rgba(212, 193, 255, 0.02);
         }
         .box-num { font-size: 32px; }
-        .box-label { font-size: 14px; opacity: 0.4; text-transform: uppercase; }
+        .box-label { font-size: 14px; opacity: 0.4; }
 
-        /* HUD - THE "EXA" SYSTEM */
+        /* HUD - VERTICAL FILL */
         #hud {
             position: fixed; top: 50%; left: 50%;
             transform: translate(-50%, -50%) scale(0);
-            width: 92vw; max-width: 1100px; height: 85vh;
+            width: 94vw; max-width: 1200px; height: 88vh;
             background: rgba(4, 6, 4, 0.99);
-            border: 1px solid var(--accent-neon);
+            border: 2px solid var(--accent-neon);
             padding: 40px; z-index: 1000;
             display: flex; flex-direction: column;
             transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.2);
             pointer-events: none;
         }
 
-        /* TITLE - CENTERED WITH DEAD SPACE */
+        /* HEADER - NO WIDENING */
         .hud-header { 
-            font-size: 36px; 
-            text-align: center;
-            width: fit-content;
-            margin: 0 auto 5px auto;
-            letter-spacing: 1px;
+            font-size: 42px; text-align: center; margin-bottom: 5px; 
         }
-
         .hud-species { 
-            font-size: 14px; text-align: center; 
-            border-bottom: 1px solid var(--border);
-            padding-bottom: 15px; margin-bottom: 30px; 
-            opacity: 0.6; letter-spacing: 6px;
+            font-size: 14px; text-align: center; border-bottom: 1px solid var(--border);
+            padding-bottom: 15px; margin-bottom: 25px; opacity: 0.6; letter-spacing: 6px;
         }
         
-        /* 10 BOX GRID - ELIMINATING VERTICAL DEAD SPACE */
+        /* 10 BOX GRID - KILLS DEAD SPACE */
         .hud-stats-grid { 
             display: grid; grid-template-columns: repeat(2, 1fr); 
-            gap: 15px; flex-grow: 1;
+            gap: 12px; flex-grow: 1; /* FORCES VERTICAL EXPANSION */
         }
         
-        /* THE "EXA" BOX STYLING */
+        /* THE "EXA" RECTANGLE */
         .stat-module {
             border: 1px solid var(--border);
-            background: rgba(212, 193, 255, 0.03); 
-            padding: 0 30px; 
+            background: rgba(212, 193, 255, 0.04); 
+            padding: 0 40px; /* ANCHORS WORDS TO THE SIDES */
             display: flex; 
             align-items: center; 
-            justify-content: space-between; /* ANCHORS TEXT TO WALLS */
-            font-size: 22px;
-            text-transform: uppercase;
+            justify-content: space-between; /* WORD-TO-WALL ANCHOR */
+            font-size: 24px;
+            height: 100%; /* KILLS VERTICAL DEAD SPACE */
         }
 
-        /* FOOTNOTES - LEGIBLE MONOSPACE */
+        /* FOOTNOTES - READABLE */
         .hud-footer {
             display: flex; justify-content: space-between;
-            margin-top: 30px; padding-top: 15px; border-top: 1px solid var(--border);
+            margin-top: 25px; padding-top: 15px; border-top: 1px solid var(--border);
             font-family: monospace; font-size: 11px; opacity: 0.5;
         }
 
         #beam-svg { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; pointer-events: none; z-index: 900; opacity: 0; }
-        .beam-path { fill: rgba(212, 193, 255, 0.04); stroke: var(--accent-neon); stroke-width: 0.5; }
+        .beam-path { fill: rgba(212, 193, 255, 0.05); stroke: var(--accent-neon); stroke-width: 0.5; }
     </style>
 </head>
 <body onclick="hideHud()">
@@ -153,7 +144,6 @@
         const projection = document.getElementById('poly-projection');
         let activeBox = null;
 
-        // Clean grid with empty nodes
         for (let i = 2; i <= 30; i++) {
             const b = document.createElement('div');
             b.className = 'box';
