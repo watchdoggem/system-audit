@@ -145,42 +145,57 @@
             width: 100%;
         }
 
-        .box-num {
-            font-size: clamp(5rem, 12vw, 16rem); /* BIGGER - fills the box */
-            line-height: 0.85;
-            margin-bottom: -0.1em;
-        }
+       .box-num {
+    /* Increased middle value from 1.88vw to 3.5vw for a "fuller" look */
+    font-size: clamp(1.8rem, 3.5vw, 4.5rem); 
+    line-height: 0.9;
+}
 
-        .box-label {
-            font-size: clamp(3.5rem, 8vw, 11rem); /* BIGGER - fills the box */
-            margin-top: clamp(0.1rem, 0.12vw, 0.25rem);
-            opacity: 0.94;
-        }
+.box-label {
+    /* Increased middle value to match/complement the number */
+    font-size: clamp(1.2rem, 2.5vw, 3.2rem); 
+    margin-top: clamp(0.15rem, 0.16vw, 0.3rem);
+    opacity: 0.92;
+}
 
         .box.empty .box-content { opacity: 0.12; }
 
-        /* HUD - FIXED for phones */
-        #hud {
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: clamp(320px, 88vw, 1000px);
-            max-width: 94vw;
-            max-height: 88vh;
-            overflow-y: auto;
-            background: rgba(5, 3, 15, var(--translucent));
-            border: 2px solid var(--accent-violet);
-            border-image: linear-gradient(to right, transparent, var(--accent-violet), transparent) 1;
-            padding: clamp(1.2rem, 4vw, 2.4rem);
-            box-shadow: 0 0 80px rgba(0,0,0,0.9);
-            opacity: 0;
-            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.35);
-            z-index: 1000;
-            border-radius: 8px;
-            pointer-events: auto; /* FIXED - now touchable/scrollable on mobile */
-        }
+#hud {
+    position: fixed;
+    /* Change from fixed 50% to a flexible top */
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: clamp(300px, 50vw, 950px);
+    
+    /* FIX: Set max-height and ensure it can scroll internally */
+    max-height: 85vh; 
+    overflow-y: auto;
+    
+    background: rgba(5, 3, 15, var(--translucent));
+    border: 2px solid var(--accent-violet);
+    padding: clamp(0.8rem, 1.2vw, 2rem);
+    box-shadow: 0 0 80px rgba(0,0,0,0.9);
+    opacity: 0;
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.35);
+    z-index: 1000;
+    border-radius: 8px;
+    pointer-events: none;
+    
+    /* Prevent the HUD itself from being "too tall" for the viewport */
+    display: flex;
+    flex-direction: column;
+}
 
+/* MOBILE FIX: Adjust positioning so it doesn't float off-screen */
+@media (max-width: 600px) {
+    #hud {
+        width: 95vw;
+        top: 5%; /* Align to top instead of center to prevent top-cutoff */
+        transform: translateX(-50%); /* Only translate X */
+        max-height: 90vh;
+    }
+}
         #hud.active {
             opacity: 1;
         }
