@@ -2,88 +2,134 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TERMINAL</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>WATCHDOGGEM | TERMINAL</title>
     <style>
         :root {
             --bg-deep: #060a06;
             --accent-neon: #d4c1ff; 
-            --border: rgba(212, 193, 255, 0.2);
+            --accent-glow: rgba(212, 193, 255, 0.4);
+            --border: rgba(212, 193, 255, 0.25); /* Increased visibility */
         }
 
+        * { box-sizing: border-box; cursor: crosshair; -webkit-tap-highlight-color: transparent; }
+        
         body { 
             background: var(--bg-deep);
-            margin: 0; padding: 20px; 
+            background-image: 
+                radial-gradient(circle at 50% 50%, #101a10 0%, #060a06 100%),
+                linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%),
+                linear-gradient(90deg, rgba(255, 0, 0, 0.03), rgba(0, 255, 0, 0.01), rgba(0, 0, 255, 0.03));
+            background-size: 100% 100%, 100% 4px, 100% 100%;
+            margin: 0; padding: 15px; 
             font-family: 'Impact', sans-serif; 
             color: var(--accent-neon);
-            overflow: hidden;
+            min-height: 100vh;
+            overflow-x: hidden;
         }
 
-        /* 1. TOTALLY BLANK BACKGROUND NODES */
+        /* HEADER & SEARCH */
+        #header-row {
+            display: flex;
+            align-items: center; gap: 12px; margin-bottom: 20px;
+        }
+
+        #search-container {
+            flex-grow: 1;
+            display: flex; border: 1px solid var(--border);
+            padding: 12px; background: rgba(0, 0, 0, 0.6); backdrop-filter: blur(5px);
+        }
+
+        #filter-input {
+            background: transparent;
+            border: none; outline: none;
+            color: var(--accent-neon); font-family: 'Impact', sans-serif;
+            font-size: 20px; width: 100%; letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+
+        .twitter-link {
+            width: 50px; height: 50px; border: 1px solid var(--accent-neon);
+            display: flex; align-items: center; justify-content: center;
+            background: #000; transition: transform 0.2s;
+        }
+        .twitter-link:hover { transform: scale(1.05); box-shadow: 0 0 10px var(--accent-glow); }
+        .twitter-link img { width: 100%; height: 100%; object-fit: cover; }
+
+        /* UNIFORM GRID */
         .grid { 
-            display: grid; grid-template-columns: repeat(5, 1fr); gap: 15px;
+            display: grid;
+            grid-template-columns: repeat(2, 1fr); gap: 10px;
             max-width: 1400px; margin: 0 auto;
         }
+        @media (min-width: 1000px) { .grid { grid-template-columns: repeat(5, 1fr); gap: 15px; } }
+
         .box {
-            border: 1px solid var(--border); height: 130px;
-            background: rgba(212, 193, 255, 0.02);
-            display: flex; align-items: center; justify-content: center;
+            border: 1px solid var(--border);
+            height: 130px;
+            display: flex; flex-direction: column; justify-content: center; align-items: center;
+            background: linear-gradient(145deg, rgba(26, 46, 26, 0.4), rgba(10, 15, 10, 0.6));
+            transition: all 0.2s;
+            text-decoration: none;
         }
-        .box-num { font-size: 32px; }
+        .box:hover { border-color: var(--accent-neon); background: rgba(212, 193, 255, 0.08); }
+        
+        .box-num { font-size: 28px; color: var(--accent-neon); letter-spacing: 1px; }
+        .box-label { font-size: 14px; opacity: 0.8; color: var(--accent-neon); text-transform: uppercase; margin-top: 5px; }
 
-        /* 2. TRANSLUCENT HUD (0.85) */
+        /* THE HUD */
         #hud {
-            position: fixed; top: 50%; left: 50%;
+            position: fixed;
+            top: 50%; left: 50%;
             transform: translate(-50%, -50%) scale(0);
-            width: 90vw; max-width: 1000px; height: 80vh;
-            background: rgba(4, 6, 4, 0.85); 
-            border: 2px solid var(--accent-neon);
-            padding: 40px; z-index: 1000;
-            display: flex; flex-direction: column;
-            transition: transform 0.2s ease-out;
+            width: 94vw; max-width: 1000px;
+            background: rgba(4, 6, 4, 0.98);
+            border: 1px solid var(--accent-neon);
+            padding: 25px; z-index: 1000; display: flex; flex-direction: column;
             pointer-events: none;
+            transition: transform 0.15s cubic-bezier(0.175, 0.885, 0.32, 1.2);
+            box-shadow: 0 0 80px rgba(0,0,0,1);
         }
 
-        /* 3. FIXING FONTS & SIZING */
-        .hud-header { 
-            font-size: 40px; text-align: center; margin-bottom: 5px;
-            letter-spacing: 1px;
-        }
-        .hud-species { 
-            font-size: 14px; text-align: center; border-bottom: 1px solid var(--border);
-            padding-bottom: 15px; margin-bottom: 30px; opacity: 0.6; letter-spacing: 4px;
-        }
+        .hud-header { font-size: 24px; text-align: center; color: var(--accent-neon); letter-spacing: 1px; }
+        .hud-species { font-size: 14px; text-align: center; border-bottom: 1px solid var(--border); padding-bottom: 12px;
+            margin-bottom: 15px; opacity: 0.9; color: var(--accent-neon); }
         
-        .hud-stats-grid { 
-            display: grid; grid-template-columns: repeat(2, 1fr); 
-            gap: 15px; flex-grow: 1;
-        }
-        
-        /* BOX PRESENTATION: NORMAL FILL */
+        .hud-stats-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; }
         .stat-module {
             border: 1px solid var(--border);
-            background: rgba(212, 193, 255, 0.05);
-            display: flex; align-items: center; justify-content: space-between;
-            padding: 0 25px;
-            font-size: 20px; /* Balanced size */
-            height: 100%; /* Fills vertical space */
+            padding: 12px;
+            background: rgba(212, 193, 255, 0.03); text-align: center; 
+            font-size: 14px; color: var(--accent-neon);
+            text-transform: uppercase;
         }
 
-        .hud-footer {
-            display: flex; justify-content: space-between;
-            margin-top: 30px; font-family: monospace; font-size: 11px; opacity: 0.5;
+        @media (min-width: 800px) {
+            .hud-header { font-size: 36px; }
+            .stat-module { font-size: 18px; padding: 15px; }
+            .hud-species { font-size: 18px; }
         }
 
-        #beam-svg { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; pointer-events: none; z-index: 900; opacity: 0; }
-        .beam-path { fill: rgba(212, 193, 255, 0.05); stroke: var(--accent-neon); stroke-width: 0.5; }
+        #hud-empty { text-align: center; padding: 60px; font-size: 28px; color: var(--accent-neon); opacity: 0.4; letter-spacing: 5px; }
+
+        /* BEAMS */
+        #beam-svg {
+            position: fixed;
+            top: 0; left: 0; width: 100vw; height: 100vh;
+            pointer-events: none; z-index: 900; opacity: 0;
+        }
+        .beam-path { fill: rgba(212, 193, 255, 0.05); stroke: var(--accent-neon); stroke-width: 1; opacity: 0.6; }
     </style>
 </head>
 <body onclick="hideHud()">
 
-    <div class="grid" id="main-grid">
-        <div class="box" onmouseenter="showHud(this, true)">
-            <div class="box-num">104,801</div>
+    <div id="header-row">
+        <div id="search-container">
+            <input type="text" id="filter-input" placeholder="SEARCH SYSTEM...">
         </div>
+        <a href="https://twitter.com/watchdoggem" class="twitter-link" target="_blank">
+            <img src="https://abs.twimg.com/sticky/default_profile_images/default_profile_normal.png" alt="X">
+        </a>
     </div>
 
     <svg id="beam-svg"><polygon id="poly-projection" class="beam-path" /></svg>
@@ -93,21 +139,25 @@
             <div class="hud-header">104,801 NON-HUMAN PRIMATES IN RESEARCH</div>
             <div class="hud-species">SUBJECTS: RHESUS MACAQUES | CYNOMOLGUS</div>
             <div class="hud-stats-grid">
-                <div class="stat-module"><span>100%</span> <span>FATAL</span> <span>ANESTHETIC</span> <span>OVERDOSE</span></div>
-                <div class="stat-module"><span>20%</span> <span>CLINICAL</span> <span>SELF-HARM</span></div>
-                <div class="stat-module"><span>83%</span> <span>SOCIAL</span> <span>ISOLATION</span></div>
-                <div class="stat-module"><span>89%</span> <span>DISTRESSED</span> <span>PACING</span></div>
-                <div class="stat-module"><span>12%</span> <span>NO</span> <span>PAIN</span> <span>RELIEF</span></div>
-                <div class="stat-module"><span>100%</span> <span>CAGE</span> <span>SEQUESTRATION</span></div>
-                <div class="stat-module"><span>31,000</span> <span>CLASS</span> <span>A</span> <span>BREEDERS</span></div>
-                <div class="stat-module"><span>13,375</span> <span>CLASS</span> <span>B</span> <span>DEALERS</span></div>
-                <div class="stat-module"><span>$800M+</span> <span>U.S.</span> <span>DOMESTIC</span> <span>REVENUE</span></div>
-                <div class="stat-module"><span>$300M+</span> <span>TAXPAYER</span> <span>INFRASTRUCTURE</span></div>
+                <div class="stat-module">100% FATAL ANESTHETIC OVERDOSE</div>
+                <div class="stat-module">20% CLINICAL SELF-HARM</div>
+                <div class="stat-module">83% SOCIAL ISOLATION</div>
+                <div class="stat-module">89% DISTRESSED PACING</div>
+                <div class="stat-module">12% NO PAIN RELIEF (COLUMN E)</div>
+                <div class="stat-module">100% CAGE SEQUESTRATION</div>
+                <div class="stat-module">31,000 CAGED BY CLASS A BREEDERS</div>
+                <div class="stat-module">13,375 CAGED BY CLASS B DEALERS</div>
+                <div class="stat-module">$800M+ U.S. DOMESTIC REVENUE</div>
+                <div class="stat-module">$300M+ TAXPAYER INFRASTRUCTURE</div>
             </div>
-            <div class="hud-footer">
-                <div>SOURCE: USDA APHIS 2024 / NIH FINANCIALS</div>
-                <div>FDA REQUIRED | NIH FUNDED | USDA OVERSIGHT</div>
-            </div>
+        </div>
+        <div id="hud-empty" style="display:none;">DATA STREAM CORRUPTED</div>
+    </div>
+
+    <div class="grid" id="main-grid">
+        <div class="box" onmouseenter="showHud(this, true)" ontouchstart="showHud(this, true)">
+            <div class="box-num">104,801</div>
+            <div class="box-label">NHP TESTING</div>
         </div>
     </div>
 
@@ -118,11 +168,17 @@
         const projection = document.getElementById('poly-projection');
         let activeBox = null;
 
-        // Generate 29 BLANK nodes
-        for (let i = 2; i <= 30; i++) {
+        // Populate empty nodes with randomized "system" data to fill deadspace
+        for (let i = 2; i <= 35; i++) {
             const b = document.createElement('div');
             b.className = 'box';
+            
+            // Random hex-style ID for filler
+            const randomID = (Math.random() * 0xFFFFFF << 0).toString(16).toUpperCase().padStart(6, '0');
+            
+            b.innerHTML = `<div class="box-num">${randomID}</div><div class="box-label">NODE_${i.toString().padStart(2, '0')}</div>`;
             b.onmouseenter = (e) => showHud(e.currentTarget, false);
+            b.ontouchstart = (e) => { e.preventDefault(); showHud(e.currentTarget, false); };
             grid.appendChild(b);
         }
 
@@ -130,20 +186,25 @@
             if (!activeBox) return;
             const r = activeBox.getBoundingClientRect(); 
             const h = hud.getBoundingClientRect();
-            projection.setAttribute('points', `${r.left},${r.top} ${h.left},${h.top} ${h.right},${h.top} ${r.right},${r.top} ${r.right},${r.bottom} ${h.right},${h.bottom} ${h.left},${h.bottom} ${r.left},${r.bottom}`);
+            // 8-point polygon for the beam projection
+            const points = `${r.left},${r.top} ${h.left},${h.top} ${h.right},${h.top} ${r.right},${r.top} ${r.right},${r.bottom} ${h.right},${h.bottom} ${h.left},${h.bottom} ${r.left},${r.bottom}`;
+            projection.setAttribute('points', points);
             requestAnimationFrame(updateBeams);
         }
 
         function showHud(el, hasData) {
             activeBox = el;
-            document.getElementById('hud-data').style.visibility = hasData ? 'visible' : 'hidden';
+            document.getElementById('hud-data').style.display = hasData ? 'block' : 'none';
+            document.getElementById('hud-empty').style.display = hasData ? 'none' : 'block';
             hud.style.transform = "translate(-50%, -50%) scale(1)";
             beamSvg.style.opacity = "1";
             updateBeams();
         }
 
         function hideHud() { 
-            activeBox = null; hud.style.transform = "translate(-50%, -50%) scale(0)"; beamSvg.style.opacity = "0"; 
+            activeBox = null;
+            hud.style.transform = "translate(-50%, -50%) scale(0)";
+            beamSvg.style.opacity = "0"; 
         }
     </script>
 </body>
