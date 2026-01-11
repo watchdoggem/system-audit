@@ -39,7 +39,6 @@
             gap: 15px;
         }
 
-        /* ACTIVE BOX */
         .box {
             position: relative;
             background: var(--box-fill);
@@ -50,56 +49,32 @@
             transition: all 0.2s;
             text-align: center;
         }
+        .box:hover { border-color: var(--glow); background: rgba(100, 255, 218, 0.12); }
 
-        .box:hover {
-            border-color: var(--glow);
-            background: rgba(100, 255, 218, 0.12);
-        }
-
-        /* BLACKED OUT BOXES */
-        .locked {
-            background: #000;
-            border: 1px solid #111;
-            color: #000; /* Text hidden by color */
-        }
-        .locked:hover { border-color: #222; background: #050505; }
+        .locked { background: #000; border: 1px solid #111; color: #000; }
 
         .box-top {
-            flex: 1.1;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            font-size: 50px;
-            border-bottom: 2px solid rgba(100, 255, 218, 0.2);
+            flex: 1.1; display: flex; justify-content: center; align-items: center;
+            font-size: 50px; border-bottom: 2px solid rgba(100, 255, 218, 0.2);
             letter-spacing: -1px;
         }
-
         .box-bottom {
-            flex: 0.9;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            font-size: 19px;
-            line-height: 1.1;
-            padding: 10px;
-            text-transform: uppercase;
+            flex: 0.9; display: flex; justify-content: center; align-items: center;
+            font-size: 19px; line-height: 1.1; padding: 10px; text-transform: uppercase;
         }
 
-        .hidden { display: none; }
-
-        /* THE POPUP HUD */
+        /* THE HUD - OVERHAULED FOR INFO-DENSITY */
         #hud {
             position: fixed;
             top: 50%; left: 50%;
             transform: translate(-50%, -50%) scale(0);
-            width: 620px;
+            width: 700px;
             background: rgba(1, 10, 8, 0.98);
             border: 3px solid var(--glow);
-            padding: 35px;
+            padding: 30px;
             z-index: 1000;
             display: flex;
             flex-direction: column;
-            gap: 20px;
             text-align: center;
             pointer-events: none;
             transition: transform 0.3s cubic-bezier(0.17, 0.84, 0.44, 1);
@@ -107,20 +82,47 @@
             box-shadow: 0 0 100px #000;
         }
 
-        .hud-section { border-bottom: 1px solid rgba(100, 255, 218, 0.1); padding-bottom: 10px; }
-        .hud-section:last-child { border: none; }
-        .hud-title { font-size: 14px; opacity: 0.5; display: block; margin-bottom: 5px; letter-spacing: 4px; }
-        .hud-body { font-size: 24px; color: #fff; display: block; line-height: 1.3; }
+        .hud-header { font-size: 35px; color: #fff; margin-bottom: 20px; border-bottom: 2px solid var(--glow); padding-bottom: 10px; }
+        
+        /* DATA MODULES GRID */
+        .hud-stats-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        .stat-module {
+            border: 1px solid rgba(100, 255, 218, 0.3);
+            padding: 15px;
+            background: rgba(100, 255, 218, 0.03);
+        }
+        .stat-val { font-size: 32px; display: block; color: var(--glow); }
+        .stat-lab { font-size: 12px; opacity: 0.6; text-transform: uppercase; letter-spacing: 1px; }
 
-        /* TRACTOR BEAMS */
+        .hud-impact-full {
+            font-size: 18px;
+            color: #ccc;
+            margin-bottom: 20px;
+            padding: 10px;
+            background: rgba(255,0,0,0.05);
+            border-left: 3px solid #ff4444;
+            text-align: left;
+        }
+
+        .hud-footer {
+            font-size: 10px;
+            opacity: 0.4;
+            display: flex;
+            justify-content: space-between;
+            border-top: 1px solid rgba(100, 255, 218, 0.1);
+            padding-top: 10px;
+        }
+
         #beam-svg {
-            position: fixed;
-            top: 0; left: 0;
+            position: fixed; top: 0; left: 0;
             width: 100vw; height: 100vh;
-            pointer-events: none;
-            z-index: 900;
-            opacity: 0;
-            transition: opacity 0.2s;
+            pointer-events: none; z-index: 900;
+            opacity: 0; transition: opacity 0.2s;
         }
     </style>
 </head>
@@ -137,65 +139,80 @@
                 <stop offset="100%" style="stop-color:var(--glow); stop-opacity:0" />
             </linearGradient>
         </defs>
-        <polygon id="poly-top" fill="url(#beamGrad)" />
-        <polygon id="poly-bottom" fill="url(#beamGrad)" />
-        <polygon id="poly-left" fill="url(#beamGrad)" />
-        <polygon id="poly-right" fill="url(#beamGrad)" />
+        <polygon id="poly-top" fill="url(#beamGrad)" /><polygon id="poly-bottom" fill="url(#beamGrad)" />
+        <polygon id="poly-left" fill="url(#beamGrad)" /><polygon id="poly-right" fill="url(#beamGrad)" />
     </svg>
 
     <div id="hud">
-        <div class="hud-section"><span class="hud-title">DATA</span><span id="h-data" class="hud-body"></span></div>
-        <div class="hud-section"><span class="hud-title">IMPACT</span><span id="h-impact" class="hud-body"></span></div>
-        <div class="hud-section"><span class="hud-title">INCLUDES</span><span id="h-includes" class="hud-body"></span></div>
-        <div class="hud-section"><span class="hud-title">SOURCE</span><span id="h-source" class="hud-body"></span></div>
+        <div id="h-subject" class="hud-header">SUBJECTS</div>
+        
+        <div class="hud-stats-grid">
+            <div class="stat-module"><span id="h-s1-v" class="stat-val"></span><span id="h-s1-l" class="stat-lab"></span></div>
+            <div class="stat-module"><span id="h-s2-v" class="stat-val"></span><span id="h-s2-l" class="stat-lab"></span></div>
+            <div class="stat-module"><span id="h-s3-v" class="stat-val"></span><span id="h-s3-l" class="stat-lab"></span></div>
+            <div class="stat-module"><span id="h-s4-v" class="stat-val"></span><span id="h-s4-l" class="stat-lab"></span></div>
+        </div>
+
+        <div id="h-impact" class="hud-impact-full"></div>
+
+        <div class="hud-footer">
+            <span id="h-agencies">AGENCY: --</span>
+            <span id="h-source">SOURCE: --</span>
+        </div>
     </div>
 
     <div class="grid" id="audit-grid">
-        <div class="box" data-search="104801 NHP MONKEYS USDA NIH FDA DEATH PAIN" 
-             data-d="104,801 NON-HUMAN PRIMATE SUBJECTS" 
-             data-i="100% TERMINAL EUTHANASIA RATE; 14-20% CLINICAL SIB; CHRONIC STEREOTYPY (PACING/DISTRESS)" 
-             data-in="NIH FUNDING; FDA MANDATES; USDA COLUMN E (UNRELIEVED PAIN)" 
-             data-s="USDA APHIS 2023 / OLAW PROTOCOL / JAAWS CLINICAL BEHAVIOR AUDIT"
+        <div class="box" 
+             data-subj="104,801 NON-HUMAN PRIMATES"
+             data-s1v="100%" data-s1l="TERMINAL EUTHANASIA"
+             data-s2v="20%" data-s2l="CLINICAL SIB (SELF-HARM)"
+             data-s3v="100%" data-s3l="SOCIAL ISOLATION"
+             data-s4v="7,000+" data-s4l="COLUMN E (NO RELIEF)"
+             data-imp="SUBJECTS CONFINED TO STERILE CAGES 24/7. PATHOLOGICAL STEREOTYPY (PACING/ROCKING) OBSERVED IN MAJORITY OF LONG-TERM SEQUESTRATION. FDA MANDATES ANIMAL DATA FOR ALL IND APPLICATIONS."
+             data-age="NIH / FDA / USDA"
+             data-src="USDA APHIS 2023 / NIH OLAW / JAAWS CLINICAL AUDIT"
+             data-search="104801 NHP MONKEYS USDA NIH FDA DEATH PAIN" 
              onmouseenter="showHud(this)" onmouseleave="hideHud()" onclick="this.remove()">
             <div class="box-top">104,801</div>
             <div class="box-bottom">NON-HUMAN PRIMATE TESTING</div>
         </div>
-
-        </div>
+    </div>
 
     <script>
         const hud = document.getElementById('hud');
         const beamSvg = document.getElementById('beam-svg');
         const polys = {
-            top: document.getElementById('poly-top'),
-            bottom: document.getElementById('poly-bottom'),
-            left: document.getElementById('poly-left'),
-            right: document.getElementById('poly-right')
+            top: document.getElementById('poly-top'), bottom: document.getElementById('poly-bottom'),
+            left: document.getElementById('poly-left'), right: document.getElementById('poly-right')
         };
 
         function showHud(el) {
             if(el.classList.contains('locked')) return;
-            document.getElementById('h-data').innerText = el.getAttribute('data-d');
-            document.getElementById('h-impact').innerText = el.getAttribute('data-i');
-            document.getElementById('h-includes').innerText = el.getAttribute('data-in');
-            document.getElementById('h-source').innerText = el.getAttribute('data-s');
+            document.getElementById('h-subject').innerText = el.getAttribute('data-subj');
+            document.getElementById('h-s1-v').innerText = el.getAttribute('data-s1v');
+            document.getElementById('h-s1-l').innerText = el.getAttribute('data-s1l');
+            document.getElementById('h-s2-v').innerText = el.getAttribute('data-s2v');
+            document.getElementById('h-s2-l').innerText = el.getAttribute('data-s2l');
+            document.getElementById('h-s3-v').innerText = el.getAttribute('data-s3v');
+            document.getElementById('h-s3-l').innerText = el.getAttribute('data-s3l');
+            document.getElementById('h-s4-v').innerText = el.getAttribute('data-s4v');
+            document.getElementById('h-s4-l').innerText = el.getAttribute('data-s4l');
+            document.getElementById('h-impact').innerText = el.getAttribute('data-imp');
+            document.getElementById('h-agencies').innerText = "AGENCY: " + el.getAttribute('data-age');
+            document.getElementById('h-source').innerText = "SOURCE: " + el.getAttribute('data-src');
             
             hud.style.transform = "translate(-50%, -50%) scale(1)";
             beamSvg.style.opacity = "1";
             
             const r = el.getBoundingClientRect();
             const h = hud.getBoundingClientRect();
-            
             polys.top.setAttribute('points', `${r.left},${r.top} ${r.right},${r.top} ${h.right},${h.top} ${h.left},${h.top}`);
             polys.bottom.setAttribute('points', `${r.left},${r.bottom} ${r.right},${r.bottom} ${h.right},${h.bottom} ${h.left},${h.bottom}`);
             polys.left.setAttribute('points', `${r.left},${r.top} ${r.left},${r.bottom} ${h.left},${h.bottom} ${h.left},${h.top}`);
             polys.right.setAttribute('points', `${r.right},${r.top} ${r.right},${r.bottom} ${h.right},${h.bottom} ${h.right},${h.top}`);
         }
 
-        function hideHud() {
-            hud.style.transform = "translate(-50%, -50%) scale(0)";
-            beamSvg.style.opacity = "0";
-        }
+        function hideHud() { hud.style.transform = "translate(-50%, -50%) scale(0)"; beamSvg.style.opacity = "0"; }
 
         function filterGrid() {
             let q = document.getElementById('filter-input').value.toUpperCase();
@@ -206,7 +223,6 @@
             }
         }
 
-        // Fill remaining grid with Locked (Blacked Out) boxes
         const grid = document.getElementById('audit-grid');
         for(let i=2; i<=50; i++) {
             const b = document.createElement('div');
