@@ -190,23 +190,19 @@
     flex-direction: column;
 }
 
-/* MOBILE FIX: Adjust positioning so it doesn't float off-screen */
 @media (max-width: 600px) {
     #hud {
-        width: 92vw;
-        top: 50%; /* Keeps it centered */
-        transform: translate(-50%, -50%);
-        padding: 1rem;
-        /* Ensure it doesn't touch the very edges of the screen */
-        max-height: 85vh; 
-    }
-    
-    /* Shrink the stats slightly on mobile to save space */
-    .stat-item {
-        padding: 0.5rem;
-        min-height: 60px;
+        width: 94vw;
+        top: 4vh;
+        left: 50%;
+        transform: translateX(-50%);
+        max-height: 92vh;
+        overflow-y: auto;
+        overscroll-behavior: contain;
+        padding-bottom: 2rem;
     }
 }
+
         #hud.active {
             opacity: 1;
         }
@@ -329,10 +325,11 @@
                  onmouseenter="showHud(this)" 
                  onmouseleave="handleBoxLeave(this)"
                  ontouchstart="showHud(this)">
-                <div class="box-content">
-                    <div class="box-num">104,801</div>
-                    <div class="box-label">NHP SUBJECTS</div>
-                </div>
+<div class="box-content splash-stack">
+    <div class="splash-top">104801</div>
+    <div class="splash-bottom">NHP TESTING</div>
+</div>
+
             </div>
 
             <!-- Empty ones -->
