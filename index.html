@@ -154,22 +154,18 @@
             width: 100%;
         }
 
-        .box:first-child .box-content {
-            transform: scale(1.06);
+        /* ── Only real change: massive fill for the first box text ── */
+        .box:first-child .box-num {
+            font-size: clamp(6.5rem, 14vw, 26rem);
+            line-height: 0.74;
+            margin: -0.18em 0 -0.32em 0;
+            letter-spacing: clamp(8px, 1.8vw, 36px);
         }
 
-        .box-num {
-            font-size: clamp(5.5rem, 12vw, 22rem);
-            line-height: 0.78;
-            margin: -0.15em 0 -0.28em 0;
-            white-space: nowrap;
-        }
-
-        .box-label {
-            font-size: clamp(3.8rem, 8.5vw, 15rem);
-            letter-spacing: clamp(8px, 1.6vw, 32px);
-            opacity: 0.96;
-            text-shadow: 0 0 50px var(--glow);
+        .box:first-child .box-label {
+            font-size: clamp(4.2rem, 9.5vw, 18rem);
+            letter-spacing: clamp(10px, 2.2vw, 44px);
+            opacity: 0.97;
         }
 
         .box.empty .box-content {
@@ -178,23 +174,22 @@
             letter-spacing: 4px;
         }
 
-        /* HUD ───────────────────────────────────────────────────────────── */
+        /* HUD ── only change: much better mobile fit ───────────────────────────── */
         #hud {
             position: fixed;
-            inset: 0;
-            margin: auto;
-            width: min(92vw, 1100px);
-            max-height: 94vh;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: clamp(340px, 90vw, 1100px);
+            max-width: 94vw;
+            max-height: 92vh;
             overflow-y: auto;
             background: rgba(5, 3, 15, var(--translucent));
             border: 3px solid var(--accent-violet);
-            padding: clamp(1.5rem, 5vw, 3rem);
+            padding: clamp(1.6rem, 5.5vw, 3.2rem);
             box-shadow: 0 0 120px rgba(0,0,0,0.95);
             opacity: 0;
             transition: opacity 0.4s ease, transform 0.4s ease;
-            transform: translate(-50%, -50%) scale(0.94);
-            left: 50%;
-            top: 50%;
             z-index: 1000;
             border-radius: 16px;
             pointer-events: auto;
@@ -293,17 +288,13 @@
         @media (max-width: 700px) {
             #hud {
                 width: 94vw;
-                padding: 1.8rem 6vw;
-                max-height: 90vh;
+                max-height: 88vh;
+                padding: 2rem 6vw;
                 border-width: 2.5px;
             }
             
             .hud-stats {
                 grid-template-columns: 1fr;
-            }
-            
-            .box:first-child {
-                transform: scale(1.03);
             }
         }
     </style>
