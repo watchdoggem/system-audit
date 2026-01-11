@@ -2,14 +2,13 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>WATCHDOGGEM | TERMINAL</title>
     <style>
         :root {
             --bg-deep: #0a0f0a;
-            --surface: #162115;
             --accent-neon: #d4c1ff; 
             --accent-glow: rgba(212, 193, 255, 0.4);
-            --moss-dark: #2a3b25;
             --border: rgba(212, 193, 255, 0.15);
         }
 
@@ -22,9 +21,24 @@
             font-family: 'Impact', sans-serif; 
             color: var(--accent-neon);
             overflow-x: hidden;
+            min-height: 100vh;
         }
 
-        /* Cleaned up Search Bar */
+        /* AVATAR STAMP */
+        #avatar-stamp {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            width: 80px;
+            height: 80px;
+            border: 1px solid var(--accent-neon);
+            background: rgba(0,0,0,0.3);
+            box-shadow: 0 0 15px var(--accent-glow);
+            z-index: 500;
+            overflow: hidden;
+        }
+        #avatar-stamp img { width: 100%; height: 100%; object-fit: cover; }
+
         #search-container {
             display: flex;
             border: 1px solid var(--border);
@@ -32,6 +46,7 @@
             margin-bottom: 30px;
             background: rgba(255, 255, 255, 0.03);
             backdrop-filter: blur(5px);
+            width: calc(100% - 100px); /* Leave room for avatar */
         }
 
         #filter-input {
@@ -45,6 +60,16 @@
             display: grid;
             grid-template-columns: repeat(5, 1fr);
             gap: 20px;
+        }
+
+        /* MOBILE FIXES */
+        @media (max-width: 1100px) { .grid { grid-template-columns: repeat(3, 1fr); } }
+        @media (max-width: 700px) { 
+            .grid { grid-template-columns: repeat(2, 1fr); }
+            #hud { width: 95vw !important; padding: 20px !important; }
+            .hud-header { white-space: normal !important; font-size: 22px !important; }
+            .hud-stats-grid { grid-template-columns: 1fr !important; }
+            #avatar-stamp { width: 50px; height: 50px; }
         }
 
         .box {
@@ -63,7 +88,7 @@
         
         .box:hover { 
             border-color: var(--accent-neon); 
-            background: rgba(212, 193, 255, 0.05);
+            background: rgba(212, 193, 255, 0.08);
             box-shadow: 0 0 20px rgba(212, 193, 255, 0.1);
         }
 
@@ -77,7 +102,7 @@
             width: 80vw; 
             max-width: 1000px;
             background: rgba(10, 15, 10, 0.85); 
-            backdrop-filter: blur(12px); 
+            backdrop-filter: blur(15px); 
             border: 1px solid var(--accent-neon);
             padding: 40px;
             z-index: 1000;
@@ -85,7 +110,7 @@
             flex-direction: column;
             pointer-events: none;
             transition: transform 0.2s ease-out;
-            box-shadow: 0 0 60px rgba(0,0,0,0.8);
+            box-shadow: 0 0 80px rgba(0,0,0,1);
         }
 
         .hud-header { 
@@ -98,7 +123,7 @@
         }
         
         .hud-species {
-            font-size: 20px; 
+            font-size: 22px; 
             margin-bottom: 30px; 
             letter-spacing: 2px;
             text-align: center; 
@@ -124,11 +149,7 @@
             min-height: 85px;
         }
 
-        .stat-text { 
-            font-size: 22px; 
-            text-transform: uppercase; 
-            line-height: 1.1;
-        }
+        .stat-text { font-size: 22px; text-transform: uppercase; line-height: 1.1; }
 
         .hud-footer {
             display: flex;
@@ -147,17 +168,21 @@
         }
     </style>
 </head>
-<body>
+<body onclick="hideHud()">
 
-    <div id="search-container">
+    <div id="avatar-stamp">
+        <img src="https://i.ibb.co/XfXkY0f/avatar.png" alt="Watchdog Avatar">
+    </div>
+
+    <div id="search-container" onclick="event.stopPropagation()">
         <input type="text" id="filter-input" placeholder="SEARCH / FILTER AUDIT LOG" onkeyup="filterGrid()">
     </div>
 
     <svg id="beam-svg">
-        <polygon id="poly-top" fill="rgba(212, 193, 255, 0.03)" />
-        <polygon id="poly-bottom" fill="rgba(212, 193, 255, 0.03)" />
-        <polygon id="poly-left" fill="rgba(212, 193, 255, 0.03)" />
-        <polygon id="poly-right" fill="rgba(212, 193, 255, 0.03)" />
+        <polygon id="poly-top" fill="rgba(212, 193, 255, 0.04)" />
+        <polygon id="poly-bottom" fill="rgba(212, 193, 255, 0.04)" />
+        <polygon id="poly-left" fill="rgba(212, 193, 255, 0.04)" />
+        <polygon id="poly-right" fill="rgba(212, 193, 255, 0.04)" />
     </svg>
 
     <div id="hud">
@@ -176,7 +201,7 @@
              data-stats="100% FATAL ANESTHETIC OVERDOSE; 20% CLINICAL SELF-HARM; 83% SOCIAL ISOLATION; 89% DISTRESSED PACING; 12% NO PAIN RELIEF (COLUMN E); 100% CAGE SEQUESTRATION; 31,000 CAGED BY CLASS A BREEDERS; 13,375 CAGED BY CLASS B DEALERS; $800M+ U.S. DOMESTIC REVENUE; $300M+ TAXPAYER INFRASTRUCTURE"
              data-src="SOURCE: USDA APHIS 2024 / NIH FINANCIALS"
              data-search="104801 NHP MONKEYS" 
-             onmouseenter="showHud(this)" onmouseleave="hideHud()">
+             onmouseenter="showHud(this, event)" onmouseleave="hideHud()">
             <div class="box-num">104,801</div>
             <div class="box-label">NHP TESTING</div>
         </div>
@@ -190,7 +215,8 @@
             left: document.getElementById('poly-left'), right: document.getElementById('poly-right')
         };
 
-        function showHud(el) {
+        function showHud(el, e) {
+            e.stopPropagation();
             document.getElementById('h-header').innerText = el.getAttribute('data-head');
             document.getElementById('h-source').innerText = el.getAttribute('data-src');
             const statsContainer = document.getElementById('h-stats');
@@ -206,6 +232,10 @@
 
             hud.style.transform = "translate(-50%, -50%) scale(1)";
             beamSvg.style.opacity = "1";
+            updateBeams(el);
+        }
+
+        function updateBeams(el) {
             const r = el.getBoundingClientRect();
             const h = hud.getBoundingClientRect();
             polys.top.setAttribute('points', `${r.left},${r.top} ${r.right},${r.top} ${h.right},${h.top} ${h.left},${h.top}`);
@@ -216,11 +246,14 @@
 
         function hideHud() { hud.style.transform = "translate(-50%, -50%) scale(0)"; beamSvg.style.opacity = "0"; }
 
+        // CLOSE ON ESCAPE
+        window.addEventListener('keydown', (e) => { if(e.key === "Escape") hideHud(); });
+
         function filterGrid() {
             let q = document.getElementById('filter-input').value.toUpperCase();
             let boxes = document.querySelectorAll('.box');
             for (let b of boxes) { 
-                const match = b.innerText.toUpperCase().includes(q);
+                const match = b.innerText.toUpperCase().includes(q) || b.getAttribute('data-search').toUpperCase().includes(q);
                 b.style.display = match ? 'flex' : 'none'; 
             }
         }
