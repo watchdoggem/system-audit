@@ -28,21 +28,21 @@
             overflow-x: hidden;
         }
 
-        /* TWITTER LINK - UPPER RIGHT */
-        .social-link {
+        /* TWITTER PHOTO LINK - UPPER RIGHT */
+        .twitter-link {
             position: fixed;
             top: 20px;
             right: 20px;
             z-index: 2000;
-            color: var(--accent-neon);
-            text-decoration: none;
-            border: 1px solid var(--border);
-            padding: 10px 15px;
-            background: rgba(0,0,0,0.5);
-            font-size: 14px;
-            letter-spacing: 1px;
+            width: 60px;
+            height: 60px;
+            border: 2px solid var(--accent-neon);
+            background: url('https://pbs.twimg.com/profile_images/1815535352329314304/A_X-C3K__400x400.jpg') no-repeat center;
+            background-size: cover;
+            box-shadow: 0 0 15px var(--accent-glow);
+            transition: transform 0.2s;
         }
-        .social-link:hover { border-color: var(--accent-neon); }
+        .twitter-link:hover { transform: scale(1.1); }
 
         #search-container {
             display: flex;
@@ -60,6 +60,7 @@
             font-size: 24px; width: 100%; letter-spacing: 3px;
         }
 
+        .grid { display: block; }
         .box {
             border: 1px solid var(--border);
             height: 180px; width: 250px;
@@ -78,7 +79,7 @@
             top: 50%; left: 50%;
             transform: translate(-50%, -50%) scale(0);
             width: 85vw; max-width: 1100px;
-            /* UPDATED: 85% OPAQUE */
+            /* 85% OPAQUE */
             background: rgba(5, 8, 5, 0.85);
             border: 1px solid var(--accent-neon);
             padding: 40px; z-index: 1000;
@@ -95,15 +96,15 @@
         .stat-module {
             border: 1px solid var(--border);
             padding: 18px;
-            /* FIXED: SOLID PURPLE TEXT */
             background: rgba(212, 193, 255, 0.05);
             text-align: center; font-size: 24px; text-transform: uppercase;
+            /* SOLID PURPLE TEXT */
             color: var(--accent-neon);
         }
 
         .hud-footer {
             display: flex; justify-content: space-between;
-            /* FIXED: BIGGER LEGIBLE FOOTNOTES */
+            /* LEGIBLE FOOTNOTES */
             font-size: 22px; border-top: 1px solid var(--border);
             padding-top: 20px; font-weight: bold;
         }
@@ -123,7 +124,7 @@
 </head>
 <body onclick="hideHud()">
 
-    <a href="https://x.com/watchdoggem/" target="_blank" class="social-link" onclick="event.stopPropagation()">X / @WATCHDOGGEM</a>
+    <a href="https://x.com/watchdoggem/" target="_blank" class="twitter-link" onclick="event.stopPropagation()"></a>
 
     <div id="search-container">
         <input type="text" id="filter-input" placeholder="SEARCH / FILTER AUDIT LOG">
@@ -174,10 +175,10 @@
             beamSvg.style.opacity = "1";
             
             const r = el.getBoundingClientRect(); 
-            const h = hud.getBoundingClientRect();
-            
-            // Simplified Beam Math
-            const points = `${r.left},${r.top} ${h.left},${h.top} ${h.right},${h.top} ${r.right},${r.top} ${r.right},${r.bottom} ${h.right},${h.bottom} ${h.left},${h.bottom} ${r.left},${r.bottom}`;
+            const h = hud.getBoundingClientRect(); 
+
+            // OUTWARD CONNECTING BEAM MATH
+            const points = `${r.left},${r.top} ${r.right},${r.top} ${h.right},${h.top} ${h.right},${h.bottom} ${r.right},${r.bottom} ${r.left},${r.bottom} ${h.left},${h.bottom} ${h.left},${h.top}`;
             projection.setAttribute('points', points);
         }
 
