@@ -4,11 +4,9 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>watchdoggem</title>
-
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700;900&family=VT323&display=swap" rel="stylesheet">
-
 <style>
 :root {
     --bg:#05030f;
@@ -51,7 +49,7 @@ header{
     align-items:center;
     gap:clamp(.7rem,.9vw,1.4rem);
     margin-bottom:clamp(.9rem,1.1vw,1.8rem);
-    border-bottom:1px solid var(--border);
+    border-bottom:1px solid rgba(199,158,255,.32);
     padding-bottom:clamp(.5rem,.6vw,1rem);
 }
 
@@ -63,31 +61,27 @@ header{
     text-shadow:0 0 16px var(--glow);
 }
 
-.search-bar { flex:1 1 auto; min-width:120px; max-width:100%; }
-
-#filter-input {
-    width:100%;
-    padding: clamp(.4rem,.44vw,.85rem) clamp(.6rem,.63vw,1.2rem);
-    background: rgba(5,3,15,0.8);
-    border:1px solid var(--border);
-    color: var(--accent-violet);
-    font-size: clamp(.9rem,2.5vw,1.6rem);
-    outline:none;
-}
-#filter-input::placeholder{ color: rgba(199,158,255,.55); }
-
-.x-link {
-    flex:0 0 auto;
-    width: clamp(40px,6vw,70px);
-    height: clamp(40px,6vw,70px);
-    overflow:hidden;
-    border-radius:6px;
-    border:2px solid var(--accent-violet);
+/* CATEGORY BUTTON BAR */
+#category-bar{
     display:flex;
     justify-content:center;
-    align-items:center;
+    margin:1rem 0;
 }
-.x-avatar{ width:100%; height:100%; object-fit:cover; }
+.category-button {
+    background:var(--panel-bg);
+    border:2px solid var(--border);
+    border-radius:12px;
+    padding:.5rem 1rem;
+    cursor:pointer;
+    text-transform:uppercase;
+    font-weight:700;
+    margin:0 .25rem;
+    transition:.3s;
+}
+.category-button.active{
+    border-color:var(--accent-violet);
+    box-shadow:0 0 12px var(--glow);
+}
 
 /* GRID */
 .grid{
@@ -108,9 +102,8 @@ header{
     padding:clamp(1rem,2vw,3rem);
     transition:.3s;
     box-shadow:inset 0 0 20px rgba(199,158,255,.08);
-    overflow-wrap: break-word;
+    position:relative;
 }
-
 .box:hover,.box.active{
     border-color:var(--accent-violet);
     box-shadow:0 0 32px var(--glow), inset 0 0 24px rgba(199,158,255,.15);
@@ -130,12 +123,12 @@ header{
     justify-content:center;
     align-items:center;
 }
+.box.empty .box-content{opacity:.12}
 
-.splash-top { font-size: clamp(2rem,5vw,4rem); line-height:1; }
-.splash-mid { font-size: clamp(1rem,3vw,2rem); opacity:.85; margin-top:.35em; }
-.splash-bottom { font-size: clamp(.9rem,2.5vw,1.8rem); letter-spacing:.15em; opacity:.75; margin-top:.2em; }
-
-.box.empty .box-content{ opacity:.12; }
+/* SPLASH TEXT */
+.splash-top {font-size: clamp(2rem, 5vw, 4rem); line-height:1;}
+.splash-mid {font-size: clamp(1rem,3vw,2rem); opacity:.85; margin-top:.35em;}
+.splash-bottom {font-size: clamp(.9rem,2.5vw,1.8rem); letter-spacing:.15em; opacity:.75; margin-top:.2em;}
 
 /* HUD */
 #hud{
@@ -143,7 +136,7 @@ header{
     top:50%;
     left:50%;
     transform:translate(-50%,-50%);
-    width:clamp(400px,55vw,1000px);
+    width:clamp(380px,52vw,1000px);
     max-height:80vh;
     overflow-y:auto;
     background:rgba(5,3,15,var(--translucent));
@@ -158,55 +151,89 @@ header{
     display:flex;
     flex-direction:column;
 }
+#hud.active{opacity:1}
 
-#hud.active{opacity:1;}
+.hud-header{
+    font-family:'Orbitron',sans-serif;
+    font-size:clamp(1.4rem,1.6vw,2.8rem);
+    text-align:center;
+    margin-bottom:.3rem;
+    text-shadow:0 0 18px var(--glow);
+}
+.hud-species{
+    text-align:center;
+    font-size:clamp(.8rem,.9vw,1.6rem);
+    opacity:.88;
+    margin-bottom:.9rem;
+    border-bottom:1px dashed var(--border);
+    padding-bottom:.5rem;
+}
+.hud-stats{
+    display:grid;
+    grid-template-columns:repeat(2,1fr);
+    gap:clamp(.45rem,.47vw,.9rem);
+}
+.stat-item{
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    padding:clamp(.5rem,.55vw,1rem);
+    border:2px solid var(--border);
+    background:var(--panel-bg);
+    text-align:center;
+    min-height:clamp(40px,4vw,80px);
+    border-radius:8px;
+}
+.stat-text{
+    font-family:'Orbitron',sans-serif;
+    font-size:clamp(.75rem,.8vw,1.5rem);
+    font-weight:900;
+    text-shadow:0 0 10px var(--glow);
+    text-transform:uppercase;
+}
 
-.hud-header{ font-family:'Orbitron',sans-serif; font-size:clamp(1.4rem,1.6vw,2.8rem); text-align:center; margin-bottom:.3rem; text-shadow:0 0 18px var(--glow); }
-.hud-species{ text-align:center; font-size:clamp(.8rem,.9vw,1.6rem); opacity:.88; margin-bottom:.9rem; border-bottom:1px dashed var(--border); padding-bottom:.5rem; }
-.hud-stats{ display:grid; grid-template-columns:repeat(2,1fr); gap:clamp(.45rem,.47vw,.9rem); }
-.stat-item{ display:flex; justify-content:center; align-items:center; padding:clamp(.5rem,.55vw,1rem); border:2px solid var(--border); background:var(--panel-bg); text-align:center; min-height:clamp(40px,4vw,80px); border-radius:8px; }
-.stat-text{ font-family:'Orbitron',sans-serif; font-size:clamp(.75rem,.8vw,1.5rem); font-weight:900; text-shadow:0 0 10px var(--glow); text-transform:uppercase; }
-
-.hud-footer{ display:flex; flex-direction:column; justify-content:flex-start; font-size:clamp(.65rem,.68vw,1.3rem); opacity:.92; margin-top:1rem; padding-top:.6rem; border-top:1px dashed var(--border); }
-
-/* MOBILE HUD FIX */
-@media (max-width:600px){
-    #hud{
-        inset:10vh 3vw auto 3vw;
-        width:auto;
-        max-height:80vh;
-        transform:none;
-        overflow-y:auto;
-        -webkit-overflow-scrolling:touch;
-        padding: clamp(.5rem,1vw,1rem);
-    }
-    .hud-stats { grid-template-columns: repeat(2, 1fr); gap: clamp(.35rem, .8vw, .6rem); }
-    .stat-text { font-size: clamp(.7rem,2.5vw,1.2rem); }
+/* HUD FOOTER: two lines stacked */
+.hud-footer{
+    display:flex;
+    flex-direction:column;
+    gap:.4rem;
+    font-size:clamp(.65rem,.68vw,1.3rem);
+    opacity:.92;
+    margin-top:1rem;
+    padding-top:.6rem;
+    border-top:1px dashed var(--border);
 }
 
 /* BEAM */
-#beam-svg{ position:fixed; inset:0; width:100vw; height:100vh; pointer-events:none; z-index:900; opacity:0; transition:opacity .6s; }
-.beam{ fill:none; stroke:var(--accent-violet); stroke-width:1.5; opacity:.3; filter:drop-shadow(0 0 10px var(--glow)); }
+#beam-svg{position:fixed;inset:0;width:100vw;height:100vh;pointer-events:none;z-index:900;opacity:0;transition:opacity .6s;}
+.beam{fill:none;stroke:var(--accent-violet);stroke-width:1.5;opacity:.3;filter:drop-shadow(0 0 10px var(--glow));}
 
+@media (max-width:600px){
+    #hud{width:calc(100% - 6vw);}
+    .hud-stats{grid-template-columns:repeat(2,1fr);gap:.5rem;}
+    .stat-text{font-size:clamp(.7rem,2.5vw,1.2rem);}
+}
 </style>
 </head>
-
 <body>
 <div id="scaler">
+
 <header>
     <div class="title">WATCHDOGGEM</div>
-    <div class="search-bar">
-        <input type="text" id="filter-input" placeholder="SEARCH / FILTER..." autocomplete="off">
-    </div>
-    <a href="https://x.com/watchdoggem" target="_blank" class="x-link">
-        <img src="https://unavatar.io/x/watchdoggem" alt="X" class="x-avatar">
-    </a>
 </header>
 
-<div class="grid" id="grid"></div>
+<div id="category-bar">
+    <div class="category-button" data-category="animal">Animal</div>
 </div>
 
-<svg id="beam-svg"><polygon id="beam-poly" class="beam" points="0,0"/></svg>
+<div class="grid" id="grid">
+    <!-- Panels generated dynamically -->
+</div>
+</div>
+
+<svg id="beam-svg">
+    <polygon id="beam-poly" class="beam" points="0,0"/>
+</svg>
 
 <div id="hud">
     <div class="hud-header"></div>
@@ -225,6 +252,7 @@ const panels = [
     title:"NON-HUMAN PRIMATES",
     subtitle:"IN RESEARCH",
     species:["RHESUS MACAQUES","CYNOMOLGUS MACAQUES"],
+    categories:["animal"],
     stats:[
       {text:"100% FATAL ANESTHETIC OVERDOSE", ref:1},
       {text:"20% CLINICAL SELF-HARM", ref:1},
@@ -235,7 +263,7 @@ const panels = [
       {text:"$800M+ U.S. DOMESTIC RESEARCH FUNDING", ref:2},
       {text:"$300M+ TAXPAYER INFRASTRUCTURE SUPPORT", ref:1}
     ],
-    footerLines:["SOURCE: USDA APHIS 2024","NIH FINANCIALS 2024","FDA REQUIRED • NIH FUNDED • USDA OVERSIGHT"]
+    footerLines:["SOURCE: USDA APHIS 2024 • NIH 2024 FINANCIALS","FDA REQUIRED • NIH FUNDED • USDA OVERSIGHT"]
   },
   {id:"EMPTY1", empty:true},
   {id:"EMPTY2", empty:true},
@@ -243,14 +271,14 @@ const panels = [
 ];
 
 // ======================
-// GRID RENDER
+// GRID GENERATION
 // ======================
 const grid = document.getElementById('grid');
-let activeBox=null,leaveTimeout=null;
+let activeCategories = new Set();
 
-function renderGrid(filter=""){
+function renderGrid(){
     grid.innerHTML="";
-    panels.forEach(p=>{
+    panels.forEach((p)=>{
         const box = document.createElement('div');
         box.classList.add('box');
         box.dataset.hasData = (!p.empty).toString();
@@ -258,28 +286,45 @@ function renderGrid(filter=""){
         const content = document.createElement('div');
         content.classList.add('box-content');
 
-        if(p.empty){ box.classList.add('empty'); content.textContent="EMPTY SLOT"; }
-        else{
-            content.innerHTML=`<div class="splash-top">${p.id}</div>
-                               <div class="splash-mid">${p.title}</div>
-                               <div class="splash-bottom">${p.subtitle}</div>`;
+        if(p.empty){
+            box.classList.add('empty');
+            content.textContent = "EMPTY SLOT";
+        } else {
+            content.innerHTML = `<div class="splash-top">${p.id}</div>
+                                 <div class="splash-mid">${p.title}</div>
+                                 <div class="splash-bottom">${p.subtitle}</div>`;
             box.addEventListener('mouseenter',()=>showHud(box,p));
             box.addEventListener('mouseleave',()=>handleBoxLeave(box));
             box.addEventListener('touchstart',()=>showHud(box,p));
         }
 
         box.appendChild(content);
-        // SEARCH / FILTER
-        let text = p.empty ? "" : (p.id+" "+p.title+" "+p.subtitle).toLowerCase();
-        box.style.display = text.includes(filter.toLowerCase()) ? "flex" : "none";
-
         grid.appendChild(box);
+    });
+
+    applyFilters();
+}
+
+// ======================
+// CATEGORY FILTER
+// ======================
+function applyFilters(){
+    document.querySelectorAll('.box').forEach((box,i)=>{
+        const p = panels[i];
+        if(p.empty){box.style.display="none"; return;}
+        const match = activeCategories.size===0 || p.categories?.some(c=>activeCategories.has(c));
+        box.style.display = match?"flex":"none";
     });
 }
 
-// SEARCH FILTER INPUT
-document.getElementById('filter-input').addEventListener('input',e=>{
-    renderGrid(e.target.value);
+document.querySelectorAll('.category-button').forEach(btn=>{
+    btn.addEventListener('click',()=>{
+        const cat = btn.dataset.category;
+        if(activeCategories.has(cat)) activeCategories.delete(cat);
+        else activeCategories.add(cat);
+        btn.classList.toggle('active');
+        renderGrid();
+    });
 });
 
 // ======================
@@ -288,6 +333,7 @@ document.getElementById('filter-input').addEventListener('input',e=>{
 const hud=document.getElementById('hud');
 const beamSvg=document.getElementById('beam-svg');
 const beamPoly=document.getElementById('beam-poly');
+let activeBox=null,leaveTimeout=null;
 
 function updateBeam(){
     if(!activeBox) return;
@@ -297,8 +343,8 @@ function updateBeam(){
     beamPoly.setAttribute('points',pts);
 }
 
-function showHud(el,p){
-    if(p.empty) return;
+function showHud(el,panel){
+    if(panel.empty) return;
     if(leaveTimeout) clearTimeout(leaveTimeout);
     if(activeBox===el) return;
     activeBox=el;
@@ -306,24 +352,23 @@ function showHud(el,p){
     el.classList.add('active');
 
     hud.classList.add('active');
-    hud.querySelector('.hud-header').textContent = `${p.id} ${p.title}`;
-    hud.querySelector('.hud-species').textContent = p.species.join(" | ");
+    hud.querySelector('.hud-header').textContent = `${panel.id} ${panel.title}`;
+    hud.querySelector('.hud-species').textContent = panel.species.join(" | ");
 
     const statsDiv = hud.querySelector('.hud-stats');
     statsDiv.innerHTML="";
-    p.stats.forEach(s=>{
+    panel.stats.forEach(s=>{
         const stat = document.createElement('div');
         stat.classList.add('stat-item');
         stat.innerHTML=`<div class="stat-text">${s.text}<sup>${s.ref}</sup></div>`;
         statsDiv.appendChild(stat);
     });
 
-    // FOOTER
     const footerDiv = hud.querySelector('.hud-footer');
     footerDiv.innerHTML="";
-    p.footerLines.forEach((line,i)=>{
-        const span=document.createElement('span');
-        span.innerHTML=line + (i<2 ? `<sup>${i+1}</sup>` : "");
+    panel.footerLines?.forEach(line=>{
+        const span = document.createElement('span');
+        span.textContent=line;
         footerDiv.appendChild(span);
     });
 
@@ -343,8 +388,11 @@ function handleBoxLeave(el){
 
 window.addEventListener('resize',updateBeam);
 window.addEventListener('scroll',updateBeam);
+
 document.addEventListener('touchstart',e=>{
-    if(!e.target.closest('#hud')&&!e.target.closest('.box')){ if(activeBox) handleBoxLeave(activeBox); }
+    if(!e.target.closest('#hud')&&!e.target.closest('.box')){
+        if(activeBox) handleBoxLeave(activeBox);
+    }
 });
 
 // INITIAL RENDER
