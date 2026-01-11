@@ -13,7 +13,6 @@
 :root {
     --bg:#05030f;
     --accent-violet:#c79eff;
-    --accent-violet-dim:#a57eff;
     --glow:rgba(199,158,255,.42);
     --border:rgba(199,158,255,.32);
     --panel-bg:rgba(199,158,255,.09);
@@ -188,6 +187,7 @@ header{
     left:50%;
     transform:translate(-50%,-50%);
     width:clamp(400px,55vw,1000px);
+    max-width:95vw; /* prevent tiny overflow on phone */
     max-height:80vh;
     overflow-y:auto;
     background:rgba(5,3,15,var(--translucent));
@@ -325,7 +325,7 @@ const panels = [
       {text:"$300M+ TAXPAYER INFRASTRUCTURE SUPPORT", ref:1}
     ],
     footerLines:[
-        "SOURCE: USDA APHIS 2024 • NIH FINANCIALS",
+        "SOURCE: USDA APHIS 2024 • NIH FINANCIALS 2024",
         "FDA REQUIRED • NIH FUNDED • USDA OVERSIGHT"
     ]
   },
