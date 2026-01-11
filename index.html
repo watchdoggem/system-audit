@@ -30,6 +30,7 @@
             border: 1px solid var(--accent-neon);
             background: rgba(0,0,0,0.5);
             z-index: 1100; overflow: hidden; border-radius: 4px;
+            box-shadow: 0 0 15px var(--accent-glow);
         }
         #avatar-stamp img { width: 100%; height: 100%; object-fit: cover; }
 
@@ -44,6 +45,7 @@
             background: transparent; border: none; outline: none;
             color: var(--accent-neon); font-family: 'Impact', sans-serif;
             font-size: 24px; width: 100%; letter-spacing: 2px;
+            text-shadow: 0 0 8px var(--accent-glow);
         }
 
         .grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 20px; }
@@ -58,47 +60,50 @@
         .box-num { font-size: 62px; line-height: 0.8; letter-spacing: -2px; }
         .box-label { font-size: 28px; line-height: 1; margin-top: 12px; opacity: 0.8; }
 
-        /* SOLID HUD - HIGH VISIBILITY */
         #hud {
             position: fixed; top: 50%; left: 50%;
             transform: translate(-50%, -50%) scale(0);
             width: 85vw; max-width: 1100px;
-            background: rgba(10, 15, 10, 0.98); 
+            background: rgba(10, 15, 10, 0.95); 
             border: 1px solid var(--accent-neon);
             padding: 40px; z-index: 1000;
             display: flex; flex-direction: column;
             pointer-events: none; transition: transform 0.15s ease-out;
-            box-shadow: 0 0 100px rgba(0,0,0,1);
+            box-shadow: 0 0 80px rgba(0,0,0,1);
         }
 
-        .hud-header { font-size: 36px; margin-bottom: 10px; text-align: center; text-transform: uppercase; letter-spacing: 1px; }
-        .hud-species { font-size: 22px; margin-bottom: 25px; letter-spacing: 2px; text-align: center; border-bottom: 1px solid var(--border); padding-bottom: 15px; opacity: 0.9; }
-        .hud-stats-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; margin-bottom: 25px; }
+        .hud-header { font-size: 36px; margin-bottom: 12px; text-align: center; text-transform: uppercase; text-shadow: 0 0 10px var(--accent-glow); }
+        .hud-species { font-size: 22px; margin-bottom: 30px; letter-spacing: 2px; text-align: center; border-bottom: 1px solid var(--border); padding-bottom: 20px; }
+        .hud-stats-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; margin-bottom: 30px; }
 
         .stat-module {
-            border: 1px solid var(--border); padding: 18px;
-            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid var(--border); padding: 20px;
+            background: rgba(255, 255, 255, 0.03);
             display: flex; justify-content: center; align-items: center;
-            text-align: center; min-height: 90px;
+            text-align: center; min-height: 85px;
         }
 
-        .stat-text { font-size: 24px; text-transform: uppercase; line-height: 1.1; }
+        .stat-text { font-size: 22px; text-transform: uppercase; line-height: 1.1; }
 
         .hud-footer {
             display: flex; justify-content: space-between;
-            font-size: 16px; border-top: 1px solid var(--border);
-            padding-top: 20px; letter-spacing: 1.5px;
+            font-size: 15px; border-top: 1px solid var(--border);
+            padding-top: 20px; letter-spacing: 2px;
         }
 
         #beam-svg {
             position: fixed; top: 0; left: 0;
             width: 100vw; height: 100vh;
             pointer-events: none; z-index: 900;
-            opacity: 0; transition: opacity 0.1s;
+            opacity: 0; transition: opacity 0.15s;
         }
         
-        /* The projection lines based on your drawing */
-        .beam-poly { fill: rgba(212, 193, 255, 0.07); stroke: rgba(212, 193, 255, 0.2); stroke-width: 1.5; }
+        /* The projection glow flare */
+        .beam-flare { 
+            fill: rgba(212, 193, 255, 0.12); 
+            stroke: rgba(212, 193, 255, 0.3); 
+            stroke-width: 1.5; 
+        }
     </style>
 </head>
 <body onclick="hideHud()">
@@ -112,10 +117,7 @@
     </div>
 
     <svg id="beam-svg">
-        <polygon id="beam-t" class="beam-poly" /> 
-        <polygon id="beam-b" class="beam-poly" /> 
-        <polygon id="beam-l" class="beam-poly" /> 
-        <polygon id="beam-r" class="beam-poly" /> 
+        <polygon id="flare-shape" class="beam-flare" /> 
     </svg>
 
     <div id="hud">
@@ -133,7 +135,6 @@
              data-head="104,801 NON-HUMAN PRIMATES IN RESEARCH"
              data-stats="100% FATAL ANESTHETIC OVERDOSE; 20% CLINICAL SELF-HARM; 83% SOCIAL ISOLATION; 89% DISTRESSED PACING; 12% NO PAIN RELIEF (COLUMN E); 100% CAGE SEQUESTRATION; 31,000 CAGED BY CLASS A BREEDERS; 13,375 CAGED BY CLASS B DEALERS; $800M+ U.S. DOMESTIC REVENUE; $300M+ TAXPAYER INFRASTRUCTURE"
              data-src="SOURCE: USDA APHIS 2024 / NIH FINANCIALS"
-             data-search="104801 NHP MONKEYS" 
              onmouseenter="showHud(this, event)" onmouseleave="hideHud()">
             <div class="box-num">104,801</div>
             <div class="box-label">NHP TESTING</div>
@@ -143,10 +144,7 @@
     <script>
         const hud = document.getElementById('hud');
         const beamSvg = document.getElementById('beam-svg');
-        const b = {
-            t: document.getElementById('beam-t'), b: document.getElementById('beam-b'),
-            l: document.getElementById('beam-l'), r: document.getElementById('beam-r')
-        };
+        const flare = document.getElementById('flare-shape');
 
         function showHud(el, e) {
             e.stopPropagation();
@@ -168,11 +166,15 @@
             const r = el.getBoundingClientRect(); // Small Box
             const h = hud.getBoundingClientRect(); // Large HUD
 
-            // EXACT PROJECTION MATH (Box Corner -> HUD Corner)
-            b.t.setAttribute('points', `${r.left},${r.top} ${r.right},${r.top} ${h.right},${h.top} ${h.left},${h.top}`);
-            b.b.setAttribute('points', `${r.left},${r.bottom} ${r.right},${r.bottom} ${h.right},${h.bottom} ${h.left},${h.bottom}`);
-            b.l.setAttribute('points', `${r.left},${r.top} ${r.left},${r.bottom} ${h.left},${h.bottom} ${h.left},${h.top}`);
-            b.r.setAttribute('points', `${r.right},${r.top} ${r.right},${r.bottom} ${h.right},${h.bottom} ${h.right},${h.top}`);
+            // FLARE LOGIC: Start at Box Corners, Expand OUTWARD to HUD Corners
+            // Order: Box-TL, Box-TR, HUD-TR, HUD-BR, Box-BR, Box-BL, HUD-BL, HUD-TL
+            const points = `
+                ${r.left},${r.top} ${r.right},${r.top} 
+                ${h.right},${h.top} ${h.right},${h.bottom} 
+                ${r.right},${r.bottom} ${r.left},${r.bottom}
+                ${h.left},${h.bottom} ${h.left},${h.top}
+            `;
+            flare.setAttribute('points', points);
         }
 
         function hideHud() { 
