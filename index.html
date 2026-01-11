@@ -28,59 +28,90 @@
             overflow-x: hidden;
         }
 
-        /* 5-COLUMN GRID (RESPONSIVE) */
+        /* HEADER & AVATAR */
+        #header-row {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        #search-container {
+            flex-grow: 1;
+            display: flex;
+            border: 1px solid var(--border);
+            padding: 15px;
+            background: rgba(0, 0, 0, 0.4);
+            backdrop-filter: blur(5px);
+        }
+
+        #filter-input {
+            background: transparent;
+            border: none; outline: none;
+            color: var(--accent-neon); font-family: 'Impact', sans-serif;
+            font-size: 24px; width: 100%; letter-spacing: 3px;
+        }
+
+        .avatar-link {
+            width: 60px; height: 60px;
+            border: 1px solid var(--accent-neon);
+            background: #000;
+            display: flex; align-items: center; justify-content: center;
+            transition: transform 0.2s;
+            text-decoration: none;
+        }
+        .avatar-link:hover { transform: scale(1.1); box-shadow: 0 0 15px var(--accent-glow); }
+        .avatar-link img { width: 100%; height: 100%; object-fit: cover; }
+
+        /* GRID: 5 COLUMNS ON DESKTOP, RESPONSIVE ON MOBILE */
         .grid { 
             display: grid;
-            grid-template-columns: repeat(2, 1fr); /* Phone default */
-            gap: 10px;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
             max-width: 1400px;
             margin: 0 auto;
         }
-        @media (min-width: 800px) { .grid { grid-template-columns: repeat(5, 1fr); gap: 15px; } }
+        @media (min-width: 900px) { .grid { grid-template-columns: repeat(5, 1fr); } }
 
         .box {
             border: 1px solid var(--border);
-            height: 120px;
+            height: 150px;
             display: flex; flex-direction: column;
             justify-content: center; align-items: center;
             background: linear-gradient(145deg, rgba(26, 46, 26, 0.4), rgba(10, 15, 10, 0.6));
-            transition: all 0.2s ease;
+            transition: border 0.3s;
         }
-        .box:hover { border-color: var(--accent-neon); background: rgba(212, 193, 255, 0.1); }
-        .box-num { font-size: 28px; }
-        .box-label { font-size: 12px; opacity: 0.6; }
+        .box:hover { border-color: var(--accent-neon); }
+        .box-num { font-size: 42px; line-height: 0.8; }
+        .box-label { font-size: 18px; margin-top: 8px; opacity: 0.6; }
+        .box.empty { background: rgba(212, 193, 255, 0.02); }
 
-        /* HUD - PIXEL PERFECT ALIGNMENT */
+        /* HUD BOX */
         #hud {
             position: fixed;
             top: 50%; left: 50%;
             transform: translate(-50%, -50%) scale(0);
-            width: 90vw; max-width: 1000px;
+            width: 90vw; max-width: 1100px;
             background: rgba(5, 8, 5, 0.98);
             border: 1px solid var(--accent-neon);
-            padding: 30px; z-index: 1000;
+            padding: 40px; z-index: 1000;
             display: flex; flex-direction: column;
             pointer-events: none;
-            transition: transform 0.15s cubic-bezier(0.175, 0.885, 0.32, 1.2);
-            box-shadow: 0 0 100px rgba(0,0,0,1);
+            transition: transform 0.1s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            box-shadow: 0 0 100px rgba(0,0,0,0.9);
         }
 
-        .hud-header { font-size: 32px; text-align: center; margin-bottom: 5px; }
-        .hud-species { font-size: 16px; text-align: center; border-bottom: 1px solid var(--border); padding-bottom: 15px; margin-bottom: 25px; }
-        
-        .hud-stats-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin-bottom: 20px; }
+        .hud-header { font-size: 42px; text-align: center; margin-bottom: 10px; }
+        .hud-species { font-size: 22px; text-align: center; border-bottom: 1px solid var(--border); padding-bottom: 15px; margin-bottom: 30px; }
+        .hud-stats-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; margin-bottom: 30px; }
         .stat-module {
-            border: 1px solid var(--border); padding: 15px;
+            border: 1px solid var(--border); padding: 18px;
             background: rgba(212, 193, 255, 0.02);
-            text-align: center; font-size: 18px; text-transform: uppercase;
+            text-align: center; font-size: 24px; text-transform: uppercase;
         }
+        .hud-footer { display: flex; justify-content: space-between; font-size: 18px; border-top: 1px solid var(--border); padding-top: 20px; font-weight: bold; }
 
-        .hud-footer {
-            display: flex; justify-content: space-between;
-            font-size: 12px; border-top: 1px solid var(--border);
-            padding-top: 15px; opacity: 0.8;
-        }
-
+        /* BEAM SYSTEM */
         #beam-svg {
             position: fixed; top: 0; left: 0;
             width: 100vw; height: 100vh;
@@ -88,13 +119,22 @@
             opacity: 0;
         }
         .beam-path { 
-            fill: rgba(212, 193, 255, 0.06);
-            stroke: var(--accent-neon); 
-            stroke-width: 0.8; 
+            fill: rgba(212, 193, 255, 0.05); 
+            stroke: rgba(212, 193, 255, 0.3); 
+            stroke-width: 1.5; 
         }
     </style>
 </head>
-<body>
+<body onclick="hideHud()">
+
+    <div id="header-row">
+        <div id="search-container">
+            <input type="text" id="filter-input" placeholder="SEARCH / FILTER AUDIT LOG">
+        </div>
+        <a href="https://twitter.com/watchdoggem" class="avatar-link" target="_blank">
+            <img src="https://abs.twimg.com/sticky/default_profile_images/default_profile_normal.png" alt="Twitter">
+        </a>
+    </div>
 
     <svg id="beam-svg"><polygon id="poly-projection" class="beam-path" /></svg>
 
@@ -119,7 +159,12 @@
         </div>
     </div>
 
-    <div class="grid" id="main-grid"></div>
+    <div class="grid" id="main-grid">
+        <div class="box" onmouseenter="showHud(this)" onmouseleave="hideHud()">
+            <div class="box-num">104,801</div>
+            <div class="box-label">NHP TESTING</div>
+        </div>
+        </div>
 
     <script>
         const grid = document.getElementById('main-grid');
@@ -127,30 +172,32 @@
         const beamSvg = document.getElementById('beam-svg');
         const projection = document.getElementById('poly-projection');
 
-        for (let i = 1; i <= 30; i++) {
-            const box = document.createElement('div');
-            box.className = 'box';
-            box.innerHTML = `<div class="box-num">104,801</div><div class="box-label">NHP TESTING</div>`;
-            box.onmouseenter = (e) => showHud(e.currentTarget);
-            box.onmouseleave = hideHud;
-            grid.appendChild(box);
+        // Fill remaining boxes as empty
+        for (let i = 2; i <= 50; i++) {
+            const emptyBox = document.createElement('div');
+            emptyBox.className = 'box empty';
+            emptyBox.onmouseenter = (e) => showHud(e.currentTarget);
+            emptyBox.onmouseleave = hideHud;
+            grid.appendChild(emptyBox);
         }
 
         function showHud(el) {
             hud.style.transform = "translate(-50%, -50%) scale(1)";
             beamSvg.style.opacity = "1";
             
+            // MATH FIX: Get dimensions of viewport-relative elements
             const r = el.getBoundingClientRect(); 
-            // Forced reflow to ensure HUD dimensions are captured at scale 1
             const h = hud.getBoundingClientRect();
 
+            // 8-Point Path mapping Box corners to HUD corners
+            // Connecting: B-TL -> H-TL -> H-TR -> B-TR -> B-BR -> H-BR -> H-BL -> B-BL
             const points = `
                 ${r.left},${r.top} ${h.left},${h.top} 
                 ${h.right},${h.top} ${r.right},${r.top} 
                 ${r.right},${r.bottom} ${h.right},${h.bottom} 
                 ${h.left},${h.bottom} ${r.left},${r.bottom}
             `;
-            projection.setAttribute('points', points);
+            projection.setAttribute('points', points.trim());
         }
 
         function hideHud() { 
