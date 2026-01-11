@@ -312,8 +312,8 @@ header{
     <div class="hud-footer">
         <div class="hud-footer-left"></div>
         <div class="hud-footer-right">
-            <div>USDA APHIS 2024 REPORT</div>
-            <div>NIH FINANCIAL 2024 REPORT</div>
+            <div><sup>1</sup> USDA APHIS 2024 REPORT</div>
+            <div><sup>2</sup> NIH FINANCIAL 2024 REPORT</div>
         </div>
     </div>
 </div>
@@ -335,7 +335,8 @@ const panels = [
       {text:"12% PAIN RELIEF WITHHELD", ref:1},
       {text:"100% CAGE SEQUESTRATION", ref:1},
       {text:"$800M+ U.S. DOMESTIC RESEARCH FUNDING", ref:2},
-      {text:"$300M+ TAXPAYER INFRASTRUCTURE SUPPORT", ref:1}
+      {text:"$300M+ TAXPAYER INFRASTRUCTURE SUPPORT", ref:1},
+      {text:"$104k SOMETHING ELSE", ref:1} // example for your 104k citation
     ],
     footer:"FDA REQUIRED • NIH FUNDED • USDA OVERSIGHT"
   },
@@ -392,8 +393,13 @@ function renderGrid() {
 function applyFilters(){
     document.querySelectorAll('.box').forEach((box,i)=>{
         const p = panels[i];
-        const categoryMatch = !p.empty && (activeCategories.size===0 || p.categories.some(c=>activeCategories.has(c)));
-        box.style.display = categoryMatch ? "flex" : "none";
+        const categoryMatch = (activeCategories.size===0 || (!p.empty && p.categories.some(c=>activeCategories.has(c))));
+        // Only hide empty boxes when a category is active
+        if(p.empty && activeCategories.size>0){
+            box.style.display = "none";
+        } else {
+            box.style.display = categoryMatch ? "flex" : "none";
+        }
     });
 }
 
