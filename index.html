@@ -245,12 +245,20 @@ header{
 .hud-footer{
     display:flex;
     justify-content:space-between;
+    align-items:flex-end;
     font-size:clamp(.65rem,.68vw,1.3rem);
     opacity:.92;
     margin-top:1rem;
     padding-top:.6rem;
     border-top:1px dashed var(--border);
     flex-wrap:wrap;
+}
+.hud-footer-left{text-align:left;}
+.hud-footer-right{
+    text-align:right;
+    display:flex;
+    flex-direction:column;
+    gap:0.2em;
 }
 
 /* BEAM */
@@ -301,7 +309,13 @@ header{
     <div class="hud-header"></div>
     <div class="hud-species"></div>
     <div class="hud-stats"></div>
-    <div class="hud-footer"></div>
+    <div class="hud-footer">
+        <div class="hud-footer-left"></div>
+        <div class="hud-footer-right">
+            <div>USDA APHIS 2024 REPORT</div>
+            <div>NIH FINANCIAL 2024 REPORT</div>
+        </div>
+    </div>
 </div>
 
 <script>
@@ -360,6 +374,14 @@ function renderGrid() {
                     catBtn.classList.add('splash-category-button');
                     if(activeCategories.has(cat)) catBtn.classList.add('active');
                     content.appendChild(catBtn);
+
+                    // optional: clicking category toggles filter
+                    catBtn.addEventListener('click', ()=>{
+                        const catLower = cat.toLowerCase();
+                        if(activeCategories.has(catLower)) activeCategories.delete(catLower);
+                        else activeCategories.add(catLower);
+                        renderGrid();
+                    });
                 });
             }
 
@@ -379,8 +401,7 @@ function renderGrid() {
 function applyFilters(){
     document.querySelectorAll('.box').forEach((box,i)=>{
         const p = panels[i];
-        if(p.empty) return;
-        const categoryMatch = activeCategories.size===0 || p.categories.some(c=>activeCategories.has(c));
+        const categoryMatch = !p.empty && (activeCategories.size===0 || p.categories.some(c=>activeCategories.has(c)));
         box.style.display = categoryMatch ? "flex" : "none";
     });
 }
@@ -423,7 +444,7 @@ function showHud(el,panel){
     el.classList.add('active');
 
     hud.classList.add('active');
-    hud.querySelector('.hud-header').textContent = `PRIMATES IN RESEARCH`;
+    hud.querySelector('.hud-header').textContent = panel.title;
     hud.querySelector('.hud-species').textContent = panel.species.join(" | ");
 
     const statsDiv = hud.querySelector('.hud-stats');
@@ -435,7 +456,7 @@ function showHud(el,panel){
         statsDiv.appendChild(stat);
     });
 
-    hud.querySelector('.hud-footer').textContent = panel.footer;
+    hud.querySelector('.hud-footer-left').textContent = panel.footer;
 
     beamSvg.style.opacity='1';
     updateBeam();
