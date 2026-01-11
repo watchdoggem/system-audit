@@ -69,6 +69,17 @@ header{
     min-width: 120px;
     max-width: 100%;
 }
+@media (max-width: 600px) {
+    #filter-input {
+        font-size: clamp(1.2rem, 4vw, 1.6rem); /* bigger for mobile, keeps style */
+        padding: clamp(.6rem, 1.5vw, 1rem) clamp(.8rem, 2vw, 1.2rem);
+    }
+
+    .x-link {
+        width: clamp(50px, 10vw, 70px);
+        height: clamp(50px, 10vw, 70px);
+    }
+}
 
 #filter-input {
     width: 100%;
@@ -238,20 +249,25 @@ header{
     flex-wrap:wrap;
 }
 
-/* MOBILE FIXES */
-@media(max-width:600px){
-    .grid{
-        grid-template-columns:repeat(4,1fr); /* force 4 columns on mobile */
-        gap:clamp(.4rem,.5vw,.8rem);
-    }
+@media (max-width: 600px){
     #hud{
-        width:90vw;
-        max-height:50vh;
-        transform:translate(-50%, -50%);
-        padding:clamp(.6rem,.8vw,1.2rem);
+        inset:10vh 3vw auto 3vw; /* push down from top a bit */
+        width:auto;
+        max-height:80vh; /* give room for the bottom boxes */
+        transform:none;
+        overflow-y:auto;
+        -webkit-overflow-scrolling:touch;
+        padding: clamp(.5rem,1vw,1rem); /* optional: slightly smaller padding */
     }
-    .hud-stats{grid-template-columns:1fr 1fr;}
-    .stat-item{font-size:clamp(.65rem,.7vw,1.1rem);}
+
+    .hud-stats {
+        grid-template-columns: repeat(2, 1fr); /* keep 2 columns */
+        gap: clamp(.35rem, .8vw, .6rem); /* optional: slightly smaller spacing */
+    }
+
+    .stat-text {
+        font-size: clamp(.7rem, 2.5vw, 1.2rem); /* slightly smaller so all fit */
+    }
 }
 
 /* BEAM */
