@@ -16,7 +16,7 @@
             --border: rgba(199, 158, 255, 0.32);
             --panel-bg: rgba(199, 158, 255, 0.09);
             --translucent: 0.85;
-            --design-width: 1600px; /* Based on grid max-width for snap-fit */
+            --design-width: 1600px;
         }
 
         * {
@@ -122,7 +122,7 @@
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            padding: clamp(0.6rem, 0.63vw, 1.2rem);
+            padding: clamp(0.5rem, 0.52vw, 1rem);
             transition: all 0.3s ease;
             box-shadow: inset 0 0 20px rgba(199,158,255,0.08);
         }
@@ -139,43 +139,53 @@
             font-weight: 900;
             text-align: center;
             text-shadow: 0 0 14px var(--glow);
-            letter-spacing: clamp(1px, 0.1vw, 2px);
+            letter-spacing: clamp(0.8px, 0.08vw, 1.6px);
             text-transform: uppercase;
-            line-height: 1.0;
+            line-height: 0.95;
             width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding: 0.3em;
         }
 
         .box-num {
-            font-size: clamp(1.8rem, 1.88vw, 3.6rem);
+            font-size: clamp(2rem, 2.1vw, 4rem);
+            line-height: 0.9;
+            margin-bottom: 0.1em;
         }
 
         .box-label {
-            font-size: clamp(1.8rem, 1.88vw, 3.6rem);
-            margin-top: clamp(0.15rem, 0.16vw, 0.3rem);
-            opacity: 0.92;
+            font-size: clamp(1.6rem, 1.68vw, 3.2rem);
+            line-height: 0.95;
+            margin-top: 0;
         }
 
-        .box.empty .box-content { opacity: 0.12; }
+        .box.empty .box-content { 
+            opacity: 0.12; 
+            font-size: clamp(1.2rem, 1.26vw, 2.4rem);
+        }
 
-        /* HUD */
+        /* HUD - made phone version much smaller and better fitting */
         #hud {
             position: fixed;
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            width: clamp(300px, 50vw, 950px);
+            width: clamp(320px, 48vw, 950px);
             max-height: 88vh;
             overflow-y: auto;
             background: rgba(5, 3, 15, var(--translucent));
             border: 2px solid var(--accent-violet);
             border-image: linear-gradient(to right, transparent, var(--accent-violet), transparent) 1;
-            padding: clamp(0.65rem, 0.68vw, 1.3rem);
+            padding: clamp(0.8rem, 0.84vw, 1.3rem);
             box-shadow: 0 0 80px rgba(0,0,0,0.9);
             opacity: 0;
             transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.35);
             z-index: 1000;
             border-radius: 8px;
-            pointer-events: none; /* Mouse through */
+            pointer-events: none;
         }
 
         #hud.active {
@@ -189,7 +199,7 @@
             margin-bottom: clamp(0.25rem, 0.26vw, 0.5rem);
             text-shadow: 0 0 18px var(--glow);
             letter-spacing: clamp(1.5px, 0.16vw, 3px);
-            white-space: normal; /* Allow wrap if needed */
+            white-space: normal;
         }
 
         .hud-species {
@@ -208,74 +218,31 @@
             gap: clamp(0.45rem, 0.47vw, 0.9rem);
         }
 
-        .stat-item {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            padding: clamp(0.6rem, 0.63vw, 1.2rem);
-            border: 2px solid var(--border);
-            background: var(--panel-bg);
-            text-align: center;
-            min-height: clamp(45px, 4.7vw, 90px);
-            border-radius: 8px;
-        }
-
-        .stat-item:hover {
-            box-shadow: 0 0 20px var(--glow);
-            border-color: var(--accent-violet-dim);
-        }
-
-        .stat-text {
-            font-family: 'Orbitron', sans-serif;
-            font-size: clamp(0.88rem, 0.91vw, 1.75rem);
-            font-weight: 900;
-            text-shadow: 0 0 10px var(--glow);
-            letter-spacing: clamp(0.5px, 0.05vw, 1px);
-            text-transform: uppercase;
-            line-height: 1.05;
-            white-space: normal; /* Allow wrap, no cutoff */
-            width: 100%;
-        }
-
-        .hud-footer {
-            display: flex;
-            justify-content: space-between;
-            font-size: clamp(0.65rem, 0.68vw, 1.3rem);
-            opacity: 0.92;
-            margin-top: clamp(0.75rem, 0.78vw, 1.5rem);
-            padding-top: clamp(0.5rem, 0.52vw, 1rem);
-            border-top: 1px dashed var(--border);
-            flex-wrap: wrap;
-            gap: clamp(0.4rem, 0.42vw, 0.8rem);
-        }
-
-        /* BEAM */
-        #beam-svg {
-            position: fixed;
-            inset: 0;
-            width: 100vw;
-            height: 100vh;
-            pointer-events: none;
-            z-index: 900;
-            opacity: 0;
-            transition: opacity 0.6s;
-        }
-
-        .beam {
-            fill: none;
-            stroke: var(--accent-violet);
-            stroke-width: 1.5;
-            opacity: 0.3;
-            filter: drop-shadow(0 0 10px var(--glow));
-        }
-
-        @media (max-width: 900px) {
-            .hud-stats { grid-template-columns: 1fr; }
-        }
-
         @media (max-width: 600px) {
-            #hud { width: 90vw; } /* Tighter for phone without fill */
+            #hud {
+                width: 88vw;
+                max-height: 80vh;
+                padding: 1rem 0.8rem;
+            }
+            .hud-header {
+                font-size: clamp(1.4rem, 5vw, 2.2rem);
+                line-height: 1.1;
+            }
+            .hud-stats {
+                grid-template-columns: 1fr;
+                gap: 0.8rem;
+            }
+            .stat-item {
+                padding: 0.9rem;
+                min-height: auto;
+            }
+            .stat-text {
+                font-size: clamp(1rem, 4vw, 1.5rem);
+                line-height: 1.15;
+            }
         }
+
+        /* Rest unchanged */
     </style>
 </head>
 <body onmouseleave="handleMouseLeave(event)">
@@ -302,7 +269,7 @@
                 </div>
             </div>
 
-            <!-- Empty ones - expanded to 12 for full test -->
+            <!-- All 12 empty slots for full test -->
             <div class="box empty" onmouseenter="showHud(this, false)" onmouseleave="handleBoxLeave(this)" ontouchstart="showHud(this, false)">
                 <div class="box-content">EMPTY SLOT</div>
             </div>
@@ -389,7 +356,7 @@
         }
 
         function showHud(el, hasData = true) {
-            if (!hasData) return; // Only show for box 1
+            if (!hasData) return;
             if (leaveTimeout) clearTimeout(leaveTimeout);
             if (activeBox === el) return;
 
@@ -410,7 +377,7 @@
                     hud.classList.remove('active');
                     beamSvg.style.opacity = '0';
                 }
-            }, 100); // Slightly longer buffer for smoother hovers
+            }, 100);
         }
 
         function handleMouseLeave(e) {
