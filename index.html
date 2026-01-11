@@ -9,8 +9,7 @@
             --bg-deep: #060a06;
             --accent-neon: #d4c1ff; 
             --accent-glow: rgba(212, 193, 255, 0.4);
-            --terminal-green: #1a2e1a;
-            --border: rgba(212, 193, 255, 0.1);
+            --border: rgba(212, 193, 255, 0.15);
         }
 
         * { box-sizing: border-box; cursor: crosshair; }
@@ -28,16 +27,6 @@
             min-height: 100vh;
             overflow-x: hidden;
         }
-
-        #avatar-stamp {
-            position: fixed; top: 25px; right: 25px;
-            width: 70px; height: 70px;
-            border: 1px solid var(--accent-neon);
-            background: rgba(0,0,0,0.8);
-            z-index: 1100; border-radius: 2px;
-            box-shadow: 0 0 20px rgba(212, 193, 255, 0.2);
-        }
-        #avatar-stamp img { width: 100%; height: 100%; object-fit: cover; opacity: 0.8; }
 
         #search-container {
             display: flex; border: 1px solid var(--border);
@@ -73,12 +62,12 @@
             position: fixed; top: 50%; left: 50%;
             transform: translate(-50%, -50%) scale(0);
             width: 85vw; max-width: 1100px;
-            background: rgba(5, 8, 5, 0.95); 
+            background: rgba(5, 8, 5, 0.98); 
             border: 1px solid var(--accent-neon);
             padding: 40px; z-index: 1000;
             display: flex; flex-direction: column;
             pointer-events: none; transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            box-shadow: 0 0 100px rgba(0,0,0,0.9);
+            box-shadow: 0 0 120px rgba(0,0,0,1);
         }
 
         .hud-header { font-size: 42px; margin-bottom: 10px; text-align: center; letter-spacing: 2px; }
@@ -95,9 +84,9 @@
 
         .hud-footer {
             display: flex; justify-content: space-between;
-            font-size: 18px; border-top: 1px solid var(--border);
-            padding-top: 20px; opacity: 0.8; /* Sized up and more visible */
-            letter-spacing: 1px;
+            font-size: 20px; border-top: 1px solid var(--border);
+            padding-top: 20px; opacity: 1; color: var(--accent-neon);
+            font-weight: bold;
         }
 
         #beam-svg {
@@ -109,16 +98,12 @@
         
         .beam-path { 
             fill: url(#beamGradient); 
-            stroke: rgba(212, 193, 255, 0.2); 
+            stroke: rgba(212, 193, 255, 0.3); 
             stroke-width: 1; 
         }
     </style>
 </head>
 <body onclick="hideHud()">
-
-    <div id="avatar-stamp">
-        <img src="https://unavatar.io/x/watchdoggem" alt="WATCHDOGGEM">
-    </div>
 
     <div id="search-container" onclick="event.stopPropagation()">
         <input type="text" id="filter-input" placeholder="SEARCH / FILTER AUDIT LOG" onkeyup="filterGrid()">
@@ -144,49 +129,43 @@
         </div>
     </div>
 
-    <div class="grid" id="audit-grid">
-        <div class="box" data-head="104,801 NHP IN RESEARCH" data-stats="100% FATAL; 20% SELF-HARM; 83% ISOLATION; 89% DISTRESS" onmouseenter="showHud(this)" onmouseleave="hideHud()">
-            <div class="box-num">104,801</div><div class="box-label">NHP TESTING</div>
-        </div>
-        <div class="box" data-head="REVENUE METRICS" data-stats="$800M+ REVENUE; $300M+ TAXPAYER; 31,000 BREEDERS" onmouseenter="showHud(this)" onmouseleave="hideHud()">
-            <div class="box-num">$1.1B</div><div class="box-label">MARKET VALUE</div>
-        </div>
-        <div class="box" data-head="AUDIT LOG 03" data-stats="DATA PENDING; DATA PENDING" onmouseenter="showHud(this)" onmouseleave="hideHud()">
-            <div class="box-num">03</div><div class="box-label">LOG ENTRY</div>
-        </div>
-        <div class="box" data-head="AUDIT LOG 04" data-stats="DATA PENDING; DATA PENDING" onmouseenter="showHud(this)" onmouseleave="hideHud()">
-            <div class="box-num">04</div><div class="box-label">LOG ENTRY</div>
-        </div>
-        <div class="box" data-head="AUDIT LOG 05" data-stats="DATA PENDING; DATA PENDING" onmouseenter="showHud(this)" onmouseleave="hideHud()">
-            <div class="box-num">05</div><div class="box-label">LOG ENTRY</div>
-        </div>
-        <div class="box" data-head="AUDIT LOG 06" data-stats="DATA PENDING; DATA PENDING" onmouseenter="showHud(this)" onmouseleave="hideHud()">
-            <div class="box-num">06</div><div class="box-label">LOG ENTRY</div>
-        </div>
-        <div class="box" data-head="AUDIT LOG 07" data-stats="DATA PENDING; DATA PENDING" onmouseenter="showHud(this)" onmouseleave="hideHud()">
-            <div class="box-num">07</div><div class="box-label">LOG ENTRY</div>
-        </div>
-        <div class="box" data-head="AUDIT LOG 08" data-stats="DATA PENDING; DATA PENDING" onmouseenter="showHud(this)" onmouseleave="hideHud()">
-            <div class="box-num">08</div><div class="box-label">LOG ENTRY</div>
-        </div>
-        <div class="box" data-head="AUDIT LOG 09" data-stats="DATA PENDING; DATA PENDING" onmouseenter="showHud(this)" onmouseleave="hideHud()">
-            <div class="box-num">09</div><div class="box-label">LOG ENTRY</div>
-        </div>
-        <div class="box" data-head="AUDIT LOG 10" data-stats="DATA PENDING; DATA PENDING" onmouseenter="showHud(this)" onmouseleave="hideHud()">
-            <div class="box-num">10</div><div class="box-label">LOG ENTRY</div>
-        </div>
-    </div>
+    <div class="grid" id="audit-grid"></div>
 
     <script>
+        // DATA STORAGE: Add or edit your 10 boxes here once. It won't break the style.
+        const auditData = [
+            { num: "104,801", label: "NHP TESTING", head: "104,801 NON-HUMAN PRIMATES IN RESEARCH", stats: "100% FATAL ANESTHETIC OVERDOSE; 20% CLINICAL SELF-HARM; 83% SOCIAL ISOLATION; 89% DISTRESSED PACING; 12% NO PAIN RELIEF (COLUMN E); 100% CAGE SEQUESTRATION" },
+            { num: "$1.1B", label: "MARKET VALUE", head: "U.S. DOMESTIC REVENUE & INFRASTRUCTURE", stats: "$800M+ ANNUAL REVENUE; $300M+ TAXPAYER FUNDED; 31,000 CLASS A BREEDERS; 13,375 CLASS B DEALERS; NIH FINANCIAL OVERLAY; USDA OVERSIGHT LOGICALS" },
+            { num: "31,000", label: "BREEDERS", head: "CLASS A BREEDING FACILITIES", stats: "MASS SEQUESTRATION; GENETIC BOTTLENECKING; HIGH-DENSITY HOUSING; INFANT SEPARATION" },
+            { num: "13,375", label: "DEALERS", head: "CLASS B DEALER NETWORK", stats: "RANDOM SOURCE ORIGINS; TRANSPORT STRESS; QUARANTINE PROTOCOLS; LOGISTICAL TRACEABILITY" },
+            { num: "89%", label: "DISTRESS", head: "PSYCHOLOGICAL PATHOLOGY", stats: "STEREOTYPIC BEHAVIORS; SELF-MUTILATION; REPETITIVE PACING; CHRONIC CORTISOL SPIKES" },
+            { num: "2024", label: "FISCAL YEAR", head: "CURRENT AUDIT CYCLE", stats: "USDA APHIS REPORTING; NIH DISBURSEMENT; GAO REVIEWS; OLAW COMPLIANCE" },
+            { num: "12%", label: "COL E", head: "UNRELIEVED PAIN CATEGORY", stats: "PROCEDURAL DISTRESS; ZERO ANALGESIA; SCIENTIFIC JUSTIFICATION; ETHICAL BYPASS" },
+            { num: "83%", label: "ISOLATION", head: "SOCIAL DEPRIVATION METRICS", stats: "SINGLE HOUSING; SENSORY DEPRIVATION; MATERNAL LOSS; SOCIAL REINTRODUCTION FAILURE" },
+            { num: "NIH", label: "FUNDING", head: "FEDERAL FINANCIAL OVERLAY", stats: "INTRAMURAL RESEARCH; EXTRAMURAL GRANTS; TAXPAYER ALLOCATION; BIOMEDICAL PRIORITY" },
+            { num: "USDA", label: "OVERSIGHT", head: "REGULATORY AUDIT STATUS", stats: "FACILITY INSPECTIONS; CITATION LOGS; NON-COMPLIANCE RECORDS; AWA ENFORCEMENT" }
+        ];
+
+        const grid = document.getElementById('audit-grid');
         const hud = document.getElementById('hud');
         const beamSvg = document.getElementById('beam-svg');
         const projection = document.getElementById('poly-projection');
 
-        function showHud(el) {
-            document.getElementById('h-header').innerText = el.getAttribute('data-head');
+        // Build the grid automatically
+        auditData.forEach(item => {
+            const box = document.createElement('div');
+            box.className = 'box';
+            box.innerHTML = `<div class="box-num">${item.num}</div><div class="box-label">${item.label}</div>`;
+            box.onmouseenter = () => showHud(box, item);
+            box.onmouseleave = hideHud;
+            grid.appendChild(box);
+        });
+
+        function showHud(el, data) {
+            document.getElementById('h-header').innerText = data.head;
             const statsContainer = document.getElementById('h-stats');
             statsContainer.innerHTML = '';
-            el.getAttribute('data-stats').split(';').forEach((stat) => {
+            data.stats.split(';').forEach(stat => {
                 const div = document.createElement('div');
                 div.className = 'stat-module';
                 div.innerHTML = `<span class="stat-text">${stat.trim()}</span>`;
@@ -196,16 +175,10 @@
             hud.style.transform = "translate(-50%, -50%) scale(1)";
             beamSvg.style.opacity = "1";
             
-            // MATH LOCK: Recalculate based on current scroll/window size
+            // MATH LOCK
             const r = el.getBoundingClientRect(); 
             const h = hud.getBoundingClientRect(); 
-
-            const points = `
-                ${r.left},${r.top} ${h.left},${h.top} 
-                ${h.right},${h.top} ${r.right},${r.top} 
-                ${r.right},${r.bottom} ${h.right},${h.bottom} 
-                ${h.left},${h.bottom} ${r.left},${r.bottom}
-            `;
+            const points = `${r.left},${r.top} ${h.left},${h.top} ${h.right},${h.top} ${r.right},${r.top} ${r.right},${r.bottom} ${h.right},${h.bottom} ${h.left},${h.bottom} ${r.left},${r.bottom}`;
             projection.setAttribute('points', points);
         }
 
