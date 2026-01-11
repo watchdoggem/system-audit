@@ -28,6 +28,7 @@
             overflow-x: hidden;
         }
 
+        /* HEADER & SEARCH */
         #header-row { display: flex; align-items: center; gap: 12px; margin-bottom: 20px; }
         #search-container {
             flex-grow: 1; display: flex; border: 1px solid var(--border);
@@ -46,6 +47,7 @@
         }
         .twitter-link img { width: 100%; height: 100%; object-fit: cover; }
 
+        /* MAIN GRID - RESTORED TO EMPTY NODES */
         .grid { 
             display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px;
             max-width: 1400px; margin: 0 auto;
@@ -60,57 +62,58 @@
         .box-num { font-size: 32px; color: var(--accent-neon); }
         .box-label { font-size: 16px; opacity: 0.7; color: var(--accent-neon); text-transform: uppercase; }
 
-        /* HUD STYLING */
+        /* HUD - BOXY & JUSTIFIED */
         #hud {
             position: fixed; top: 50%; left: 50%;
             transform: translate(-50%, -50%) scale(0);
             width: 96vw; max-width: 1100px;
             background: rgba(4, 6, 4, 0.98);
             border: 1px solid var(--accent-neon);
-            padding: 30px; z-index: 1000; 
-            display: flex; flex-direction: column;
+            padding: 30px; z-index: 1000; display: flex; flex-direction: column;
             pointer-events: none;
             transition: transform 0.15s cubic-bezier(0.175, 0.885, 0.32, 1.2);
             box-shadow: 0 0 80px rgba(0,0,0,1);
         }
 
         .hud-header { 
-            font-size: 36px; 
+            font-size: 38px; 
             text-align: justify; 
-            text-align-last: justify; 
+            text-align-last: justify; /* Force rectangle fill */
             margin-bottom: 8px; 
-            line-height: 1;
+            line-height: 1.1;
         }
 
         .hud-species { 
-            font-size: 16px; text-align: center; border-bottom: 1px solid var(--border); 
+            font-size: 15px; text-align: center; border-bottom: 1px solid var(--border); 
             padding-bottom: 10px; margin-bottom: 20px; 
-            color: var(--accent-neon); opacity: 0.8; 
-            letter-spacing: 3px;
+            color: var(--accent-neon); opacity: 0.7; 
+            letter-spacing: 4px;
         }
         
         .hud-stats-grid { 
             display: grid; grid-template-columns: repeat(2, 1fr); 
-            gap: 15px; 
+            gap: 15px; /* Intentional dead space between boxes */
         }
         
         .stat-module {
             border: 1px solid var(--border);
-            padding: 20px;
+            padding: 22px 30px; 
             background: rgba(212, 193, 255, 0.02); 
-            min-height: 95px;
+            min-height: 90px;
             display: flex; align-items: center; justify-content: center;
             text-align: justify;
-            text-align-last: justify;
+            text-align-last: justify; /* Force rectangle fill inside boxes */
             font-size: 18px;
             line-height: 1.2;
+            text-transform: uppercase;
         }
 
+        /* READABLE FOOTNOTES */
         .hud-footer {
             display: flex; justify-content: space-between;
             margin-top: 25px; padding-top: 12px; border-top: 1px solid var(--border);
-            font-family: 'Courier New', Courier, monospace;
-            font-size: 12px; color: var(--accent-neon); opacity: 0.6;
+            font-family: monospace;
+            font-size: 11px; color: var(--accent-neon); opacity: 0.5;
             letter-spacing: 1px;
         }
 
@@ -172,6 +175,7 @@
         const projection = document.getElementById('poly-projection');
         let activeBox = null;
 
+        // FIXED: Empty nodes for 2-30
         for (let i = 2; i <= 30; i++) {
             const b = document.createElement('div');
             b.className = 'box';
