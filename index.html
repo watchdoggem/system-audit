@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>watchdoggem</title>
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -47,16 +47,21 @@ body{
 /* HEADER */
 header{
     display:flex;
-    flex-wrap:wrap;
     justify-content:space-between;
     align-items:center;
-    gap:clamp(.7rem,.9vw,1.4rem);
-    margin-bottom:clamp(.9rem,1.1vw,1.8rem);
+    flex-wrap:wrap;
+    margin-bottom:1rem;
+    padding-bottom:.8rem;
     border-bottom:1px solid var(--border);
-    padding-bottom:clamp(.5rem,.6vw,1rem);
 }
 
-.title{
+.header-left{
+    display:flex;
+    align-items:center;
+    gap:1rem;
+}
+
+.header-left .title{
     font-family:'Orbitron',sans-serif;
     font-size:clamp(1.7rem,2.1vw,3.4rem);
     font-weight:900;
@@ -64,42 +69,43 @@ header{
     text-shadow:0 0 16px var(--glow);
 }
 
-.x-link {
-    flex: 0 0 auto;
-    width: clamp(50px, 10vw, 80px);
-    height: clamp(50px, 10vw, 80px);
-    overflow: hidden;
-    border-radius: 10px;
-    border: 2px solid var(--accent-violet);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-.x-avatar {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
+.header-left .x-link{
+    width:clamp(50px,8vw,80px);
+    height:clamp(50px,8vw,80px);
+    border-radius:10px;
+    border:2px solid var(--accent-violet);
+    display:flex;
+    justify-content:center;
+    align-items:center;
 }
 
-/* CATEGORY BAR */
-#category-bar{
-    display:flex;
-    justify-content:flex-start;
-    margin-bottom:1rem;
+.header-left .x-avatar{
+    width:100%;
+    height:100%;
+    object-fit:cover;
 }
-.category-button {
+
+.header-right{
+    display:flex;
+    align-items:center;
+    gap:1rem;
+}
+
+/* CATEGORY BUTTON */
+.category-button{
     background:var(--panel-bg);
     border:2px solid var(--border);
     border-radius:12px;
     padding:.5rem 1rem;
     cursor:pointer;
-    text-transform:uppercase;
+    font-family:'Orbitron',sans-serif;
     font-weight:700;
+    text-transform:uppercase;
     transition:.3s;
 }
-.category-button.active {
+.category-button.active{
     border-color:var(--accent-violet);
-    box-shadow:0 0 16px var(--glow);
+    box-shadow:0 0 12px var(--glow);
 }
 
 /* GRID */
@@ -138,33 +144,17 @@ header{
     text-transform:uppercase;
     width:100%;
 }
-.box[data-has-data="true"] .box-content {
-    display:flex;
-    flex-direction:column;
-    justify-content:center;
-    align-items:center;
-}
 
-.splash-top {
-    font-size: clamp(2rem, 5vw, 4rem);
-    line-height: 1;
-}
-.splash-mid {
-    font-size: clamp(1rem, 3vw, 2rem);
-    opacity:.85;
-    margin-top:.35em;
-}
-.splash-bottom {
-    font-size: clamp(.9rem, 2.5vw, 1.8rem);
-    letter-spacing:.15em;
-    opacity:.75;
-    margin-top:.2em;
-}
-.splash-category-button {
+.splash-top{font-size:clamp(2rem,5vw,4rem);}
+.splash-mid{font-size:clamp(1rem,3vw,2rem);opacity:.85;margin-top:.35em;}
+.splash-bottom{font-size:clamp(.9rem,2.5vw,1.8rem);letter-spacing:.15em;opacity:.75;margin-top:.2em;}
+
+/* Panel category button */
+.splash-category-button{
     position:absolute;
-    bottom:10px;
-    right:10px;
-    padding:.3rem .75rem;
+    bottom:1rem;
+    right:1rem;
+    padding:.3rem .8rem;
     border-radius:12px;
     border:2px solid var(--border);
     background:var(--panel-bg);
@@ -174,7 +164,7 @@ header{
     cursor:pointer;
     transition:.3s;
 }
-.splash-category-button.active {
+.splash-category-button.active{
     border-color:var(--accent-violet);
     box-shadow:0 0 12px var(--glow);
 }
@@ -202,75 +192,17 @@ header{
     display:flex;
     flex-direction:column;
 }
-#hud.active{opacity:1}
-
-.hud-header{
-    font-family:'Orbitron',sans-serif;
-    font-size:clamp(1.4rem,1.6vw,2.8rem);
-    text-align:center;
-    margin-bottom:.3rem;
-    text-shadow:0 0 18px var(--glow);
-}
-.hud-species{
-    text-align:center;
-    font-size:clamp(.8rem,.9vw,1.6rem);
-    opacity:.88;
-    margin-bottom:.9rem;
-    border-bottom:1px dashed var(--border);
-    padding-bottom:.5rem;
-}
-.hud-stats{
-    display:grid;
-    grid-template-columns:repeat(2,1fr);
-    gap:clamp(.45rem,.47vw,.9rem);
-}
-.stat-item{
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    padding:clamp(.5rem,.55vw,1rem);
-    border:2px solid var(--border);
-    background:var(--panel-bg);
-    text-align:center;
-    min-height:clamp(40px,4vw,80px);
-    border-radius:8px;
-}
-.stat-text{
-    font-family:'Orbitron',sans-serif;
-    font-size:clamp(.75rem,.8vw,1.5rem);
-    font-weight:900;
-    text-shadow:0 0 10px var(--glow);
-    text-transform:uppercase;
-}
-.hud-footer{
-    display:flex;
-    justify-content:space-between;
-    font-size:clamp(.65rem,.68vw,1.3rem);
-    opacity:.92;
-    margin-top:1rem;
-    padding-top:.6rem;
-    border-top:1px dashed var(--border);
-    flex-wrap:wrap;
-}
+#hud.active{opacity:1;}
+.hud-header{font-family:'Orbitron',sans-serif;font-size:clamp(1.4rem,1.6vw,2.8rem);text-align:center;margin-bottom:.3rem;text-shadow:0 0 18px var(--glow);}
+.hud-species{text-align:center;font-size:clamp(.8rem,.9vw,1.6rem);opacity:.88;margin-bottom:.9rem;border-bottom:1px dashed var(--border);padding-bottom:.5rem;}
+.hud-stats{display:grid;grid-template-columns:repeat(2,1fr);gap:clamp(.45rem,.47vw,.9rem);}
+.stat-item{display:flex;justify-content:center;align-items:center;padding:clamp(.5rem,.55vw,1rem);border:2px solid var(--border);background:var(--panel-bg);text-align:center;min-height:clamp(40px,4vw,80px);border-radius:8px;}
+.stat-text{font-family:'Orbitron',sans-serif;font-size:clamp(.75rem,.8vw,1.5rem);font-weight:900;text-shadow:0 0 10px var(--glow);text-transform:uppercase;}
+.hud-footer{display:flex;justify-content:space-between;font-size:clamp(.65rem,.68vw,1.3rem);opacity:.92;margin-top:1rem;padding-top:.6rem;border-top:1px dashed var(--border);flex-wrap:wrap;}
 
 /* BEAM */
-#beam-svg{
-    position:fixed;
-    inset:0;
-    width:100vw;
-    height:100vh;
-    pointer-events:none;
-    z-index:900;
-    opacity:0;
-    transition:opacity .6s;
-}
-.beam{
-    fill:none;
-    stroke:var(--accent-violet);
-    stroke-width:1.5;
-    opacity:.3;
-    filter:drop-shadow(0 0 10px var(--glow));
-}
+#beam-svg{position:fixed;inset:0;width:100vw;height:100vh;pointer-events:none;z-index:900;opacity:0;transition:opacity .6s;}
+.beam{fill:none;stroke:var(--accent-violet);stroke-width:1.5;opacity:.3;filter:drop-shadow(0 0 10px var(--glow));}
 </style>
 </head>
 
@@ -278,18 +210,18 @@ header{
 <div id="scaler">
 
 <header>
-    <div class="title">WATCHDOGGEM</div>
-    <a href="https://x.com/watchdoggem" target="_blank" class="x-link">
-        <img src="https://unavatar.io/x/watchdoggem" alt="X" class="x-avatar">
-    </a>
+    <div class="header-left">
+        <div class="title">WATCHDOGGEM</div>
+        <a href="https://x.com/watchdoggem" target="_blank" class="x-link">
+            <img src="https://unavatar.io/x/watchdoggem" alt="X" class="x-avatar">
+        </a>
+    </div>
+    <div class="header-right">
+        <div class="category-button" data-category="animal">Animal</div>
+    </div>
 </header>
 
-<div id="category-bar">
-    <div class="category-button" data-category="animal">Animal</div>
-</div>
-
 <div class="grid" id="grid">
-    <!-- Panels generated here -->
 </div>
 </div>
 
@@ -305,7 +237,9 @@ header{
 </div>
 
 <script>
+// ======================
 // PANEL DATA
+// ======================
 const panels = [
   {
     id:"104801",
@@ -323,6 +257,10 @@ const panels = [
       {text:"$800M+ U.S. DOMESTIC RESEARCH FUNDING", ref:2},
       {text:"$300M+ TAXPAYER INFRASTRUCTURE SUPPORT", ref:1}
     ],
+    citations:[
+      "1: NIH Animal Research Report",
+      "2: US Research Funding Audit"
+    ],
     footer:"FDA REQUIRED • NIH FUNDED • USDA OVERSIGHT"
   },
   {id:"EMPTY1", empty:true},
@@ -331,12 +269,15 @@ const panels = [
 ];
 
 let activeCategories = new Set();
+
+// ======================
+// GRID RENDER
+// ======================
 const grid = document.getElementById('grid');
 
-// GRID RENDER
-function renderGrid() {
-    grid.innerHTML = "";
-    panels.forEach((p)=>{
+function renderGrid(){
+    grid.innerHTML="";
+    panels.forEach(p=>{
         const box = document.createElement('div');
         box.classList.add('box');
         box.dataset.hasData = (!p.empty).toString();
@@ -346,20 +287,27 @@ function renderGrid() {
 
         if(p.empty){
             box.classList.add('empty');
-            content.textContent = "EMPTY SLOT";
+            content.textContent="EMPTY SLOT";
         } else {
             content.innerHTML = `<div class="splash-top">${p.id}</div>
                                  <div class="splash-mid">${p.title}</div>
                                  <div class="splash-bottom">${p.subtitle}</div>`;
 
-            // panel category button (bottom-right)
+            // splash button at bottom-right
             if(p.categories && p.categories.length){
                 p.categories.forEach(cat=>{
                     const catBtn = document.createElement('div');
                     catBtn.textContent = cat.toUpperCase();
                     catBtn.classList.add('splash-category-button');
                     if(activeCategories.has(cat)) catBtn.classList.add('active');
-                    content.appendChild(catBtn);
+                    catBtn.addEventListener('click', ()=>{
+                        if(activeCategories.has(cat)) activeCategories.delete(cat);
+                        else activeCategories.add(cat);
+                        applyFilters();
+                        catBtn.classList.toggle('active');
+                        topCategoryButtonSync(cat);
+                    });
+                    box.appendChild(catBtn);
                 });
             }
 
@@ -371,32 +319,47 @@ function renderGrid() {
         box.appendChild(content);
         grid.appendChild(box);
     });
-
     applyFilters();
 }
 
-// CATEGORY FILTER
+// ======================
+// CATEGORY BUTTON (TOP-RIGHT)
+// ======================
+const topCatBtn = document.querySelector('.category-button');
+topCatBtn.addEventListener('click',()=>{
+    const cat = topCatBtn.dataset.category;
+    if(activeCategories.has(cat)) activeCategories.delete(cat);
+    else activeCategories.add(cat);
+    topCatBtn.classList.toggle('active');
+    renderGrid(); // ensure active state synced with bottom-right splash
+});
+
+// Sync bottom-right button visual when top button toggled
+function topCategoryButtonSync(cat){
+    if(topCatBtn.dataset.category===cat){
+        topCatBtn.classList.toggle('active', activeCategories.has(cat));
+    }
+}
+
+// ======================
+// FILTER APPLICATION
+// ======================
 function applyFilters(){
     document.querySelectorAll('.box').forEach((box,i)=>{
         const p = panels[i];
         if(p.empty) return;
         const categoryMatch = activeCategories.size===0 || p.categories.some(c=>activeCategories.has(c));
-        box.style.display = categoryMatch ? "flex" : "none";
+        box.style.display = categoryMatch ? "flex":"none";
+        // sync bottom-right button
+        box.querySelectorAll('.splash-category-button').forEach(btn=>{
+            btn.classList.toggle('active', activeCategories.has(btn.textContent.toLowerCase()));
+        });
     });
 }
 
-// TOP CATEGORY BUTTON HANDLER
-document.querySelectorAll('.category-button').forEach(btn=>{
-    btn.addEventListener('click', ()=>{
-        const cat = btn.dataset.category;
-        if(activeCategories.has(cat)) activeCategories.delete(cat);
-        else activeCategories.add(cat);
-        btn.classList.toggle('active');
-        renderGrid();
-    });
-});
-
+// ======================
 // HUD + BEAM
+// ======================
 const hud=document.getElementById('hud');
 const beamSvg=document.getElementById('beam-svg');
 const beamPoly=document.getElementById('beam-poly');
@@ -423,7 +386,8 @@ function showHud(el,panel){
     el.classList.add('active');
 
     hud.classList.add('active');
-    hud.querySelector('.hud-header').textContent = `PRIMATES IN RESEARCH`;
+
+    hud.querySelector('.hud-header').textContent = panel.title;
     hud.querySelector('.hud-species').textContent = panel.species.join(" | ");
 
     const statsDiv = hud.querySelector('.hud-stats');
@@ -435,7 +399,8 @@ function showHud(el,panel){
         statsDiv.appendChild(stat);
     });
 
-    hud.querySelector('.hud-footer').textContent = panel.footer;
+    // HUD footer with citations
+    hud.querySelector('.hud-footer').innerHTML = panel.citations.map(c=>c).join(" • ") + " • " + panel.footer;
 
     beamSvg.style.opacity='1';
     updateBeam();
@@ -454,13 +419,16 @@ function handleBoxLeave(el){
 window.addEventListener('resize',updateBeam);
 window.addEventListener('scroll',updateBeam);
 
-document.addEventListener('touchstart', e => {
-    if(!e.target.closest('#hud') && !e.target.closest('.box')){
+// Touch outside HUD closes
+document.addEventListener('touchstart', e=>{
+    if(!e.target.closest('#hud')&&!e.target.closest('.box')){
         if(activeBox) handleBoxLeave(activeBox);
     }
 });
 
-// INITIAL GRID RENDER
+// ======================
+// INITIAL RENDER
+// ======================
 renderGrid();
 </script>
 </body>
