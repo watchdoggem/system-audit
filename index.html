@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>WATCHDOGGEM | NHP TERMINAL</title>
+    <title>watchdoggem</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700;900&family=VT323&display=swap" rel="stylesheet">
@@ -162,7 +162,7 @@
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            width: clamp(400px, 50vw, 950px);
+            width: clamp(300px, 50vw, 950px); /* Lowered min for phone */
             max-height: 88vh;
             overflow-y: auto;
             background: rgba(5, 3, 15, var(--translucent));
@@ -271,6 +271,10 @@
         @media (max-width: 900px) {
             .hud-stats { grid-template-columns: 1fr; }
         }
+
+        @media (max-width: 600px) {
+            #hud { width: 90vw; } /* Tighter for phone without fill */
+        }
     </style>
 </head>
 <body onmouseleave="handleMouseLeave(event)">
@@ -279,7 +283,7 @@
         <header>
             <div class="title">WATCHDOGGEM</div>
             <div class="search-bar">
-                <input type="text" id="filter-input" placeholder="QUERY NHP DATABASE..." autocomplete="off">
+                <input type="text" id="filter-input" placeholder="SEARCH / FILTER..." autocomplete="off">
             </div>
             <a href="https://x.com/watchdoggem" target="_blank" class="x-link">
                 <img src="https://unavatar.io/x/watchdoggem" alt="X">
