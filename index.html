@@ -244,19 +244,14 @@ header{
 }
 .hud-footer{
     display:flex;
-    justify-content:space-between;
+    flex-direction:column;
+    justify-content:center;
+    gap:.5rem;
     font-size:clamp(.65rem,.68vw,1.3rem);
     opacity:.92;
     margin-top:1rem;
     padding-top:.6rem;
     border-top:1px dashed var(--border);
-    flex-wrap:wrap;
-}
-.hud-footer-column{
-    display:flex;
-    flex-direction:column;
-    gap:.3em;
-    text-align:left;
 }
 
 /* BEAM */
@@ -329,14 +324,22 @@ const panels = [
       {text:"$800M+ U.S. DOMESTIC RESEARCH FUNDING", ref:2},
       {text:"$300M+ TAXPAYER INFRASTRUCTURE SUPPORT", ref:1}
     ],
-    footer:{
-      agencies:["FDA","NIH","USDA"],
-      citations:["Study 1","Study 2","Study 3","Study 4","Study 5"]
-    }
+    footerLines:[
+        "SOURCE: USDA APHIS 2024 • NIH FINANCIALS",
+        "FDA REQUIRED • NIH FUNDED • USDA OVERSIGHT"
+    ]
   },
   {id:"EMPTY1", empty:true},
   {id:"EMPTY2", empty:true},
-  {id:"EMPTY3", empty:true}
+  {id:"EMPTY3", empty:true},
+  {id:"EMPTY4", empty:true},
+  {id:"EMPTY5", empty:true},
+  {id:"EMPTY6", empty:true},
+  {id:"EMPTY7", empty:true},
+  {id:"EMPTY8", empty:true},
+  {id:"EMPTY9", empty:true},
+  {id:"EMPTY10", empty:true},
+  {id:"EMPTY11", empty:true}
 ];
 
 let activeCategories = new Set();
@@ -388,11 +391,11 @@ function renderGrid() {
 function applyFilters(){
     document.querySelectorAll('.box').forEach((box,i)=>{
         const p = panels[i];
-        if(p.empty){
-            // Hide empty boxes if any filter is active
-            box.style.display = activeCategories.size>0 ? "none" : "flex";
+        if(p.empty && activeCategories.size>0) {
+            box.style.display="none";
             return;
         }
+        if(p.empty) return;
         const categoryMatch = activeCategories.size===0 || p.categories.some(c=>activeCategories.has(c));
         box.style.display = categoryMatch ? "flex" : "none";
     });
@@ -448,27 +451,13 @@ function showHud(el,panel){
         statsDiv.appendChild(stat);
     });
 
-    // HUD FOOTER - structured agencies & citations
-    const footer = hud.querySelector('.hud-footer');
-    footer.innerHTML="";
-    if(panel.footer){
-        const agenciesCol = document.createElement('div');
-        agenciesCol.classList.add('hud-footer-column');
-        panel.footer.agencies.forEach(a=>{
-            const div = document.createElement('div');
-            div.textContent=a;
-            agenciesCol.appendChild(div);
-        });
-        const citationsCol = document.createElement('div');
-        citationsCol.classList.add('hud-footer-column');
-        panel.footer.citations.forEach(c=>{
-            const div = document.createElement('div');
-            div.textContent=c;
-            citationsCol.appendChild(div);
-        });
-        footer.appendChild(agenciesCol);
-        footer.appendChild(citationsCol);
-    }
+    const footerDiv = hud.querySelector('.hud-footer');
+    footerDiv.innerHTML = "";
+    panel.footerLines.forEach(line=>{
+        const span = document.createElement('span');
+        span.textContent=line;
+        footerDiv.appendChild(span);
+    });
 
     beamSvg.style.opacity='1';
     updateBeam();
