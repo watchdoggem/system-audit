@@ -41,7 +41,7 @@
             --scale: calc(100vw / var(--design-width));
             width: var(--design-width);
             transform: scale(var(--scale));
-            transform-origin: top left;
+            transform-origin: top center;
             margin: 0 auto; /* Centers when window > design width */
             height: auto;
             padding: clamp(0.8rem, 1vw, 1.6rem);
@@ -273,7 +273,7 @@
         }
 
         @media (max-width: 600px) {
-            #hud { width: 90vw; } /* Tighter for phone without fill */
+            #hud { width: 85vw; } /* Tighter for phone without fill */
         }
     </style>
 </head>
@@ -301,13 +301,14 @@
                 </div>
             </div>
 
-            <!-- Empty ones -->
+            <!-- Empty ones - same full bubbly style -->
             <div class="box empty" onmouseenter="showHud(this, false)" onmouseleave="handleBoxLeave(this)" ontouchstart="showHud(this, false)">
                 <div class="box-content">EMPTY SLOT</div>
             </div>
             <div class="box empty" onmouseenter="showHud(this, false)" onmouseleave="handleBoxLeave(this)" ontouchstart="showHud(this, false)">
                 <div class="box-content">EMPTY SLOT</div>
             </div>
+            <!-- Repeat the empty pattern 10 more times -->
             <div class="box empty" onmouseenter="showHud(this, false)" onmouseleave="handleBoxLeave(this)" ontouchstart="showHud(this, false)">
                 <div class="box-content">EMPTY SLOT</div>
             </div>
