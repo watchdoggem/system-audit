@@ -10,9 +10,16 @@
             --accent-neon: #d4c1ff; 
             --accent-glow: rgba(212, 193, 255, 0.4);
             --border: rgba(212, 193, 255, 0.15);
+            /* Standardizing font size for modules */
+            --font-main: 22px; 
         }
 
-        * { box-sizing: border-box; cursor: crosshair; -webkit-tap-highlight-color: transparent; }
+        * { 
+            box-sizing: border-box; 
+            cursor: crosshair; 
+            -webkit-tap-highlight-color: transparent; 
+            color: var(--accent-neon); /* Global color enforcement */
+        }
         
         body { 
             background: var(--bg-deep);
@@ -23,9 +30,9 @@
             background-size: 100% 100%, 100% 4px, 100% 100%;
             margin: 0; padding: 15px; 
             font-family: 'Impact', sans-serif; 
-            color: var(--accent-neon);
             min-height: 100vh;
             overflow-x: hidden;
+            text-transform: uppercase;
         }
 
         /* HEADER & SEARCH */
@@ -43,21 +50,18 @@
         #filter-input {
             background: transparent;
             border: none; outline: none;
-            color: var(--accent-neon); font-family: 'Impact', sans-serif;
+            font-family: 'Impact', sans-serif;
             font-size: 20px; width: 100%; letter-spacing: 2px;
         }
 
         .twitter-link {
-            width: 50px;
-            height: 50px; border: 1px solid var(--accent-neon);
+            width: 50px; height: 50px; border: 1px solid var(--accent-neon);
             display: flex; align-items: center; justify-content: center;
-            background: #000; transition: transform 0.2s;
-            overflow: hidden;
+            background: #000; transition: transform 0.2s; overflow: hidden;
         }
-        .twitter-link:hover { transform: scale(1.05); box-shadow: 0 0 10px var(--accent-glow); }
         .twitter-link img { width: 100%; height: 100%; object-fit: cover; }
 
-        /* UNIFORM GRID */
+        /* GRID SYSTEM */
         .grid { 
             display: grid;
             grid-template-columns: repeat(2, 1fr); gap: 10px;
@@ -74,10 +78,10 @@
         }
         .box:hover { border-color: var(--accent-neon); background: rgba(212, 193, 255, 0.05); }
         
-        .box-num { font-size: 32px; color: var(--accent-neon); }
-        .box-label { font-size: 16px; opacity: 0.7; color: var(--accent-neon); text-transform: uppercase; }
+        .box-num { font-size: 32px; }
+        .box-label { font-size: 16px; opacity: 0.8; }
 
-        /* HUD */
+        /* HUD POPUP */
         #hud {
             position: fixed;
             top: 50%; left: 50%;
@@ -89,34 +93,26 @@
             pointer-events: none;
             transition: transform 0.15s cubic-bezier(0.175, 0.885, 0.32, 1.2);
             box-shadow: 0 0 80px rgba(0,0,0,1);
-            min-height: 50px;
         }
 
-        .hud-header { font-size: 26px; text-align: center; line-height: 1.1; }
-        .hud-species { font-size: 15px; text-align: center; border-bottom: 1px solid var(--border); padding-bottom: 10px; margin-bottom: 15px; opacity: 0.8; }
+        .hud-header { font-size: 32px; text-align: center; margin-bottom: 5px; }
+        .hud-species { font-size: 18px; text-align: center; border-bottom: 1px solid var(--border); padding-bottom: 10px; margin-bottom: 15px; opacity: 0.8; }
         
         .hud-stats-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; }
         .stat-module {
             border: 1px solid var(--border);
-            padding: 12px;
-            background: rgba(212, 193, 255, 0.02); text-align: center; font-size: 14px;
-            text-transform: uppercase;
+            padding: 15px;
+            background: rgba(212, 193, 255, 0.02); text-align: center; 
+            font-size: var(--font-main); /* Uniform Size */
         }
 
         .hud-footer {
             display: flex; justify-content: space-between;
-            font-size: 12px; border-top: 1px solid var(--border);
-            padding-top: 12px; margin-top: 15px; opacity: 0.6;
+            font-size: 16px; border-top: 1px solid var(--border);
+            padding-top: 12px; margin-top: 15px; opacity: 0.8;
         }
 
-        @media (min-width: 800px) {
-            .hud-header { font-size: 38px; }
-            .stat-module { font-size: 20px; padding: 18px; }
-            .hud-species { font-size: 20px; }
-            .hud-footer { font-size: 16px; }
-        }
-
-        /* BEAMS */
+        /* PROJECTION BEAMS */
         #beam-svg {
             position: fixed;
             top: 0; left: 0; width: 100vw; height: 100vh;
@@ -178,11 +174,9 @@
         const projection = document.getElementById('poly-projection');
         let activeBox = null;
 
-        // Populate empty nodes 2-30: Totally Blank
         for (let i = 2; i <= 30; i++) {
             const b = document.createElement('div');
             b.className = 'box';
-            // No innerHTML = Totally Blank
             b.onmouseenter = (e) => showHud(e.currentTarget, false);
             b.ontouchstart = (e) => { e.preventDefault(); showHud(e.currentTarget, false); };
             grid.appendChild(b);
