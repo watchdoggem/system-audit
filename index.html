@@ -6,117 +6,106 @@
     <title>WATCHDOGGEM | TERMINAL</title>
     <style>
         :root {
-            --bg-deep: #0a0f0a;
-            --accent-neon: #d4c1ff; 
-            --accent-glow: rgba(212, 193, 255, 0.4);
-            --border: rgba(212, 193, 255, 0.15);
+            /* Muted Tactical Palette */
+            --bg-base: #0a0c0a;
+            --terminal-dark: #141a14;
+            --accent-muted: #9a8bbd; /* Desaturated Violet */
+            --ui-green: #2a3d2a; /* Muted Forest Green */
+            --text-main: #d1d1d1;
+            --border-subtle: rgba(154, 139, 189, 0.2);
         }
 
         * { box-sizing: border-box; cursor: crosshair; }
         
         body { 
-            background: var(--bg-deep); 
-            background-image: radial-gradient(circle at center, #1a2418 0%, #0a0f0a 100%);
+            background: var(--bg-base); 
             margin: 0; padding: 20px; 
             font-family: 'Impact', sans-serif; 
-            color: var(--accent-neon);
-            overflow-x: hidden;
+            color: var(--text-main);
             min-height: 100vh;
+            overflow-x: hidden;
         }
-
-        #avatar-stamp {
-            position: fixed; top: 25px; right: 25px;
-            width: 70px; height: 70px;
-            border: 1px solid var(--accent-neon);
-            background: rgba(0,0,0,0.5);
-            z-index: 1100; overflow: hidden; border-radius: 4px;
-            box-shadow: 0 0 15px var(--accent-glow);
-        }
-        #avatar-stamp img { width: 100%; height: 100%; object-fit: cover; }
 
         #search-container {
-            display: flex; border: 1px solid var(--border);
+            display: flex; 
+            border: 1px solid var(--ui-green);
             padding: 15px; margin-bottom: 30px;
-            background: rgba(255, 255, 255, 0.03);
+            background: rgba(0, 0, 0, 0.5);
             width: calc(100% - 100px);
         }
 
         #filter-input {
             background: transparent; border: none; outline: none;
-            color: var(--accent-neon); font-family: 'Impact', sans-serif;
-            font-size: 24px; width: 100%; letter-spacing: 2px;
-            text-shadow: 0 0 8px var(--accent-glow);
+            color: var(--accent-muted); font-family: 'Impact', sans-serif;
+            font-size: 24px; width: 100%; letter-spacing: 1px;
         }
 
         .grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 20px; }
 
         .box {
-            position: relative; border: 1px solid var(--border);
+            position: relative; border: 1px solid var(--ui-green);
             height: 180px; display: flex; flex-direction: column;
             justify-content: center; align-items: center;
-            text-align: center; padding: 15px; background: rgba(26, 36, 24, 0.4);
+            text-align: center; padding: 15px; 
+            background: var(--terminal-dark);
+            z-index: 10;
         }
         
-        .box-num { font-size: 62px; line-height: 0.8; letter-spacing: -2px; }
-        .box-label { font-size: 28px; line-height: 1; margin-top: 12px; opacity: 0.8; }
+        .box-num { font-size: 62px; line-height: 0.8; color: var(--accent-muted); }
+        .box-label { font-size: 28px; line-height: 1; margin-top: 12px; color: var(--ui-green); }
 
         #hud {
             position: fixed; top: 50%; left: 50%;
             transform: translate(-50%, -50%) scale(0);
             width: 85vw; max-width: 1100px;
-            background: rgba(10, 15, 10, 0.95); 
-            border: 1px solid var(--accent-neon);
+            background: #080a08; 
+            border: 1px solid var(--accent-muted);
             padding: 40px; z-index: 1000;
             display: flex; flex-direction: column;
-            pointer-events: none; transition: transform 0.15s ease-out;
-            box-shadow: 0 0 80px rgba(0,0,0,1);
+            pointer-events: none; transition: transform 0.1s ease-out;
+            box-shadow: 0 0 60px rgba(0,0,0,1);
         }
 
-        .hud-header { font-size: 36px; margin-bottom: 12px; text-align: center; text-transform: uppercase; text-shadow: 0 0 10px var(--accent-glow); }
-        .hud-species { font-size: 22px; margin-bottom: 30px; letter-spacing: 2px; text-align: center; border-bottom: 1px solid var(--border); padding-bottom: 20px; }
-        .hud-stats-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; margin-bottom: 30px; }
-
+        .hud-header { font-size: 38px; margin-bottom: 10px; text-align: center; color: var(--accent-muted); }
+        .hud-species { font-size: 20px; margin-bottom: 25px; text-align: center; color: var(--ui-green); border-bottom: 1px solid var(--ui-green); padding-bottom: 15px; }
+        
+        .hud-stats-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; margin-bottom: 25px; }
         .stat-module {
-            border: 1px solid var(--border); padding: 20px;
-            background: rgba(255, 255, 255, 0.03);
-            display: flex; justify-content: center; align-items: center;
-            text-align: center; min-height: 85px;
+            border: 1px solid var(--ui-green); padding: 20px;
+            background: rgba(255, 255, 255, 0.02);
+            text-align: center;
         }
-
-        .stat-text { font-size: 22px; text-transform: uppercase; line-height: 1.1; }
+        .stat-text { font-size: 24px; text-transform: uppercase; color: var(--text-main); }
 
         .hud-footer {
             display: flex; justify-content: space-between;
-            font-size: 15px; border-top: 1px solid var(--border);
-            padding-top: 20px; letter-spacing: 2px;
+            font-size: 14px; border-top: 1px solid var(--ui-green);
+            padding-top: 20px; color: var(--ui-green);
         }
 
         #beam-svg {
             position: fixed; top: 0; left: 0;
             width: 100vw; height: 100vh;
             pointer-events: none; z-index: 900;
-            opacity: 0; transition: opacity 0.15s;
+            opacity: 0;
         }
         
-        .beam-flare { 
-            fill: rgba(212, 193, 255, 0.12); 
-            stroke: rgba(212, 193, 255, 0.3); 
-            stroke-width: 1.5; 
+        /* Seamless blended projection */
+        .beam-path { 
+            fill: rgba(154, 139, 189, 0.04); 
+            stroke: rgba(154, 139, 189, 0.1); 
+            stroke-width: 0.5;
         }
     </style>
 </head>
 <body onclick="hideHud()">
-
-    <a href="https://x.com/watchdoggem" target="_blank" id="avatar-stamp" onclick="event.stopPropagation()">
-        <img src="https://unavatar.io/x/watchdoggem" alt="WATCHDOGGEM">
-    </a>
 
     <div id="search-container" onclick="event.stopPropagation()">
         <input type="text" id="filter-input" placeholder="SEARCH / FILTER AUDIT LOG" onkeyup="filterGrid()">
     </div>
 
     <svg id="beam-svg">
-        <polygon id="flare-shape" class="beam-flare" /> 
+        <polygon id="poly-projection" class="beam-path" />
     </svg>
 
     <div id="hud">
@@ -124,7 +113,7 @@
         <div class="hud-species">SUBJECTS: RHESUS MACAQUES | CYNOMOLGUS</div>
         <div id="h-stats" class="hud-stats-grid"></div>
         <div class="hud-footer">
-            <span id="h-source"></span>
+            <span id="h-source">SOURCE: USDA APHIS 2024 / NIH FINANCIALS</span>
             <span>FDA REQUIRED | NIH FUNDED | USDA OVERSIGHT</span>
         </div>
     </div>
@@ -132,9 +121,8 @@
     <div class="grid" id="audit-grid">
         <div class="box" 
              data-head="104,801 NON-HUMAN PRIMATES IN RESEARCH"
-             data-stats="100% FATAL ANESTHETIC OVERDOSE; 20% CLINICAL SELF-HARM; 83% SOCIAL ISOLATION; 89% DISTRESSED PACING; 12% NO PAIN RELIEF (COLUMN E); 100% CAGE SEQUESTRATION; 31,000 CAGED BY CLASS A BREEDERS; 13,375 CAGED BY CLASS B DEALERS; $800M+ U.S. DOMESTIC REVENUE; $300M+ TAXPAYER INFRASTRUCTURE"
-             data-src="SOURCE: USDA APHIS 2024 / NIH FINANCIALS"
-             onmouseenter="showHud(this, event)" onmouseleave="hideHud()">
+             data-stats="100% FATAL ANESTHETIC OVERDOSE; 20% CLINICAL SELF-HARM; 83% SOCIAL ISOLATION; 89% DISTRESSED PACING; 12% NO PAIN RELIEF (COLUMN E); 100% CAGE SEQUESTRATION"
+             onmouseenter="showHud(this)" onmouseleave="hideHud()">
             <div class="box-num">104,801</div>
             <div class="box-label">NHP TESTING</div>
         </div>
@@ -143,15 +131,12 @@
     <script>
         const hud = document.getElementById('hud');
         const beamSvg = document.getElementById('beam-svg');
-        const flare = document.getElementById('flare-shape');
+        const projection = document.getElementById('poly-projection');
 
-        function showHud(el, e) {
-            e.stopPropagation();
+        function showHud(el) {
             document.getElementById('h-header').innerText = el.getAttribute('data-head');
-            document.getElementById('h-source').innerText = el.getAttribute('data-src');
             const statsContainer = document.getElementById('h-stats');
             statsContainer.innerHTML = '';
-            
             el.getAttribute('data-stats').split(';').forEach((stat) => {
                 const div = document.createElement('div');
                 div.className = 'stat-module';
@@ -162,13 +147,9 @@
             hud.style.transform = "translate(-50%, -50%) scale(1)";
             beamSvg.style.opacity = "1";
             
-            // Get Box pos
             const r = el.getBoundingClientRect(); 
-            
-            // MANUAL HUD CALCULATION FOR FULL SCREEN ACCURACY
-            // This ignores the animation scale and calculates exactly where the HUD corners will be.
             const hW = Math.min(window.innerWidth * 0.85, 1100);
-            const hH = hud.offsetHeight || 600; // Use current height or estimate
+            const hH = hud.offsetHeight || 600;
             
             const h = {
                 left: (window.innerWidth - hW) / 2,
@@ -177,14 +158,13 @@
                 bottom: (window.innerHeight + hH) / 2
             };
 
-            // CONNECT CORNERS: Box corners flare OUTWARD to HUD corners
             const points = `
                 ${r.left},${r.top} ${h.left},${h.top} 
                 ${h.right},${h.top} ${r.right},${r.top} 
                 ${r.right},${r.bottom} ${h.right},${h.bottom} 
                 ${h.left},${h.bottom} ${r.left},${r.bottom}
             `;
-            flare.setAttribute('points', points);
+            projection.setAttribute('points', points);
         }
 
         function hideHud() { 
