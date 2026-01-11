@@ -1,9 +1,9 @@
- <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>WATCHDOGGEM | SYSTEM GRID</title>
+    <title>WATCHDOGGEM | TERMINAL</title>
     <style>
         :root {
             --bg-deep: #060a06;
@@ -18,8 +18,9 @@
             background: var(--bg-deep);
             background-image: 
                 radial-gradient(circle at 50% 50%, #101a10 0%, #060a06 100%),
-                linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%);
-            background-size: 100% 100%, 100% 4px;
+                linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%),
+                linear-gradient(90deg, rgba(255, 0, 0, 0.03), rgba(0, 255, 0, 0.01), rgba(0, 0, 255, 0.03));
+            background-size: 100% 100%, 100% 4px, 100% 100%;
             margin: 0; padding: 20px; 
             font-family: 'Impact', sans-serif; 
             color: var(--accent-neon);
@@ -27,133 +28,154 @@
             overflow-x: hidden;
         }
 
-        /* RESPONSIVE GRID */
-        .grid { 
-            display: grid;
-            /* Mobile: 2 columns | Tablet: 3 columns | Desktop: 5 columns */
-            grid-template-columns: repeat(2, 1fr);
-            gap: 10px;
-            max-width: 1400px;
-            margin: 0 auto;
+        #search-container {
+            display: flex;
+            border: 1px solid var(--border);
+            padding: 15px; margin-bottom: 30px;
+            background: rgba(0, 0, 0, 0.4);
+            width: 100%;
+            backdrop-filter: blur(5px);
         }
 
-        @media (min-width: 600px) { .grid { grid-template-columns: repeat(3, 1fr); } }
-        @media (min-width: 1000px) { .grid { grid-template-columns: repeat(5, 1fr); gap: 15px; } }
+        #filter-input {
+            background: transparent;
+            border: none; outline: none;
+            color: var(--accent-neon); font-family: 'Impact', sans-serif;
+            font-size: 24px; width: 100%; letter-spacing: 3px;
+        }
+
+        /* FIXED RESPONSIVE GRID */
+        .grid { 
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            width: 100%;
+        }
 
         .box {
             border: 1px solid var(--border);
-            height: 100px; /* Slimmer for mobile */
+            height: 180px;
             display: flex; flex-direction: column;
             justify-content: center; align-items: center;
-            background: rgba(212, 193, 255, 0.03);
-            transition: all 0.2s ease;
-            z-index: 5;
+            background: linear-gradient(145deg, rgba(26, 46, 26, 0.4), rgba(10, 15, 10, 0.6));
+            transition: border 0.3s;
         }
+        .box:hover { border-color: var(--accent-neon); }
+        .box-num { font-size: 62px; line-height: 0.8; }
+        .box-label { font-size: 28px; margin-top: 12px; opacity: 0.6; }
 
-        @media (min-width: 1000px) { .box { height: 120px; } }
-
-        .box:hover { 
-            border-color: var(--accent-neon);
-            background: rgba(212, 193, 255, 0.1);
-            box-shadow: 0 0 15px var(--accent-glow);
-        }
-
-        .box-num { font-size: 20px; }
-        .box-label { font-size: 10px; opacity: 0.6; letter-spacing: 1px; }
-
-        /* HUD POSITIONING */
+        /* THE HUD - FIXED FOR PHONE */
         #hud {
             position: fixed;
             top: 50%; left: 50%;
             transform: translate(-50%, -50%) scale(0);
-            width: 90vw; max-width: 800px;
+            width: 95vw; max-width: 1100px;
             background: rgba(5, 8, 5, 0.98);
             border: 1px solid var(--accent-neon);
             padding: 20px; z-index: 1000;
             display: flex; flex-direction: column;
             pointer-events: none;
-            transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.2);
-            box-shadow: 0 0 50px rgba(0,0,0,1);
+            transition: transform 0.1s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            box-shadow: 0 0 100px rgba(0,0,0,0.9);
         }
 
-        .hud-title { font-size: 24px; text-align: center; border-bottom: 1px solid var(--border); padding-bottom: 10px; }
+        .hud-header { font-size: 32px; text-align: center; margin-bottom: 5px; }
+        .hud-species { font-size: 18px; text-align: center; border-bottom: 1px solid var(--border); padding-bottom: 10px; margin-bottom: 20px; }
         
-        .hud-stats-grid { 
-            display: grid;
-            grid-template-columns: repeat(2, 1fr); 
-            gap: 8px; 
-            margin: 15px 0; 
-        }
+        .hud-stats-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin-bottom: 20px; }
         .stat-module {
             border: 1px solid var(--border);
-            padding: 8px;
-            background: rgba(212, 193, 255, 0.05);
-            text-align: center; font-size: 12px;
+            padding: 12px;
+            background: rgba(212, 193, 255, 0.02);
+            text-align: center; font-size: 16px; text-transform: uppercase;
         }
 
-        /* PROJECTION BEAM */
+        @media (min-width: 800px) {
+            .hud-header { font-size: 42px; }
+            .stat-module { font-size: 22px; padding: 18px; }
+            #hud { padding: 40px; }
+        }
+
+        .hud-footer {
+            display: flex; justify-content: space-between;
+            font-size: 14px; border-top: 1px solid var(--border);
+            padding-top: 20px; font-weight: bold;
+        }
+
         #beam-svg {
-            position: fixed;
-            top: 0; left: 0;
-            width: 100%; height: 100%;
+            position: fixed; top: 0; left: 0;
+            width: 100vw; height: 100vh;
             pointer-events: none; z-index: 900;
             opacity: 0;
-            transition: opacity 0.2s;
         }
         .beam-path { 
-            fill: rgba(212, 193, 255, 0.08); 
-            stroke: var(--accent-neon); 
-            stroke-width: 0.5; 
+            fill: rgba(212, 193, 255, 0.05);
+            stroke: rgba(212, 193, 255, 0.3); 
+            stroke-width: 1.5; 
         }
     </style>
 </head>
 <body>
 
+    <div id="search-container">
+        <input type="text" id="filter-input" placeholder="SEARCH / FILTER AUDIT LOG">
+    </div>
+
     <svg id="beam-svg"><polygon id="poly-projection" class="beam-path" /></svg>
 
     <div id="hud">
-        <div id="h-title" class="hud-title">TITLE</div>
+        <div class="hud-header">104,801 NON-HUMAN PRIMATES IN RESEARCH</div>
+        <div class="hud-species">SUBJECTS: RHESUS MACAQUES | CYNOMOLGUS</div>
+        
         <div class="hud-stats-grid">
-            <div class="stat-module">INFO BOX 1</div><div class="stat-module">INFO BOX 2</div>
-            <div class="stat-module">INFO BOX 3</div><div class="stat-module">INFO BOX 4</div>
-            <div class="stat-module">INFO BOX 5</div><div class="stat-module">INFO BOX 6</div>
-            <div class="stat-module">INFO BOX 7</div><div class="stat-module">INFO BOX 8</div>
-            <div class="stat-module">INFO BOX 9</div><div class="stat-module">INFO BOX 10</div>
+            <div class="stat-module">100% FATAL ANESTHETIC OVERDOSE</div>
+            <div class="stat-module">20% CLINICAL SELF-HARM</div>
+            <div class="stat-module">83% SOCIAL ISOLATION</div>
+            <div class="stat-module">89% DISTRESSED PACING</div>
+            <div class="stat-module">12% NO PAIN RELIEF (COLUMN E)</div>
+            <div class="stat-module">100% CAGE SEQUESTRATION</div>
+            <div class="stat-module">31,000 CAGED BY CLASS A BREEDERS</div>
+            <div class="stat-module">13,375 CAGED BY CLASS B DEALERS</div>
+            <div class="stat-module">$800M+ U.S. DOMESTIC REVENUE</div>
+            <div class="stat-module">$300M+ TAXPAYER INFRASTRUCTURE</div>
+        </div>
+
+        <div class="hud-footer">
+            <span>SOURCE: USDA APHIS 2024 / NIH FINANCIALS</span>
+            <span>FDA REQUIRED | NIH FUNDED | USDA OVERSIGHT</span>
         </div>
     </div>
 
-    <div class="grid" id="main-grid"></div>
+    <div class="grid">
+        <div class="box" onmouseenter="showHud(this)" onmouseleave="hideHud()">
+            <div class="box-num">104,801</div>
+            <div class="box-label">NHP TESTING</div>
+        </div>
+    </div>
 
     <script>
-        const grid = document.getElementById('main-grid');
         const hud = document.getElementById('hud');
         const beamSvg = document.getElementById('beam-svg');
         const projection = document.getElementById('poly-projection');
 
-        for (let i = 1; i <= 60; i++) {
-            const box = document.createElement('div');
-            box.className = 'box';
-            box.innerHTML = `<div class="box-num">ID-${100 + i}</div><div class="box-label">NODE STATUS</div>`;
-            box.onmouseenter = (e) => showHud(e.currentTarget, i);
-            box.onmouseleave = hideHud;
-            grid.appendChild(box);
-        }
-
-        function showHud(el, index) {
-            document.getElementById('h-title').innerText = `DATASET #00${index}`;
+        function showHud(el) {
             hud.style.transform = "translate(-50%, -50%) scale(1)";
             beamSvg.style.opacity = "1";
             
-            const r = el.getBoundingClientRect();
+            // Re-calculating coordinates on hover to ensure absolute accuracy
+            const r = el.getBoundingClientRect(); 
             const h = hud.getBoundingClientRect();
 
-            // The "Beam" logic: Connects 4 corners of the box to 4 corners of the HUD
-            // Order: BoxTopLeft, HudTopLeft, HudTopRight, BoxTopRight, BoxBottomRight, HudBottomRight, HudBottomLeft, BoxBottomLeft
+            // Corrected vertex mapping to prevent corner misalignment
             const points = `
-                ${r.left},${r.top} ${h.left},${h.top} 
-                ${h.right},${h.top} ${r.right},${r.top} 
-                ${r.right},${r.bottom} ${h.right},${h.bottom} 
-                ${h.left},${h.bottom} ${r.left},${r.bottom}
+                ${r.left},${r.top} 
+                ${h.left},${h.top} 
+                ${h.right},${h.top} 
+                ${r.right},${r.top} 
+                ${r.right},${r.bottom} 
+                ${h.right},${h.bottom} 
+                ${h.left},${h.bottom} 
+                ${r.left},${r.bottom}
             `;
             projection.setAttribute('points', points.trim());
         }
