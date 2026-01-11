@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>WATCHDOG | TERMINAL</title>
+    <title>WATCHDOGGEM | TERMINAL</title>
     <style>
         :root {
             --glow: #64ffda;
@@ -19,7 +19,7 @@
             overflow-x: hidden;
         }
 
-        /* SEARCH BAR TERMINAL */
+        /* SEARCH BAR */
         #search-container {
             display: flex;
             background: rgba(100, 255, 218, 0.03);
@@ -33,14 +33,13 @@
             font-size: 28px; width: 100%; letter-spacing: 2px;
         }
 
-        /* THE GRID */
         .grid {
             display: grid;
             grid-template-columns: repeat(5, 1fr);
             gap: 15px;
         }
 
-        /* THE BOX */
+        /* ACTIVE BOX */
         .box {
             position: relative;
             background: var(--box-fill);
@@ -57,6 +56,14 @@
             background: rgba(100, 255, 218, 0.12);
         }
 
+        /* BLACKED OUT BOXES */
+        .locked {
+            background: #000;
+            border: 1px solid #111;
+            color: #000; /* Text hidden by color */
+        }
+        .locked:hover { border-color: #222; background: #050505; }
+
         .box-top {
             flex: 1.1;
             display: flex;
@@ -65,7 +72,6 @@
             font-size: 50px;
             border-bottom: 2px solid rgba(100, 255, 218, 0.2);
             letter-spacing: -1px;
-            padding: 0 5px;
         }
 
         .box-bottom {
@@ -104,9 +110,9 @@
         .hud-section { border-bottom: 1px solid rgba(100, 255, 218, 0.1); padding-bottom: 10px; }
         .hud-section:last-child { border: none; }
         .hud-title { font-size: 14px; opacity: 0.5; display: block; margin-bottom: 5px; letter-spacing: 4px; }
-        .hud-body { font-size: 26px; color: #fff; display: block; line-height: 1.2; }
+        .hud-body { font-size: 24px; color: #fff; display: block; line-height: 1.3; }
 
-        /* VOLUMETRIC TRACTOR BEAMS */
+        /* TRACTOR BEAMS */
         #beam-svg {
             position: fixed;
             top: 0; left: 0;
@@ -145,36 +151,17 @@
     </div>
 
     <div class="grid" id="audit-grid">
-        <div class="box" data-search="104801 NHP USDA COLUMN E SIB ISOLATION" 
-             data-d="104,801 RESEARCH SUBJECTS" 
-             data-i="USDA COLUMN E (PAIN/DISTRESS WITHOUT RELIEF); CHRONIC SIB (SELF-INJURIOUS BEHAVIOR); ISOLATION SEQUESTRATION" 
-             data-in="FDA PRE-CLINICAL MANDATES; NIH INTRAMURAL FUNDING; USDA ANIMAL CARE COMPLIANCE" 
-             data-s="USDA APHIS 2023 / AALAS LABORATORY CARE STANDARDS"
+        <div class="box" data-search="104801 NHP MONKEYS USDA NIH FDA DEATH PAIN" 
+             data-d="104,801 NON-HUMAN PRIMATE SUBJECTS" 
+             data-i="100% TERMINAL EUTHANASIA RATE; 14-20% CLINICAL SIB; CHRONIC STEREOTYPY (PACING/DISTRESS)" 
+             data-in="NIH FUNDING; FDA MANDATES; USDA COLUMN E (UNRELIEVED PAIN)" 
+             data-s="USDA APHIS 2023 / OLAW PROTOCOL / JAAWS CLINICAL BEHAVIOR AUDIT"
              onmouseenter="showHud(this)" onmouseleave="hideHud()" onclick="this.remove()">
             <div class="box-top">104,801</div>
             <div class="box-bottom">NON-HUMAN PRIMATE TESTING</div>
         </div>
 
-        <div class="box" data-search="1031010 ABORTIONS MIFEPRISTONE CLINICAL" 
-             data-d="1,031,010 CLINICAL PROCEDURES" 
-             data-i="63% PHARMACOLOGICAL (MIFEPRISTONE); 37% SURGICAL ASPIRATION; 11% INCREASE SINCE 2020" 
-             data-in="INCLUDES SPONTANEOUS POST-FECA INTERVENTION; CLINICAL TERMINATION" 
-             data-s="GUTTMACHER INSTITUTE (MONTHLY PROVISION STUDY 2024)"
-             onmouseenter="showHud(this)" onmouseleave="hideHud()" onclick="this.remove()">
-            <div class="box-top">1,031,010</div>
-            <div class="box-bottom">ANNUAL CLINICAL ABORTIONS</div>
         </div>
-
-        <div class="box" data-search="34000 CFR 114 FDA ACIDIFIED FOOD KITCHEN" 
-             data-d="34,000+ REGISTERED FACILITIES" 
-             data-i="21 CFR 114.80 THERMAL PROCESSING MANDATES; SCHEDULED PROCESS COMPLIANCE COSTS" 
-             data-in="ACIDIFIED FOOD REGULATORY BARRIERS; BPCS (BETTER PROCESS CONTROL SCHOOL) REQUIREMENTS" 
-             data-s="FDA FOOD SAFETY MODERNIZATION ACT (FSMA) IMPACT REPORT"
-             onmouseenter="showHud(this)" onmouseleave="hideHud()" onclick="this.remove()">
-            <div class="box-top">34,000</div>
-            <div class="box-bottom">CFR 114 KITCHEN RISK</div>
-        </div>
-    </div>
 
     <script>
         const hud = document.getElementById('hud');
@@ -187,10 +174,11 @@
         };
 
         function showHud(el) {
-            document.getElementById('h-data').innerText = el.getAttribute('data-d') || "---";
-            document.getElementById('h-impact').innerText = el.getAttribute('data-i') || "---";
-            document.getElementById('h-includes').innerText = el.getAttribute('data-in') || "---";
-            document.getElementById('h-source').innerText = el.getAttribute('data-s') || "---";
+            if(el.classList.contains('locked')) return;
+            document.getElementById('h-data').innerText = el.getAttribute('data-d');
+            document.getElementById('h-impact').innerText = el.getAttribute('data-i');
+            document.getElementById('h-includes').innerText = el.getAttribute('data-in');
+            document.getElementById('h-source').innerText = el.getAttribute('data-s');
             
             hud.style.transform = "translate(-50%, -50%) scale(1)";
             beamSvg.style.opacity = "1";
@@ -211,22 +199,19 @@
 
         function filterGrid() {
             let q = document.getElementById('filter-input').value.toUpperCase();
-            let boxes = document.getElementsByClassName('box');
+            let boxes = document.querySelectorAll('.box:not(.locked)');
             for (let b of boxes) {
                 let txt = b.getAttribute('data-search') + b.innerText;
                 b.classList.toggle('hidden', !txt.toUpperCase().includes(q));
             }
         }
 
+        // Fill remaining grid with Locked (Blacked Out) boxes
         const grid = document.getElementById('audit-grid');
-        for(let i=4; i<=50; i++) {
+        for(let i=2; i<=50; i++) {
             const b = document.createElement('div');
-            b.className = 'box';
-            b.setAttribute('data-search', 'EMPTY');
-            b.innerHTML = `<div class="box-top">000,000</div><div class="box-bottom">DATA SECTOR ${i}</div>`;
-            b.onmouseenter = function() { showHud(this); };
-            b.onmouseleave = hideHud;
-            b.onclick = function() { this.remove(); };
+            b.className = 'box locked';
+            b.innerHTML = `<div class="box-top">000,000</div><div class="box-bottom">SECTOR LOCKED</div>`;
             grid.appendChild(b);
         }
     </script>
