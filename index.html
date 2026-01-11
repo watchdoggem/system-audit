@@ -19,8 +19,8 @@
             background-image: 
                 radial-gradient(circle at 50% 50%, #101a10 0%, #060a06 100%),
                 linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%),
-                linear-gradient(90deg, rgba(255, 0, 0, 0.03), rgba(0, 255, 0, 0.01), rgba(0, 0, 255, 0.03)); [cite: 6]
-            background-size: 100% 100%, 100% 4px, 100% 100%; [cite: 7]
+                linear-gradient(90deg, rgba(255, 0, 0, 0.03), rgba(0, 255, 0, 0.01), rgba(0, 0, 255, 0.03));
+            background-size: 100% 100%, 100% 4px, 100% 100%;
             margin: 0; padding: 15px; 
             font-family: 'Impact', sans-serif; 
             color: var(--accent-neon);
@@ -28,96 +28,100 @@
             overflow-x: hidden;
         }
 
-        #header-row { display: flex; align-items: center; gap: 12px; margin-bottom: 20px; } [cite: 8, 9]
-
+        /* HEADER & SEARCH */
+        #header-row { display: flex; align-items: center; gap: 12px; margin-bottom: 20px; }
         #search-container {
-            flex-grow: 1;
-            display: flex; border: 1px solid var(--border);
-            padding: 12px; background: rgba(0, 0, 0, 0.4); backdrop-filter: blur(5px); [cite: 10]
+            flex-grow: 1; display: flex; border: 1px solid var(--border);
+            padding: 12px; background: rgba(0, 0, 0, 0.4); backdrop-filter: blur(5px);
         }
-
         #filter-input {
             background: transparent; border: none; outline: none;
             color: var(--accent-neon); font-family: 'Impact', sans-serif;
-            font-size: 20px; width: 100%; letter-spacing: 2px; [cite: 11, 12]
+            font-size: 20px; width: 100%; letter-spacing: 2px;
         }
 
         .twitter-link {
             width: 50px; height: 50px; border: 1px solid var(--accent-neon);
             display: flex; align-items: center; justify-content: center;
-            background: #000; transition: transform 0.2s; [cite: 13, 14]
+            background: #000; transition: transform 0.2s;
         }
-        .twitter-link img { width: 100%; height: 100%; object-fit: cover; } [cite: 16]
+        .twitter-link img { width: 100%; height: 100%; object-fit: cover; }
 
         /* MAIN GRID */
         .grid { 
-            display: grid;
-            grid-template-columns: repeat(2, 1fr); gap: 10px;
-            max-width: 1400px; margin: 0 auto; [cite: 17, 18]
+            display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px;
+            max-width: 1400px; margin: 0 auto;
         }
-        @media (min-width: 1000px) { .grid { grid-template-columns: repeat(5, 1fr); gap: 15px; } } [cite: 19]
+        @media (min-width: 1000px) { .grid { grid-template-columns: repeat(5, 1fr); gap: 15px; } }
 
         .box {
             border: 1px solid var(--border); height: 130px;
             display: flex; flex-direction: column; justify-content: center; align-items: center;
-            background: linear-gradient(145deg, rgba(26, 46, 26, 0.4), rgba(10, 15, 10, 0.6)); [cite: 20, 21]
+            background: linear-gradient(145deg, rgba(26, 46, 26, 0.4), rgba(10, 15, 10, 0.6));
             transition: all 0.2s;
         }
-        .box-num { font-size: 32px; color: var(--accent-neon); } [cite: 23, 24]
-        .box-label { font-size: 16px; opacity: 0.7; color: var(--accent-neon); text-transform: uppercase; } [cite: 24]
+        .box-num { font-size: 32px; color: var(--accent-neon); }
+        .box-label { font-size: 16px; opacity: 0.7; color: var(--accent-neon); text-transform: uppercase; }
 
-        /* HUD - OPTIMIZED TO FILL SPACE */
+        /* HUD - EXPANDED TO FILL SCREEN (AQUA FIX) */
         #hud {
             position: fixed; top: 50%; left: 50%;
             transform: translate(-50%, -50%) scale(0);
-            width: 96vw; max-width: 1100px;
+            width: 96vw; max-width: 1200px; /* Wider to fill space */
             background: rgba(4, 6, 4, 0.98);
             border: 1px solid var(--accent-neon);
             padding: 30px; z-index: 1000; display: flex; flex-direction: column;
             pointer-events: none;
             transition: transform 0.15s cubic-bezier(0.175, 0.885, 0.32, 1.2);
-            box-shadow: 0 0 80px rgba(0,0,0,1); [cite: 25, 26, 27, 28]
+            box-shadow: 0 0 80px rgba(0,0,0,1);
         }
 
+        /* JUSTIFIED HEADER (BLOCK EFFECT) */
         .hud-header { 
-            font-size: 42px; text-align: center; margin-bottom: 5px; 
-            letter-spacing: 1px; color: var(--accent-neon); 
+            font-size: 42px; 
+            text-align: justify; 
+            text-align-last: justify; /* This is the "Word" setting you want */
+            color: var(--accent-neon);
+            margin-bottom: 5px;
         }
+
+        /* OLIVE FIX: SPECIES LINE */
         .hud-species { 
-            font-size: 20px; text-align: center; border-bottom: 1px solid var(--border); 
-            padding-bottom: 15px; margin-bottom: 20px; color: var(--accent-neon);
-            text-transform: uppercase; letter-spacing: 3px;
+            font-size: 16px; text-align: center; border-bottom: 1px solid var(--border); 
+            padding-bottom: 12px; margin-bottom: 20px; 
+            color: var(--accent-neon); opacity: 0.5; /* Muted but neon color */
+            letter-spacing: 6px; text-transform: uppercase;
         }
         
-        .hud-stats-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; } [cite: 32]
+        /* TABLE FIX: FILLING DEAD SPACE */
+        .hud-stats-grid { 
+            display: grid; grid-template-columns: repeat(2, 1fr); 
+            gap: 12px; 
+            flex-grow: 1; /* Pushes content to fill the HUD container */
+        }
         
         .stat-module {
             border: 1px solid var(--border);
-            padding: 20px;
-            background: rgba(212, 193, 255, 0.04); 
-            text-align: center; font-size: 22px;
+            padding: 25px; 
+            background: rgba(212, 193, 255, 0.03); 
+            text-align: center; font-size: 20px;
             display: flex; align-items: center; justify-content: center;
-            min-height: 90px;
+            min-height: 90px; /* Vertical Aqua space fix */
         }
 
-        /* FOOTER ROW - FIXING THE OLIVE CIRCLE AREA */
+        /* OLIVE FIX: FOOTER */
         .hud-footer {
-            display: flex;
-            justify-content: space-between;
-            margin-top: 20px;
-            padding-top: 15px;
-            border-top: 1px solid var(--border);
-            font-size: 14px;
-            color: var(--accent-neon);
-            opacity: 0.8;
+            display: flex; justify-content: space-between;
+            margin-top: 25px; padding-top: 15px; border-top: 1px solid var(--border);
+            font-size: 12px; color: var(--accent-neon); opacity: 0.4;
             letter-spacing: 1px;
         }
 
         #beam-svg {
             position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
-            pointer-events: none; z-index: 900; opacity: 0; [cite: 38, 39]
+            pointer-events: none; z-index: 900; opacity: 0;
         }
-        .beam-path { fill: rgba(212, 193, 255, 0.04); stroke: var(--accent-neon); stroke-width: 0.8; opacity: 0.5; } [cite: 40, 41]
+        .beam-path { fill: rgba(212, 193, 255, 0.04); stroke: var(--accent-neon); stroke-width: 0.8; opacity: 0.5; }
     </style>
 </head>
 <body onclick="hideHud()">
@@ -135,26 +139,26 @@
 
     <div id="hud">
         <div id="hud-data">
-            <div class="hud-header">104,801 NON-HUMAN PRIMATES IN RESEARCH</div> [cite: 42]
-            <div class="hud-species">SUBJECTS: RHESUS MACAQUES | CYNOMOLGUS</div> [cite: 42, 43]
+            <div class="hud-header">104,801 NON-HUMAN PRIMATES IN RESEARCH</div>
+            <div class="hud-species">SUBJECTS: RHESUS MACAQUES | CYNOMOLGUS</div>
             <div class="hud-stats-grid">
-                <div class="stat-module">100% FATAL ANESTHETIC OVERDOSE</div> [cite: 43]
-                <div class="stat-module">20% CLINICAL SELF-HARM</div> [cite: 43]
-                <div class="stat-module">83% SOCIAL ISOLATION</div> [cite: 43]
-                <div class="stat-module">89% DISTRESSED PACING</div> [cite: 43]
-                <div class="stat-module">12% NO PAIN RELIEF (COLUMN E)</div> [cite: 44]
-                <div class="stat-module">100% CAGE SEQUESTRATION</div> [cite: 44]
-                <div class="stat-module">31,000 CAGED BY CLASS A BREEDERS</div> [cite: 44]
-                <div class="stat-module">13,375 CAGED BY CLASS B DEALERS</div> [cite: 44]
-                <div class="stat-module">$800M+ U.S. DOMESTIC REVENUE</div> [cite: 44]
-                <div class="stat-module">$300M+ TAXPAYER INFRASTRUCTURE</div> [cite: 45]
+                <div class="stat-module">100% FATAL ANESTHETIC OVERDOSE</div>
+                <div class="stat-module">20% CLINICAL SELF-HARM</div>
+                <div class="stat-module">83% SOCIAL ISOLATION</div>
+                <div class="stat-module">89% DISTRESSED PACING</div>
+                <div class="stat-module">12% NO PAIN RELIEF (COLUMN E)</div>
+                <div class="stat-module">100% CAGE SEQUESTRATION</div>
+                <div class="stat-module">31,000 CAGED BY CLASS A BREEDERS</div>
+                <div class="stat-module">13,375 CAGED BY CLASS B DEALERS</div>
+                <div class="stat-module">$800M+ U.S. DOMESTIC REVENUE</div>
+                <div class="stat-module">$300M+ TAXPAYER INFRASTRUCTURE</div>
             </div>
             <div class="hud-footer">
                 <div>SOURCE: USDA APHIS 2024 / NIH FINANCIALS</div>
                 <div>FDA REQUIRED | NIH FUNDED | USDA OVERSIGHT</div>
             </div>
         </div>
-        <div id="hud-empty" style="display:none; text-align:center; padding:60px; font-size:28px; opacity:0.2; letter-spacing:5px;">NO DATA RECORDED</div> [cite: 37]
+        <div id="hud-empty" style="display:none; text-align:center; padding:60px; font-size:28px; opacity:0.2; letter-spacing:5px;">NO DATA RECORDED</div>
     </div>
 
     <div class="grid" id="main-grid">
@@ -165,43 +169,43 @@
     </div>
 
     <script>
-        const grid = document.getElementById('main-grid'); [cite: 46]
-        const hud = document.getElementById('hud'); [cite: 47]
-        const beamSvg = document.getElementById('beam-svg'); [cite: 47]
-        const projection = document.getElementById('poly-projection'); [cite: 47]
-        let activeBox = null; [cite: 47]
+        const grid = document.getElementById('main-grid');
+        const hud = document.getElementById('hud');
+        const beamSvg = document.getElementById('beam-svg');
+        const projection = document.getElementById('poly-projection');
+        let activeBox = null;
 
         for (let i = 2; i <= 30; i++) {
             const b = document.createElement('div');
-            b.className = 'box'; [cite: 48, 49]
-            b.innerHTML = `<div class="box-num">000,000</div><div class="box-label">NODE ${i}</div>`; [cite: 49]
-            b.onmouseenter = (e) => showHud(e.currentTarget, false); [cite: 49]
-            b.ontouchstart = (e) => { e.preventDefault(); showHud(e.currentTarget, false); }; [cite: 50]
-            grid.appendChild(b); [cite: 50]
+            b.className = 'box';
+            b.innerHTML = `<div class="box-num">000,000</div><div class="box-label">NODE ${i}</div>`;
+            b.onmouseenter = (e) => showHud(e.currentTarget, false);
+            b.ontouchstart = (e) => { e.preventDefault(); showHud(e.currentTarget, false); };
+            grid.appendChild(b);
         }
 
         function updateBeams() {
-            if (!activeBox) return; [cite: 51]
-            const r = activeBox.getBoundingClientRect(); [cite: 52]
-            const h = hud.getBoundingClientRect(); [cite: 52]
-            const points = `${r.left},${r.top} ${h.left},${h.top} ${h.right},${h.top} ${r.right},${r.top} ${r.right},${r.bottom} ${h.right},${h.bottom} ${h.left},${h.bottom} ${r.left},${r.bottom}`; [cite: 52]
-            projection.setAttribute('points', points); [cite: 53]
-            requestAnimationFrame(updateBeams); [cite: 53]
+            if (!activeBox) return;
+            const r = activeBox.getBoundingClientRect();
+            const h = hud.getBoundingClientRect();
+            const points = `${r.left},${r.top} ${h.left},${h.top} ${h.right},${h.top} ${r.right},${r.top} ${r.right},${r.bottom} ${h.right},${h.bottom} ${h.left},${h.bottom} ${r.left},${r.bottom}`;
+            projection.setAttribute('points', points);
+            requestAnimationFrame(updateBeams);
         }
 
         function showHud(el, hasData) {
-            activeBox = el; [cite: 53]
-            document.getElementById('hud-data').style.display = hasData ? 'block' : 'none'; [cite: 54]
-            document.getElementById('hud-empty').style.display = hasData ? 'none' : 'block'; [cite: 54]
-            hud.style.transform = "translate(-50%, -50%) scale(1)"; [cite: 54]
-            beamSvg.style.opacity = "1"; [cite: 55]
-            updateBeams(); [cite: 55]
+            activeBox = el;
+            document.getElementById('hud-data').style.display = hasData ? 'block' : 'none';
+            document.getElementById('hud-empty').style.display = hasData ? 'none' : 'block';
+            hud.style.transform = "translate(-50%, -50%) scale(1)";
+            beamSvg.style.opacity = "1";
+            updateBeams();
         }
 
         function hideHud() { 
-            activeBox = null; [cite: 55]
-            hud.style.transform = "translate(-50%, -50%) scale(0)"; [cite: 56]
-            beamSvg.style.opacity = "0"; [cite: 56]
+            activeBox = null;
+            hud.style.transform = "translate(-50%, -50%) scale(0)";
+            beamSvg.style.opacity = "0";
         }
     </script>
 </body>
