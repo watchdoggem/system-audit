@@ -52,8 +52,9 @@
         .box:hover { border-color: var(--muted-green); background: #050505; }
         .locked { border: 1px solid #0a0a0a; opacity: 0.1; }
 
-        .box-num { font-size: 58px; line-height: 0.8; letter-spacing: -2px; }
-        .box-label { font-size: 26px; line-height: 1; margin-top: 12px; text-transform: uppercase; }
+        /* NON-POPUP REFINEMENT */
+        .box-num { font-size: 62px; line-height: 0.8; letter-spacing: -2px; }
+        .box-label { font-size: 28px; line-height: 1; margin-top: 12px; text-transform: uppercase; }
 
         #hud {
             position: fixed;
@@ -77,10 +78,11 @@
             padding-bottom: 15px; color: var(--muted-green);
         }
         
+        /* 8 BOX GRID */
         .hud-stats-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 8px;
+            gap: 10px;
             margin-bottom: 25px;
         }
         .stat-module {
@@ -138,8 +140,8 @@
     <div class="grid" id="audit-grid">
         <div class="box" 
              data-head="104,801 NON-HUMAN PRIMATES IN RESEARCH EXPERIMENTS"
-             data-stats="100% FATAL ANESTHETIC OVERDOSE, 20% CLINICAL SELF-HARM, 83% SOCIAL ISOLATION, 89% DISTRESSED PACING, 12% NO PAIN RELIEF (COLUMN E), 100% CAGE SEQUESTRATION, 66,000 MONKEYS HELD BY CLASS A BREEDERS, 44,000 MONKEYS HELD BY CLASS B DEALERS"
-             data-src="SOURCE: USDA 2024 / APHIS / OLAW"
+             data-stats="100% FATAL ANESTHETIC OVERDOSE, 20% CLINICAL SELF-HARM, 83% SOCIAL ISOLATION, 89% DISTRESSED PACING, 12% NO PAIN RELIEF (COLUMN E), 100% CAGE SEQUESTRATION, 31,000 MONKEYS HELD BY CLASS A BREEDERS, 13,375 MONKEYS HELD BY CLASS B DEALERS"
+             data-src="SOURCE: USDA FY2024 ANNUAL SUMMARY"
              data-search="104801 NHP MONKEYS" 
              onmouseenter="showHud(this)" onmouseleave="hideHud()" onclick="this.remove()">
             <div class="box-num">104,801</div>
@@ -162,7 +164,8 @@
             const statsContainer = document.getElementById('h-stats');
             statsContainer.innerHTML = '';
             const statsArray = el.getAttribute('data-stats').split(',');
-            statsArray.forEach(stat => {
+            // FORCING 8 BOXES
+            statsArray.slice(0, 8).forEach(stat => {
                 const div = document.createElement('div');
                 div.className = 'stat-module';
                 div.innerHTML = `<span class="stat-text">${stat.trim()}</span>`;
