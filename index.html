@@ -3,225 +3,271 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>WATCHDOGGEM | [cite_start]NHP TERMINAL</title> [cite: 1, 2]
+    <title>WATCHDOGGEM | NHP TERMINAL</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700;900&family=VT323&display=swap" rel="stylesheet">
     <style>
         :root {
             --bg: #05030f;
-            [cite_start]--accent-violet: #c79eff; [cite: 3]
-            [cite_start]--accent-violet-dim: #a57eff; [cite: 3]
-            [cite_start]--glow: rgba(199, 158, 255, 0.42); [cite: 3]
-            [cite_start]--border: rgba(199, 158, 255, 0.32); [cite: 3]
-            [cite_start]--panel-bg: rgba(199, 158, 255, 0.09); [cite: 3]
-            --translucent: 0.85; [cite_start]/* Refined translucency [cite: 4] */
+            --accent-violet: #c79eff;
+            --accent-violet-dim: #a57eff;
+            --glow: rgba(199, 158, 255, 0.42);
+            --border: rgba(199, 158, 255, 0.32);
+            --panel-bg: rgba(199, 158, 255, 0.09);
+            --translucent: 0.85;
         }
 
         * {
-            [cite_start]margin: 0; [cite: 5]
-            [cite_start]padding: 0; [cite: 5]
+            margin: 0;
+            padding: 0;
             box-sizing: border-box;
             cursor: crosshair;
         }
 
         body {
-            [cite_start]background: var(--bg); [cite: 6]
+            background: var(--bg);
             background-image: 
                 radial-gradient(circle at 30% 20%, rgba(199,158,255,0.08) 0%, transparent 50%),
-                [cite_start]radial-gradient(circle at 70% 80%, rgba(167,126,255,0.06) 0%, transparent 60%); [cite: 6]
-            [cite_start]color: var(--accent-violet); [cite: 7]
-            [cite_start]font-family: 'VT323', monospace; [cite: 7]
-            [cite_start]font-size: 22px; [cite: 7]
+                radial-gradient(circle at 70% 80%, rgba(167,126,255,0.06) 0%, transparent 60%);
+            color: var(--accent-violet);
+            font-family: 'VT323', monospace;
+            font-size: 22px;
             min-height: 100vh;
-            [cite_start]padding: 1.6rem; [cite: 7]
-            [cite_start]overflow-x: hidden; [cite: 7]
+            padding: 1.6rem;
+            overflow-x: hidden;
         }
 
         header {
-            [cite_start]display: flex; [cite: 8]
-            [cite_start]flex-wrap: wrap; [cite: 9]
-            [cite_start]justify-content: center; [cite: 9]
-            [cite_start]align-items: center; [cite: 9]
-            [cite_start]gap: 1.4rem; [cite: 9]
-            [cite_start]margin-bottom: 1.8rem; [cite: 9]
-            [cite_start]border-bottom: 1px solid var(--border); [cite: 9]
-            [cite_start]padding-bottom: 1rem; [cite: 9]
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            align-items: center;
+            gap: 1.4rem;
+            margin-bottom: 1.8rem;
+            border-bottom: 1px solid var(--border);
+            padding-bottom: 1rem;
         }
 
         .title {
-            [cite_start]font-family: 'Orbitron', sans-serif; [cite: 10]
-            [cite_start]font-size: 3.4rem; [cite: 11]
-            [cite_start]font-weight: 900; [cite: 11]
-            [cite_start]letter-spacing: 7px; [cite: 11]
-            [cite_start]text-shadow: 0 0 16px var(--glow); [cite: 11]
-            [cite_start]text-align: center; [cite: 11]
+            font-family: 'Orbitron', sans-serif;
+            font-size: 3.4rem;
+            font-weight: 900;
+            letter-spacing: 7px;
+            text-shadow: 0 0 16px var(--glow);
+            text-align: center;
         }
 
         .search-bar {
-            [cite_start]flex: 1; [cite: 12]
-            [cite_start]min-width: 260px; [cite: 13]
-            [cite_start]max-width: 520px; [cite: 13]
+            flex: 1;
+            min-width: 260px;
+            max-width: 520px;
         }
 
         #filter-input {
-            [cite_start]width: 100%; [cite: 14]
-            [cite_start]padding: 0.85rem 1.2rem; [cite: 14]
-            [cite_start]background: rgba(0,0,0,0.6); [cite: 14]
-            [cite_start]border: 1px solid var(--border); [cite: 14]
-            [cite_start]color: var(--accent-violet); [cite: 14]
-            [cite_start]font-size: 1.6rem; [cite: 14]
+            width: 100%;
+            padding: 0.85rem 1.2rem;
+            background: rgba(0,0,0,0.6);
+            border: 1px solid var(--border);
+            color: var(--accent-violet);
+            font-size: 1.6rem;
             outline: none;
-            [cite_start]transition: all 0.25s; [cite: 14]
+            transition: all 0.25s;
+        }
+
+        #filter-input:focus {
+            border-color: var(--accent-violet);
+            box-shadow: 0 0 12px var(--glow);
         }
 
         .x-link {
-            [cite_start]width: 58px; [cite: 16]
-            [cite_start]height: 58px; [cite: 17]
-            [cite_start]border: 2px solid var(--accent-violet); [cite: 17]
-            [cite_start]border-radius: 6px; [cite: 17]
+            width: 58px;
+            height: 58px;
+            border: 2px solid var(--accent-violet);
+            border-radius: 6px;
             overflow: hidden;
-            [cite_start]transition: all 0.3s; [cite: 17]
+            transition: all 0.3s;
         }
 
-        /* GRID BOXES - Now unified bubbly style */
+        .x-link:hover {
+            transform: scale(1.08);
+            box-shadow: 0 0 20px var(--glow);
+        }
+
+        /* GRID BOXES - now full bubbly like HUD panels */
         .grid {
-            [cite_start]display: grid; [cite: 20]
-            [cite_start]grid-template-columns: repeat(4, 1fr); [cite: 20]
-            [cite_start]gap: 1.1rem; [cite: 20]
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1.1rem;
             max-width: 1600px;
-            [cite_start]margin: 0 auto; [cite: 20]
+            margin: 0 auto;
         }
 
-        @media (max-width: 1200px) { .grid { grid-template-columns: repeat(3, 1fr); [cite_start]} } [cite: 21]
-        @media (max-width: 900px)  { .grid { grid-template-columns: repeat(2, 1fr); [cite_start]} } [cite: 22]
+        @media (max-width: 1200px) { .grid { grid-template-columns: repeat(3, 1fr); } }
+        @media (max-width: 900px)  { .grid { grid-template-columns: repeat(2, 1fr); } }
+        @media (max-width: 600px)  { .grid { grid-template-columns: 1fr; } }
 
         .box {
-            [cite_start]aspect-ratio: 1 / 1; [cite: 24]
-            [cite_start]border: 2px solid var(--border); [cite: 25]
-            border-radius: 12px; [cite_start]/* Bubbly rounded [cite: 25] */
-            [cite_start]background: var(--panel-bg); [cite: 25]
-            [cite_start]backdrop-filter: blur(8px); [cite: 26]
+            aspect-ratio: 1 / 1;
+            border: 2px solid var(--border);
+            border-radius: 12px; /* bubbly rounded */
+            background: var(--panel-bg);
+            backdrop-filter: blur(8px);
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            [cite_start]padding: 1.2rem; [cite: 26]
-            [cite_start]transition: all 0.3s ease; [cite: 26]
-            [cite_start]box-shadow: inset 0 0 20px rgba(199,158,255,0.08); [cite: 27]
+            padding: 1.2rem;
+            transition: all 0.3s ease;
+            box-shadow: inset 0 0 20px rgba(199,158,255,0.08);
         }
 
-        .box:hover, .box.active {
-            [cite_start]border-color: var(--accent-violet); [cite: 27]
-            [cite_start]box-shadow: 0 0 32px var(--glow), inset 0 0 24px rgba(199,158,255,0.15); [cite: 28]
-            [cite_start]transform: translateY(-6px) scale(1.02); [cite: 28]
+        .box:hover,
+        .box.active {
+            border-color: var(--accent-violet);
+            box-shadow: 0 0 32px var(--glow), inset 0 0 24px rgba(199,158,255,0.15);
+            transform: translateY(-6px) scale(1.02);
         }
 
         .box-content {
-            [cite_start]font-family: 'Orbitron', sans-serif; [cite: 29]
-            [cite_start]font-weight: 900; [cite: 30]
+            font-family: 'Orbitron', sans-serif;
+            font-weight: 900;
             text-align: center;
-            [cite_start]text-shadow: 0 0 14px var(--glow); [cite: 30]
-            [cite_start]text-transform: uppercase; [cite: 30]
-            [cite_start]width: 100%; [cite: 30]
+            text-shadow: 0 0 14px var(--glow);
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            line-height: 1.05;
+            width: 100%;
         }
 
-        .box-num { font-size: 2.8rem; [cite_start]} [cite: 31]
-        .box-label { font-size: 2.8rem; margin-top: 0.3rem; opacity: 0.92; [cite_start]} [cite: 32, 33]
+        .box-num {
+            font-size: 2.8rem;
+        }
 
-        /* HUD - Smaller size (45vw) and Translucent */
+        .box-label {
+            font-size: 2.8rem;
+            margin-top: 0.3rem;
+            opacity: 0.92;
+        }
+
+        .box.empty .box-content { opacity: 0.12; } /* faint for empty */
+
+        /* HUD - smaller, translucent */
         #hud {
-            [cite_start]position: fixed; [cite: 34]
-            [cite_start]top: 50%; [cite: 35]
-            [cite_start]left: 50%; [cite: 35]
-            [cite_start]transform: translate(-50%, -50%) scale(0.96); [cite: 35]
-            width: 45vw; [cite_start]/* Smaller size [cite: 35] */
-            max-width: 850px;
-            background: rgba(5, 3, 15, var(--translucent)); [cite_start]/* Translucency applied [cite: 35] */
-            [cite_start]border: 2px solid var(--accent-violet); [cite: 36]
-            [cite_start]padding: 1.8rem; [cite: 36]
-            [cite_start]box-shadow: 0 0 80px rgba(0,0,0,0.9); [cite: 36]
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(0.96);
+            width: 68vw;
+            max-width: 980px;
+            background: rgba(5, 3, 15, var(--translucent));
+            border: 2px solid var(--accent-violet);
+            border-image: linear-gradient(to right, transparent, var(--accent-violet), transparent) 1;
+            padding: 1.8rem;
+            box-shadow: 0 0 80px rgba(0,0,0,0.9);
             opacity: 0;
-            [cite_start]pointer-events: none; [cite: 37]
+            pointer-events: none;
             transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.35);
             z-index: 1000;
-            [cite_start]border-radius: 12px; [cite: 37]
+            border-radius: 8px;
         }
 
         #hud.active {
-            [cite_start]opacity: 1; [cite: 38]
-            [cite_start]transform: translate(-50%, -50%) scale(1); [cite: 39]
-            [cite_start]pointer-events: auto; [cite: 39]
+            opacity: 1;
+            transform: translate(-50%, -50%) scale(1);
+            pointer-events: auto;
         }
 
         .hud-header {
-            [cite_start]font-family: 'Orbitron', sans-serif; [cite: 40]
-            font-size: 2.4rem; /* Adjusted for smaller HUD */
-            [cite_start]text-align: center; [cite: 40]
-            [cite_start]text-shadow: 0 0 18px var(--glow); [cite: 40]
-            [cite_start]white-space: nowrap; [cite: 40]
-            [cite_start]overflow: hidden; [cite: 40]
-            [cite_start]text-overflow: ellipsis; [cite: 40]
+            font-family: 'Orbitron', sans-serif;
+            font-size: 3.4rem;
+            text-align: center;
+            margin-bottom: 0.5rem;
+            text-shadow: 0 0 18px var(--glow);
+            letter-spacing: 4px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
         }
 
         .hud-species {
-            [cite_start]text-align: center; [cite: 41]
-            font-size: 1.3rem; /* Adjusted for smaller HUD */
-            [cite_start]opacity: 0.88; [cite: 42]
-            [cite_start]border-bottom: 1px dashed var(--border); [cite: 42]
-            [cite_start]padding-bottom: 0.8rem; [cite: 42]
-            [cite_start]text-transform: uppercase; [cite: 42]
+            text-align: center;
+            font-size: 1.7rem;
+            opacity: 0.88;
+            margin-bottom: 1.4rem;
+            border-bottom: 1px dashed var(--border);
+            padding-bottom: 0.8rem;
+            text-transform: uppercase;
         }
 
         .hud-stats {
-            [cite_start]display: grid; [cite: 43]
-            [cite_start]grid-template-columns: repeat(2, 1fr); [cite: 44]
-            [cite_start]gap: 0.7rem; [cite: 44]
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            grid-template-rows: repeat(5, auto);
+            gap: 0.9rem;
         }
 
         .stat-item {
-            [cite_start]display: flex; [cite: 44]
-            [cite_start]justify-content: center; [cite: 45]
-            [cite_start]align-items: center; [cite: 45]
-            [cite_start]padding: 0.8rem; [cite: 45]
-            [cite_start]border: 2px solid var(--border); [cite: 45]
-            [cite_start]background: var(--panel-bg); [cite: 45]
-            [cite_start]text-align: center; [cite: 45]
-            [cite_start]min-height: 80px; [cite: 45]
-            [cite_start]border-radius: 8px; [cite: 45]
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 1.3rem;
+            border: 2px solid var(--border);
+            background: var(--panel-bg);
+            text-align: center;
+            min-height: 95px;
+            border-radius: 8px;
+        }
+
+        .stat-item:hover {
+            box-shadow: 0 0 20px var(--glow);
+            border-color: var(--accent-violet-dim);
         }
 
         .stat-text {
-            [cite_start]font-family: 'Orbitron', sans-serif; [cite: 47]
-            font-size: 1.4rem; /* Adjusted for smaller HUD */
-            [cite_start]font-weight: 900; [cite: 48]
-            [cite_start]text-transform: uppercase; [cite: 48]
-            [cite_start]line-height: 1.1; [cite: 48]
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.8rem;
+            font-weight: 900;
+            text-shadow: 0 0 10px var(--glow);
+            letter-spacing: 1.2px;
+            text-transform: uppercase;
+            line-height: 1.1;
         }
 
         .hud-footer {
-            [cite_start]display: flex; [cite: 49]
-            [cite_start]justify-content: space-between; [cite: 50]
-            [cite_start]font-size: 1.1rem; [cite: 50]
-            [cite_start]opacity: 0.92; [cite: 50]
-            [cite_start]margin-top: 1rem; [cite: 50]
-            [cite_start]border-top: 1px dashed var(--border); [cite: 50]
+            display: flex;
+            justify-content: space-between;
+            font-size: 1.35rem;
+            opacity: 0.92;
+            margin-top: 1.6rem;
+            padding-top: 1rem;
+            border-top: 1px dashed var(--border);
         }
 
+        /* BEAM */
         #beam-svg {
-            [cite_start]position: fixed; [cite: 51]
-            [cite_start]inset: 0; [cite: 52]
+            position: fixed;
+            inset: 0;
+            width: 100vw;
+            height: 100vh;
             pointer-events: none;
             z-index: 900;
             opacity: 0;
-            [cite_start]transition: opacity 0.6s; [cite: 52]
+            transition: opacity 0.6s;
         }
 
-        .beam { fill: none; stroke: var(--accent-violet); stroke-width: 1.5; opacity: 0.3; [cite_start]} [cite: 53, 54]
+        .beam {
+            fill: none;
+            stroke: var(--accent-violet);
+            stroke-width: 1.5;
+            opacity: 0.3;
+            filter: drop-shadow(0 0 10px var(--glow));
+        }
 
         @media (max-width: 900px) {
-            #hud { width: 90vw; [cite_start]} [cite: 55]
-            .hud-stats { grid-template-columns: 1fr; [cite_start]} [cite: 57]
+            #hud { width: 88vw; padding: 1.4rem; }
+            .hud-header { font-size: 2.6rem; }
+            .hud-stats { grid-template-columns: 1fr; }
         }
     </style>
 </head>
@@ -233,109 +279,138 @@
             <input type="text" id="filter-input" placeholder="QUERY NHP DATABASE..." autocomplete="off">
         </div>
         <a href="https://x.com/watchdoggem" target="_blank" class="x-link">
-            <img src="https://unavatar.io/x/watchdoggem" alt="X" style="width:100%;height:100%;">
+            <img src="https://unavatar.io/x/watchdoggem" alt="X">
         </a>
     </header>
 
     <svg id="beam-svg">
         <polygon id="beam-poly" class="beam" points="0,0"/>
-    [cite_start]</svg> [cite: 59]
+    </svg>
 
     <div id="hud">
-        [cite_start]<div class="hud-header">104,801 NON-HUMAN PRIMATES</div> [cite: 59]
-        <div class="hud-species">SUBJECTS: RHESUS MACAQUES | [cite_start]CYNOMOLGUS MACAQUES</div> [cite: 59, 60]
+        <div class="hud-header">104,801 NON-HUMAN PRIMATES</div>
+        <div class="hud-species">SUBJECTS: RHESUS MACAQUES | CYNOMOLGUS MACAQUES</div>
 
         <div class="hud-stats">
-            [cite_start]<div class="stat-item"><div class="stat-text">FATAL ANESTHETIC OVERDOSE 100%</div></div> [cite: 60]
-            [cite_start]<div class="stat-item"><div class="stat-text">CLINICAL SELF-HARM 20%</div></div> [cite: 60]
-            [cite_start]<div class="stat-item"><div class="stat-text">SOCIAL ISOLATION 83%</div></div> [cite: 60]
-            [cite_start]<div class="stat-item"><div class="stat-text">DISTRESSED PACING 89%</div></div> [cite: 60]
-            [cite_start]<div class="stat-item"><div class="stat-text">NO PAIN RELIEF COLUMN E 12%</div></div> [cite: 60]
-            [cite_start]<div class="stat-item"><div class="stat-text">CAGE SEQUESTRATION 100%</div></div> [cite: 61]
-            [cite_start]<div class="stat-item"><div class="stat-text">CLASS A BREEDERS CAGED 31,000</div></div> [cite: 61]
-            [cite_start]<div class="stat-item"><div class="stat-text">CLASS B DEALERS CAGED 13,375</div></div> [cite: 61]
-            <div class="stat-item"><div class="stat-text">U.S. [cite_start]DOMESTIC REVENUE $800M+</div></div> [cite: 61, 62]
-            [cite_start]<div class="stat-item"><div class="stat-text">TAXPAYER INFRASTRUCTURE $300M+</div></div> [cite: 62]
+            <div class="stat-item"><div class="stat-text">FATAL ANESTHETIC OVERDOSE 100%</div></div>
+            <div class="stat-item"><div class="stat-text">CLINICAL SELF-HARM 20%</div></div>
+            <div class="stat-item"><div class="stat-text">SOCIAL ISOLATION 83%</div></div>
+            <div class="stat-item"><div class="stat-text">DISTRESSED PACING 89%</div></div>
+            <div class="stat-item"><div class="stat-text">NO PAIN RELIEF COLUMN E 12%</div></div>
+            <div class="stat-item"><div class="stat-text">CAGE SEQUESTRATION 100%</div></div>
+            <div class="stat-item"><div class="stat-text">CLASS A BREEDERS CAGED 31,000</div></div>
+            <div class="stat-item"><div class="stat-text">CLASS B DEALERS CAGED 13,375</div></div>
+            <div class="stat-item"><div class="stat-text">U.S. DOMESTIC REVENUE $800M+</div></div>
+            <div class="stat-item"><div class="stat-text">TAXPAYER INFRASTRUCTURE $300M+</div></div>
         </div>
 
         <div class="hud-footer">
-            [cite_start]<span>SOURCE: USDA APHIS 2024 • NIH FINANCIALS</span> [cite: 62]
-            [cite_start]<span>FDA REQUIRED • NIH FUNDED • USDA OVERSIGHT</span> [cite: 62]
+            <span>SOURCE: USDA APHIS 2024 • NIH FINANCIALS</span>
+            <span>FDA REQUIRED • NIH FUNDED • USDA OVERSIGHT</span>
         </div>
     </div>
 
     <div class="grid">
-        <div class="box" data-has-data="true" onmouseenter="showHud(this)" onmouseleave="handleBoxLeave(this)" ontouchstart="showHud(this)">
+        <div class="box" data-has-data="true" 
+             onmouseenter="showHud(this)" 
+             onmouseleave="handleBoxLeave(this)"
+             ontouchstart="showHud(this)">
             <div class="box-content">
-                [cite_start]<div class="box-num">104,801</div> [cite: 63]
-                [cite_start]<div class="box-label">NHP SUBJECTS</div> [cite: 63]
+                <div class="box-num">104,801</div>
+                <div class="box-label">NHP SUBJECTS</div>
             </div>
         </div>
 
-        <div class="box empty" onmouseenter="showHud(this, false)" onmouseleave="handleBoxLeave(this)">
-            [cite_start]<div class="box-content">EMPTY SLOT</div> [cite: 64]
+        <!-- Empty ones - same full bubbly style -->
+        <div class="box empty" onmouseenter="showHud(this, false)" onmouseleave="handleBoxLeave(this)" ontouchstart="showHud(this, false)">
+            <div class="box-content">EMPTY SLOT</div>
         </div>
-        <div class="box empty" onmouseenter="showHud(this, false)" onmouseleave="handleBoxLeave(this)">
-            [cite_start]<div class="box-content">EMPTY SLOT</div> [cite: 64]
+        <div class="box empty" onmouseenter="showHud(this, false)" onmouseleave="handleBoxLeave(this)" ontouchstart="showHud(this, false)">
+            <div class="box-content">EMPTY SLOT</div>
         </div>
-        <div class="box empty" onmouseenter="showHud(this, false)" onmouseleave="handleBoxLeave(this)">
-            [cite_start]<div class="box-content">EMPTY SLOT</div> [cite: 65]
+        <!-- Repeat the empty pattern 10 more times -->
+        <div class="box empty" onmouseenter="showHud(this, false)" onmouseleave="handleBoxLeave(this)" ontouchstart="showHud(this, false)">
+            <div class="box-content">EMPTY SLOT</div>
         </div>
-        <div class="box empty" onmouseenter="showHud(this, false)" onmouseleave="handleBoxLeave(this)">
-            [cite_start]<div class="box-content">EMPTY SLOT</div> [cite: 65]
+        <div class="box empty" onmouseenter="showHud(this, false)" onmouseleave="handleBoxLeave(this)" ontouchstart="showHud(this, false)">
+            <div class="box-content">EMPTY SLOT</div>
         </div>
-        <div class="box empty" onmouseenter="showHud(this, false)" onmouseleave="handleBoxLeave(this)">
-            [cite_start]<div class="box-content">EMPTY SLOT</div> [cite: 66]
+        <div class="box empty" onmouseenter="showHud(this, false)" onmouseleave="handleBoxLeave(this)" ontouchstart="showHud(this, false)">
+            <div class="box-content">EMPTY SLOT</div>
         </div>
-        <div class="box empty" onmouseenter="showHud(this, false)" onmouseleave="handleBoxLeave(this)">
-            [cite_start]<div class="box-content">EMPTY SLOT</div> [cite: 66]
+        <div class="box empty" onmouseenter="showHud(this, false)" onmouseleave="handleBoxLeave(this)" ontouchstart="showHud(this, false)">
+            <div class="box-content">EMPTY SLOT</div>
+        </div>
+        <div class="box empty" onmouseenter="showHud(this, false)" onmouseleave="handleBoxLeave(this)" ontouchstart="showHud(this, false)">
+            <div class="box-content">EMPTY SLOT</div>
+        </div>
+        <div class="box empty" onmouseenter="showHud(this, false)" onmouseleave="handleBoxLeave(this)" ontouchstart="showHud(this, false)">
+            <div class="box-content">EMPTY SLOT</div>
+        </div>
+        <div class="box empty" onmouseenter="showHud(this, false)" onmouseleave="handleBoxLeave(this)" ontouchstart="showHud(this, false)">
+            <div class="box-content">EMPTY SLOT</div>
+        </div>
+        <div class="box empty" onmouseenter="showHud(this, false)" onmouseleave="handleBoxLeave(this)" ontouchstart="showHud(this, false)">
+            <div class="box-content">EMPTY SLOT</div>
+        </div>
+        <div class="box empty" onmouseenter="showHud(this, false)" onmouseleave="handleBoxLeave(this)" ontouchstart="showHud(this, false)">
+            <div class="box-content">EMPTY SLOT</div>
+        </div>
+        <div class="box empty" onmouseenter="showHud(this, false)" onmouseleave="handleBoxLeave(this)" ontouchstart="showHud(this, false)">
+            <div class="box-content">EMPTY SLOT</div>
         </div>
     </div>
 
     <script>
-        [cite_start]const hud = document.getElementById('hud'); [cite: 69]
-        [cite_start]const beamSvg = document.getElementById('beam-svg'); [cite: 69]
-        [cite_start]const beamPoly = document.getElementById('beam-poly'); [cite: 69]
-        [cite_start]let activeBox = null; [cite: 69]
+        const hud = document.getElementById('hud');
+        const beamSvg = document.getElementById('beam-svg');
+        const beamPoly = document.getElementById('beam-poly');
+        let activeBox = null;
 
         function updateBeam() {
-            [cite_start]if (!activeBox) return; [cite: 70]
-            [cite_start]const b = activeBox.getBoundingClientRect(); [cite: 71]
-            [cite_start]const h = hud.getBoundingClientRect(); [cite: 71]
+            if (!activeBox) return;
+            const b = activeBox.getBoundingClientRect();
+            const h = hud.getBoundingClientRect();
             const points = [
                 b.left, b.top, h.left, h.top, h.right, h.top,
                 b.right, b.top, b.right, b.bottom, h.right, h.bottom,
                 h.left, h.bottom, b.left, b.bottom
-            [cite_start]].join(','); [cite: 71]
-            [cite_start]beamPoly.setAttribute('points', points); [cite: 72]
+            ].join(',');
+            beamPoly.setAttribute('points', points);
         }
 
         function showHud(el, hasData = true) {
-            [cite_start]activeBox = el; [cite: 72]
-            [cite_start]document.querySelectorAll('.box').forEach(b => b.classList.remove('active')); [cite: 73]
-            [cite_start]el.classList.add('active'); [cite: 73]
-            [cite_start]hud.classList.add('active'); [cite: 73]
-            [cite_start]beamSvg.style.opacity = '1'; [cite: 73]
-            [cite_start]updateBeam(); [cite: 73]
+            activeBox = el;
+            document.querySelectorAll('.box').forEach(b => b.classList.remove('active'));
+            el.classList.add('active');
+            hud.classList.add('active');
+            beamSvg.style.opacity = '1';
+            updateBeam();
         }
 
         function handleBoxLeave(el) {
             if (activeBox === el) {
-                [cite_start]activeBox = null; [cite: 73]
-                [cite_start]document.querySelectorAll('.box').forEach(b => b.classList.remove('active')); [cite: 74]
-                [cite_start]hud.classList.remove('active'); [cite: 74]
-                [cite_start]beamSvg.style.opacity = '0'; [cite: 74]
+                activeBox = null;
+                document.querySelectorAll('.box').forEach(b => b.classList.remove('active'));
+                hud.classList.remove('active');
+                beamSvg.style.opacity = '0';
             }
         }
 
         function handleMouseLeave(e) {
             if (!e.relatedTarget || !document.body.contains(e.relatedTarget)) {
-                [cite_start]if (activeBox) handleBoxLeave(activeBox); [cite: 74]
+                if (activeBox) handleBoxLeave(activeBox);
             }
         }
 
-        [cite_start]window.addEventListener('resize', updateBeam); [cite: 75]
-        [cite_start]window.addEventListener('scroll', updateBeam); [cite: 75]
+        window.addEventListener('resize', updateBeam);
+        window.addEventListener('scroll', updateBeam);
+
+        document.addEventListener('touchstart', (e) => {
+            if (!e.target.closest('#hud') && !e.target.closest('.box')) {
+                if (activeBox) handleBoxLeave(activeBox);
+            }
+        });
     </script>
 </body>
 </html>
