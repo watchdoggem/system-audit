@@ -105,7 +105,7 @@ header{
 /* GRID */
 .grid{
     display:grid;
-    grid-template-columns:repeat(auto-fit, minmax(250px,1fr));
+    grid-template-columns:repeat(5,1fr);
     gap:clamp(.55rem,.57vw,1.1rem);
 }
 
@@ -366,7 +366,6 @@ function renderGrid() {
                                  <div class="splash-mid">${p.title}</div>
                                  <div class="splash-bottom">${p.subtitle}</div>`;
 
-            // panel category button (bottom-right)
             if(p.categories && p.categories.length){
                 p.categories.forEach(cat=>{
                     const catBtn = document.createElement('div');
@@ -374,14 +373,6 @@ function renderGrid() {
                     catBtn.classList.add('splash-category-button');
                     if(activeCategories.has(cat)) catBtn.classList.add('active');
                     content.appendChild(catBtn);
-
-                    // optional: clicking category toggles filter
-                    catBtn.addEventListener('click', ()=>{
-                        const catLower = cat.toLowerCase();
-                        if(activeCategories.has(catLower)) activeCategories.delete(catLower);
-                        else activeCategories.add(catLower);
-                        renderGrid();
-                    });
                 });
             }
 
