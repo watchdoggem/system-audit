@@ -7,16 +7,16 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700;900&family=VT323&display=swap" rel="stylesheet">
+    
     <style>
         :root {
             --bg: #05030f;
             --accent-violet: #c79eff;
             --accent-violet-dim: #a57eff;
-            --glow: rgba(199, 158, 255, 0.42);
-            --border: rgba(199, 158, 255, 0.32);
-            --panel-bg: rgba(199, 158, 255, 0.09);
-            --translucent: 0.85;
-            --design-width: 1600px;
+            --glow: rgba(199, 158, 255, 0.55);
+            --border: rgba(199, 158, 255, 0.4);
+            --panel-bg: rgba(199, 158, 255, 0.12);
+            --translucent: 0.9;
         }
 
         * {
@@ -29,8 +29,8 @@
         body {
             background: var(--bg);
             background-image: 
-                radial-gradient(circle at 30% 20%, rgba(199,158,255,0.08) 0%, transparent 50%),
-                radial-gradient(circle at 70% 80%, rgba(167,126,255,0.06) 0%, transparent 60%);
+                radial-gradient(circle at 30% 20%, rgba(199,158,255,0.11) 0%, transparent 50%),
+                radial-gradient(circle at 70% 80%, rgba(167,126,255,0.09) 0%, transparent 60%);
             color: var(--accent-violet);
             font-family: 'VT323', monospace;
             min-height: 100vh;
@@ -38,6 +38,7 @@
         }
 
         #scaler {
+            --design-width: 1600px;
             --scale: calc(100vw / var(--design-width));
             width: var(--design-width);
             transform: translateX(-50%) scale(var(--scale));
@@ -45,7 +46,7 @@
             position: relative;
             left: 50%;
             height: auto;
-            padding: clamp(0.8rem, 1vw, 1.6rem);
+            padding: clamp(1rem, 2vw, 2.5rem);
         }
 
         header {
@@ -53,214 +54,220 @@
             flex-wrap: wrap;
             justify-content: center;
             align-items: center;
-            gap: clamp(0.7rem, 0.9vw, 1.4rem);
-            margin-bottom: clamp(0.9rem, 1.1vw, 1.8rem);
+            gap: clamp(0.8rem, 1.2vw, 2rem);
+            margin-bottom: clamp(1.2rem, 2vw, 3rem);
             border-bottom: 1px solid var(--border);
-            padding-bottom: clamp(0.5rem, 0.6vw, 1rem);
+            padding-bottom: clamp(0.8rem, 1.2vw, 2rem);
         }
 
         .title {
             font-family: 'Orbitron', sans-serif;
-            font-size: clamp(1.7rem, 2.1vw, 3.4rem);
+            font-size: clamp(2.2rem, 3.5vw, 5.5rem);
             font-weight: 900;
-            letter-spacing: clamp(3.5px, 0.36vw, 7px);
-            text-shadow: 0 0 16px var(--glow);
+            letter-spacing: clamp(4px, 0.5vw, 10px);
+            text-shadow: 0 0 20px var(--glow);
             text-align: center;
         }
 
         .search-bar {
             flex: 1;
-            min-width: clamp(130px, 13.5vw, 260px);
-            max-width: clamp(260px, 27vw, 520px);
+            min-width: clamp(160px, 18vw, 320px);
+            max-width: clamp(320px, 35vw, 600px);
         }
 
         #filter-input {
             width: 100%;
-            padding: clamp(0.4rem, 0.44vw, 0.85rem) clamp(0.6rem, 0.63vw, 1.2rem);
-            background: rgba(0,0,0,0.6);
+            padding: clamp(0.6rem, 0.8vw, 1.2rem) clamp(0.8rem, 1vw, 1.6rem);
+            background: rgba(0,0,0,0.65);
             border: 1px solid var(--border);
             color: var(--accent-violet);
-            font-size: clamp(0.8rem, 0.83vw, 1.6rem);
+            font-size: clamp(1rem, 1.2vw, 2rem);
             outline: none;
             transition: all 0.25s;
         }
 
         #filter-input:focus {
             border-color: var(--accent-violet);
-            box-shadow: 0 0 12px var(--glow);
+            box-shadow: 0 0 16px var(--glow);
         }
 
         .x-link {
-            width: clamp(29px, 3vw, 58px);
-            height: clamp(29px, 3vw, 58px);
+            width: clamp(36px, 4.2vw, 72px);
+            height: clamp(36px, 4.2vw, 72px);
             border: 2px solid var(--accent-violet);
-            border-radius: 6px;
+            border-radius: 8px;
             overflow: hidden;
             transition: all 0.3s;
         }
 
         .x-link:hover {
-            transform: scale(1.08);
-            box-shadow: 0 0 20px var(--glow);
+            transform: scale(1.1);
+            box-shadow: 0 0 24px var(--glow);
         }
 
         .grid {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
-            gap: clamp(0.55rem, 0.57vw, 1.1rem);
+            gap: clamp(0.8rem, 1vw, 1.8rem);
             max-width: 100%;
             margin: 0 auto;
         }
 
         .box {
             aspect-ratio: 1 / 1;
-            border: 2px solid var(--border);
-            border-radius: 12px;
+            border: 3px solid var(--border);
+            border-radius: 16px;
             background: var(--panel-bg);
-            backdrop-filter: blur(8px);
+            backdrop-filter: blur(10px);
             display: flex;
-            flex-direction: column;
-            justify-content: center;
             align-items: center;
-            padding: clamp(0.6rem, 0.63vw, 1.2rem);
-            transition: all 0.3s ease;
-            box-shadow: inset 0 0 20px rgba(199,158,255,0.08);
+            justify-content: center;
+            padding: clamp(1.2rem, 3vw, 3.5rem);
+            transition: all 0.35s ease;
+            box-shadow: inset 0 0 30px rgba(199,158,255,0.15);
         }
 
         .box:hover,
         .box.active {
             border-color: var(--accent-violet);
-            box-shadow: 0 0 32px var(--glow), inset 0 0 24px rgba(199,158,255,0.15);
-            transform: translateY(-6px) scale(1.02);
+            box-shadow: 0 0 60px var(--glow), inset 0 0 40px rgba(199,158,255,0.3);
+            transform: translateY(-8px) scale(1.03);
+        }
+
+        .box:first-child {
+            border-color: var(--accent-violet);
+            box-shadow: 0 0 70px var(--glow), inset 0 0 50px rgba(199,158,255,0.35);
+            transform: scale(1.04);
         }
 
         .box-content {
             font-family: 'Orbitron', sans-serif;
             font-weight: 900;
             text-align: center;
-            text-shadow: 0 0 14px var(--glow);
-            letter-spacing: clamp(1px, 0.1vw, 2px);
+            text-shadow: 
+                0 0 20px var(--glow),
+                0 0 40px var(--glow),
+                0 0 80px var(--glow);
+            letter-spacing: clamp(6px, 1.2vw, 24px);
             text-transform: uppercase;
-            line-height: 1.0;
+            line-height: 0.85;
             width: 100%;
         }
 
+        .box:first-child .box-content {
+            transform: scale(1.06);
+        }
+
         .box-num {
-            font-size: clamp(1.8rem, 1.88vw, 3.6rem);
+            font-size: clamp(5.5rem, 12vw, 22rem);
+            line-height: 0.78;
+            margin: -0.15em 0 -0.28em 0;
+            white-space: nowrap;
         }
 
         .box-label {
-            font-size: clamp(1.8rem, 1.88vw, 3.6rem);
-            margin-top: clamp(0.15rem, 0.16vw, 0.3rem);
-            opacity: 0.92;
+            font-size: clamp(3.8rem, 8.5vw, 15rem);
+            letter-spacing: clamp(8px, 1.6vw, 32px);
+            opacity: 0.96;
+            text-shadow: 0 0 50px var(--glow);
         }
 
-        .box.empty .box-content { opacity: 0.12; }
+        .box.empty .box-content {
+            opacity: 0.14;
+            font-size: clamp(1.8rem, 3vw, 4.5rem);
+            letter-spacing: 4px;
+        }
 
-        /* HUD - phone fix only */
+        /* HUD ───────────────────────────────────────────────────────────── */
         #hud {
             position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: clamp(300px, 50vw, 950px);
-            max-height: 88vh;
+            inset: 0;
+            margin: auto;
+            width: min(92vw, 1100px);
+            max-height: 94vh;
             overflow-y: auto;
             background: rgba(5, 3, 15, var(--translucent));
-            border: 2px solid var(--accent-violet);
-            border-image: linear-gradient(to right, transparent, var(--accent-violet), transparent) 1;
-            padding: clamp(0.65rem, 0.68vw, 1.3rem);
-            box-shadow: 0 0 80px rgba(0,0,0,0.9);
+            border: 3px solid var(--accent-violet);
+            padding: clamp(1.5rem, 5vw, 3rem);
+            box-shadow: 0 0 120px rgba(0,0,0,0.95);
             opacity: 0;
-            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.35);
+            transition: opacity 0.4s ease, transform 0.4s ease;
+            transform: translate(-50%, -50%) scale(0.94);
+            left: 50%;
+            top: 50%;
             z-index: 1000;
-            border-radius: 8px;
-            pointer-events: none;
+            border-radius: 16px;
+            pointer-events: auto;
         }
 
         #hud.active {
             opacity: 1;
+            transform: translate(-50%, -50%) scale(1);
         }
 
         .hud-header {
             font-family: 'Orbitron', sans-serif;
-            font-size: clamp(1.6rem, 1.67vw, 3.2rem);
+            font-size: clamp(2.2rem, 7vw, 6rem);
+            line-height: 1;
             text-align: center;
-            margin-bottom: clamp(0.25rem, 0.26vw, 0.5rem);
-            text-shadow: 0 0 18px var(--glow);
-            letter-spacing: clamp(1.5px, 0.16vw, 3px);
-            white-space: normal;
+            margin-bottom: 0.6em;
+            text-shadow: 0 0 24px var(--glow);
+            letter-spacing: clamp(2px, 0.5vw, 8px);
         }
 
         .hud-species {
             text-align: center;
-            font-size: clamp(0.85rem, 0.89vw, 1.7rem);
-            opacity: 0.88;
-            margin-bottom: clamp(0.7rem, 0.73vw, 1.4rem);
+            font-size: clamp(1.2rem, 4vw, 2.8rem);
+            opacity: 0.9;
+            margin-bottom: 1.8em;
             border-bottom: 1px dashed var(--border);
-            padding-bottom: clamp(0.4rem, 0.42vw, 0.8rem);
+            padding-bottom: 1em;
             text-transform: uppercase;
         }
 
         .hud-stats {
             display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: clamp(0.45rem, 0.47vw, 0.9rem);
+            grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+            gap: clamp(1rem, 3vw, 2rem);
         }
 
         .stat-item {
             display: flex;
             justify-content: center;
             align-items: center;
-            padding: clamp(0.6rem, 0.63vw, 1.2rem);
+            padding: 1.2em 1em;
             border: 2px solid var(--border);
-            background: var(--panel-bg);
+            background: rgba(199,158,255,0.08);
             text-align: center;
-            min-height: clamp(45px, 4.7vw, 90px);
-            border-radius: 8px;
+            border-radius: 12px;
+            min-height: 80px;
         }
 
         .stat-item:hover {
-            box-shadow: 0 0 20px var(--glow);
+            box-shadow: 0 0 24px var(--glow);
             border-color: var(--accent-violet-dim);
         }
 
         .stat-text {
             font-family: 'Orbitron', sans-serif;
-            font-size: clamp(0.88rem, 0.91vw, 1.75rem);
+            font-size: clamp(1.1rem, 3.8vw, 2.6rem);
             font-weight: 900;
-            text-shadow: 0 0 10px var(--glow);
-            letter-spacing: clamp(0.5px, 0.05vw, 1px);
+            text-shadow: 0 0 12px var(--glow);
+            letter-spacing: clamp(0.8px, 0.2vw, 3px);
             text-transform: uppercase;
-            line-height: 1.05;
-            white-space: normal;
-            width: 100%;
+            line-height: 1.15;
         }
 
         .hud-footer {
             display: flex;
-            justify-content: space-between;
-            font-size: clamp(0.65rem, 0.68vw, 1.3rem);
+            flex-direction: column;
+            align-items: center;
+            font-size: clamp(0.9rem, 2.5vw, 1.5rem);
             opacity: 0.92;
-            margin-top: clamp(0.75rem, 0.78vw, 1.5rem);
-            padding-top: clamp(0.5rem, 0.52vw, 1rem);
+            margin-top: 1.8rem;
+            padding-top: 1rem;
             border-top: 1px dashed var(--border);
-            flex-wrap: wrap;
-            gap: clamp(0.4rem, 0.42vw, 0.8rem);
-        }
-
-        @media (max-width: 900px) {
-            .hud-stats { grid-template-columns: 1fr; }
-        }
-
-        @media (max-width: 600px) {
-            #hud {
-                width: 82vw;          /* Smaller on phone */
-                max-height: 82vh;     /* More vertical breathing */
-                padding: 0.9rem;      /* Less padding */
-            }
-            .hud-header { font-size: clamp(1.4rem, 5vw, 2.2rem); }
-            .stat-text { font-size: clamp(1rem, 4vw, 1.5rem); }
+            gap: 0.6rem;
         }
 
         /* BEAM */
@@ -278,9 +285,26 @@
         .beam {
             fill: none;
             stroke: var(--accent-violet);
-            stroke-width: 1.5;
-            opacity: 0.3;
-            filter: drop-shadow(0 0 10px var(--glow));
+            stroke-width: 1.8;
+            opacity: 0.35;
+            filter: drop-shadow(0 0 12px var(--glow));
+        }
+
+        @media (max-width: 700px) {
+            #hud {
+                width: 94vw;
+                padding: 1.8rem 6vw;
+                max-height: 90vh;
+                border-width: 2.5px;
+            }
+            
+            .hud-stats {
+                grid-template-columns: 1fr;
+            }
+            
+            .box:first-child {
+                transform: scale(1.03);
+            }
         }
     </style>
 </head>
@@ -308,6 +332,7 @@
                 </div>
             </div>
 
+            <!-- Empty slots -->
             <div class="box empty" onmouseenter="showHud(this, false)" onmouseleave="handleBoxLeave(this)" ontouchstart="showHud(this, false)">
                 <div class="box-content">EMPTY SLOT</div>
             </div>
@@ -415,7 +440,7 @@
                     hud.classList.remove('active');
                     beamSvg.style.opacity = '0';
                 }
-            }, 100);
+            }, 120);
         }
 
         function handleMouseLeave(e) {
