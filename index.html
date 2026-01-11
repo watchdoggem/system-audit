@@ -546,15 +546,56 @@ function handleMouseLeave(e){
 window.addEventListener('resize',updateBeam);
 window.addEventListener('scroll',updateBeam);
 
-document.addEventListener('touchstart',e=>{
+// ======================
+// EVENT HANDLERS
+// ======================
+document.addEventListener('touchstart', e => {
     if(!e.target.closest('#hud') && !e.target.closest('.box')){
         if(activeBox) handleBoxLeave(activeBox);
     }
 });
 
+window.addEventListener('resize', updateBeam);
+window.addEventListener('scroll', updateBeam);
+
+function handleMouseLeave(e){
+    if(!e.relatedTarget || !document.body.contains(e.relatedTarget)){
+        if(activeBox) handleBoxLeave(activeBox);
+    }
+}
+
 // ======================
-// INITIAL RENDER
+// INITIAL GRID RENDER
 // ======================
+function renderGrid() {
+    const grid = document.getElementById('grid');
+    grid.innerHTML = '';
+    panels.forEach(p => {
+        const box = document.createElement('div');
+        box.classList.add('box');
+        box.dataset.hasData = (!p.empty).toString();
+        box.dataset.category = p.category || '';
+
+        const content = document.createElement('div');
+        content.classList.add('box-content');
+
+        if(p.empty){
+            box.classList.add('empty');
+            content.textContent = "EMPTY SLOT";
+        } else {
+            content.innerHTML = `<div class="splash-top">${p.id}</div>
+                                 <div class="splash-mid">${p.title}</div>
+                                 <div class="splash-bottom">${p.subtitle}</div>`;
+            box.addEventListener('mouseenter', () => showHud(box,p));
+            box.addEventListener('mouseleave', () => handleBoxLeave(box));
+            box.addEventListener('touchstart', () => showHud(box,p));
+        }
+
+        box.appendChild(content);
+        grid.appendChild(box);
+    });
+}
+
 renderGrid();
 </script>
 </body>
