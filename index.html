@@ -40,24 +40,23 @@
             background: transparent; border: none; outline: none;
             color: var(--accent-neon); font-family: 'Impact', sans-serif;
             font-size: 24px; width: 100%; letter-spacing: 3px;
-            text-shadow: 0 0 10px var(--accent-glow);
         }
 
-        .grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 20px; }
-
+        /* MAIN SCREEN - THE SINGLE TRIGGER BOX */
+        .grid { display: block; }
         .box {
-            position: relative; border: 1px solid var(--border);
-            height: 180px; display: flex; flex-direction: column;
+            border: 1px solid var(--border);
+            height: 180px; width: 250px;
+            display: flex; flex-direction: column;
             justify-content: center; align-items: center;
-            text-align: center; padding: 15px; 
             background: linear-gradient(145deg, rgba(26, 46, 26, 0.4), rgba(10, 15, 10, 0.6));
             transition: border 0.3s;
         }
         .box:hover { border-color: var(--accent-neon); }
-        
-        .box-num { font-size: 62px; line-height: 0.8; letter-spacing: -2px; }
-        .box-label { font-size: 28px; line-height: 1; margin-top: 12px; opacity: 0.6; }
+        .box-num { font-size: 62px; line-height: 0.8; }
+        .box-label { font-size: 28px; margin-top: 12px; opacity: 0.6; }
 
+        /* THE HUD - CONTAINS THE 10 INTERNAL DATA BOXES */
         #hud {
             position: fixed; top: 50%; left: 50%;
             transform: translate(-50%, -50%) scale(0);
@@ -66,118 +65,92 @@
             border: 1px solid var(--accent-neon);
             padding: 40px; z-index: 1000;
             display: flex; flex-direction: column;
-            pointer-events: none; transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            box-shadow: 0 0 120px rgba(0,0,0,1);
+            transition: transform 0.1s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            box-shadow: 0 0 100px rgba(0,0,0,0.9);
         }
 
-        .hud-header { font-size: 42px; margin-bottom: 10px; text-align: center; letter-spacing: 2px; }
-        .hud-species { font-size: 20px; margin-bottom: 30px; text-align: center; opacity: 0.7; border-bottom: 1px solid var(--border); padding-bottom: 15px; }
-        .hud-stats-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; margin-bottom: 30px; }
-
+        .hud-header { font-size: 42px; text-align: center; margin-bottom: 10px; }
+        .hud-species { font-size: 22px; text-align: center; border-bottom: 1px solid var(--border); padding-bottom: 15px; margin-bottom: 30px; }
+        
+        /* 10 DATA MODULES INSIDE HUD */
+        .hud-stats-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; margin-bottom: 30px; }
         .stat-module {
-            border: 1px solid var(--border); padding: 25px;
+            border: 1px solid var(--border); padding: 18px;
             background: rgba(212, 193, 255, 0.02);
-            display: flex; justify-content: center; align-items: center;
-            text-align: center;
+            text-align: center; font-size: 24px; text-transform: uppercase;
         }
-        .stat-text { font-size: 24px; text-transform: uppercase; color: var(--accent-neon); }
 
         .hud-footer {
             display: flex; justify-content: space-between;
-            font-size: 20px; border-top: 1px solid var(--border);
-            padding-top: 20px; opacity: 1; color: var(--accent-neon);
-            font-weight: bold;
+            font-size: 18px; border-top: 1px solid var(--border);
+            padding-top: 20px; font-weight: bold;
         }
 
         #beam-svg {
             position: fixed; top: 0; left: 0;
             width: 100vw; height: 100vh;
             pointer-events: none; z-index: 900;
-            opacity: 0; transition: opacity 0.2s;
+            opacity: 0;
         }
-        
         .beam-path { 
-            fill: url(#beamGradient); 
-            stroke: rgba(212, 193, 255, 0.3); 
+            fill: rgba(212, 193, 255, 0.05); 
+            stroke: rgba(212, 193, 255, 0.2); 
             stroke-width: 1; 
         }
     </style>
 </head>
 <body onclick="hideHud()">
 
-    <div id="search-container" onclick="event.stopPropagation()">
-        <input type="text" id="filter-input" placeholder="SEARCH / FILTER AUDIT LOG" onkeyup="filterGrid()">
+    <div id="search-container">
+        <input type="text" id="filter-input" placeholder="SEARCH / FILTER AUDIT LOG">
     </div>
 
     <svg id="beam-svg">
-        <defs>
-            <linearGradient id="beamGradient" x1="0%" y1="0%" x2="100%" y2="0%">
-                <stop offset="0%" style="stop-color:rgba(212,193,255,0.05);stop-opacity:1" />
-                <stop offset="100%" style="stop-color:rgba(26,46,26,0.2);stop-opacity:1" />
-            </linearGradient>
-        </defs>
         <polygon id="poly-projection" class="beam-path" />
     </svg>
 
     <div id="hud">
-        <div id="h-header" class="hud-header"></div>
+        <div class="hud-header">104,801 NON-HUMAN PRIMATES IN RESEARCH</div>
         <div class="hud-species">SUBJECTS: RHESUS MACAQUES | CYNOMOLGUS</div>
-        <div id="h-stats" class="hud-stats-grid"></div>
+        
+        <div class="hud-stats-grid">
+            <div class="stat-module">100% FATAL ANESTHETIC OVERDOSE</div>
+            <div class="stat-module">20% CLINICAL SELF-HARM</div>
+            <div class="stat-module">83% SOCIAL ISOLATION</div>
+            <div class="stat-module">89% DISTRESSED PACING</div>
+            <div class="stat-module">12% NO PAIN RELIEF (COLUMN E)</div>
+            <div class="stat-module">100% CAGE SEQUESTRATION</div>
+            <div class="stat-module">31,000 CAGED BY CLASS A BREEDERS</div>
+            <div class="stat-module">13,375 CAGED BY CLASS B DEALERS</div>
+            <div class="stat-module">$800M+ U.S. DOMESTIC REVENUE</div>
+            <div class="stat-module">$300M+ TAXPAYER INFRASTRUCTURE</div>
+        </div>
+
         <div class="hud-footer">
-            <span id="h-source">SOURCE: USDA APHIS 2024 / NIH FINANCIALS</span>
+            <span>SOURCE: USDA APHIS 2024 / NIH FINANCIALS</span>
             <span>FDA REQUIRED | NIH FUNDED | USDA OVERSIGHT</span>
         </div>
     </div>
 
-    <div class="grid" id="audit-grid"></div>
+    <div class="grid">
+        <div class="box" onmouseenter="showHud(this)" onmouseleave="hideHud()">
+            <div class="box-num">104,801</div>
+            <div class="box-label">NHP TESTING</div>
+        </div>
+    </div>
 
     <script>
-        // DATA STORAGE: Add or edit your 10 boxes here once. It won't break the style.
-        const auditData = [
-            { num: "104,801", label: "NHP TESTING", head: "104,801 NON-HUMAN PRIMATES IN RESEARCH", stats: "100% FATAL ANESTHETIC OVERDOSE; 20% CLINICAL SELF-HARM; 83% SOCIAL ISOLATION; 89% DISTRESSED PACING; 12% NO PAIN RELIEF (COLUMN E); 100% CAGE SEQUESTRATION" },
-            { num: "$1.1B", label: "MARKET VALUE", head: "U.S. DOMESTIC REVENUE & INFRASTRUCTURE", stats: "$800M+ ANNUAL REVENUE; $300M+ TAXPAYER FUNDED; 31,000 CLASS A BREEDERS; 13,375 CLASS B DEALERS; NIH FINANCIAL OVERLAY; USDA OVERSIGHT LOGICALS" },
-            { num: "31,000", label: "BREEDERS", head: "CLASS A BREEDING FACILITIES", stats: "MASS SEQUESTRATION; GENETIC BOTTLENECKING; HIGH-DENSITY HOUSING; INFANT SEPARATION" },
-            { num: "13,375", label: "DEALERS", head: "CLASS B DEALER NETWORK", stats: "RANDOM SOURCE ORIGINS; TRANSPORT STRESS; QUARANTINE PROTOCOLS; LOGISTICAL TRACEABILITY" },
-            { num: "89%", label: "DISTRESS", head: "PSYCHOLOGICAL PATHOLOGY", stats: "STEREOTYPIC BEHAVIORS; SELF-MUTILATION; REPETITIVE PACING; CHRONIC CORTISOL SPIKES" },
-            { num: "2024", label: "FISCAL YEAR", head: "CURRENT AUDIT CYCLE", stats: "USDA APHIS REPORTING; NIH DISBURSEMENT; GAO REVIEWS; OLAW COMPLIANCE" },
-            { num: "12%", label: "COL E", head: "UNRELIEVED PAIN CATEGORY", stats: "PROCEDURAL DISTRESS; ZERO ANALGESIA; SCIENTIFIC JUSTIFICATION; ETHICAL BYPASS" },
-            { num: "83%", label: "ISOLATION", head: "SOCIAL DEPRIVATION METRICS", stats: "SINGLE HOUSING; SENSORY DEPRIVATION; MATERNAL LOSS; SOCIAL REINTRODUCTION FAILURE" },
-            { num: "NIH", label: "FUNDING", head: "FEDERAL FINANCIAL OVERLAY", stats: "INTRAMURAL RESEARCH; EXTRAMURAL GRANTS; TAXPAYER ALLOCATION; BIOMEDICAL PRIORITY" },
-            { num: "USDA", label: "OVERSIGHT", head: "REGULATORY AUDIT STATUS", stats: "FACILITY INSPECTIONS; CITATION LOGS; NON-COMPLIANCE RECORDS; AWA ENFORCEMENT" }
-        ];
-
-        const grid = document.getElementById('audit-grid');
         const hud = document.getElementById('hud');
         const beamSvg = document.getElementById('beam-svg');
         const projection = document.getElementById('poly-projection');
 
-        // Build the grid automatically
-        auditData.forEach(item => {
-            const box = document.createElement('div');
-            box.className = 'box';
-            box.innerHTML = `<div class="box-num">${item.num}</div><div class="box-label">${item.label}</div>`;
-            box.onmouseenter = () => showHud(box, item);
-            box.onmouseleave = hideHud;
-            grid.appendChild(box);
-        });
-
-        function showHud(el, data) {
-            document.getElementById('h-header').innerText = data.head;
-            const statsContainer = document.getElementById('h-stats');
-            statsContainer.innerHTML = '';
-            data.stats.split(';').forEach(stat => {
-                const div = document.createElement('div');
-                div.className = 'stat-module';
-                div.innerHTML = `<span class="stat-text">${stat.trim()}</span>`;
-                statsContainer.appendChild(div);
-            });
-
+        function showHud(el) {
             hud.style.transform = "translate(-50%, -50%) scale(1)";
             beamSvg.style.opacity = "1";
             
-            // MATH LOCK
             const r = el.getBoundingClientRect(); 
             const h = hud.getBoundingClientRect(); 
+
             const points = `${r.left},${r.top} ${h.left},${h.top} ${h.right},${h.top} ${r.right},${r.top} ${r.right},${r.bottom} ${h.right},${h.bottom} ${h.left},${h.bottom} ${r.left},${r.bottom}`;
             projection.setAttribute('points', points);
         }
@@ -185,13 +158,6 @@
         function hideHud() { 
             hud.style.transform = "translate(-50%, -50%) scale(0)"; 
             beamSvg.style.opacity = "0"; 
-        }
-
-        function filterGrid() {
-            let q = document.getElementById('filter-input').value.toUpperCase();
-            document.querySelectorAll('.box').forEach(b => {
-                b.style.display = b.innerText.toUpperCase().includes(q) ? 'flex' : 'none';
-            });
         }
     </script>
 </body>
