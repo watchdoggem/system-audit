@@ -8,7 +8,6 @@
         :root {
             --bg-deep: #0a0f0a;
             --accent-neon: #d4c1ff; 
-            --accent-glow: rgba(212, 193, 255, 0.4);
             --border: rgba(212, 193, 255, 0.15);
         }
 
@@ -20,19 +19,8 @@
             margin: 0; padding: 20px; 
             font-family: 'Impact', sans-serif; 
             color: var(--accent-neon);
-            overflow-x: hidden;
-            min-height: 100vh;
+            overflow: hidden;
         }
-
-        #avatar-stamp {
-            position: fixed; top: 25px; right: 25px;
-            width: 70px; height: 70px;
-            border: 1px solid var(--accent-neon);
-            background: rgba(0,0,0,0.5);
-            z-index: 1100; overflow: hidden; border-radius: 4px;
-            box-shadow: 0 0 15px var(--accent-glow);
-        }
-        #avatar-stamp img { width: 100%; height: 100%; object-fit: cover; }
 
         #search-container {
             display: flex; border: 1px solid var(--border);
@@ -44,8 +32,7 @@
         #filter-input {
             background: transparent; border: none; outline: none;
             color: var(--accent-neon); font-family: 'Impact', sans-serif;
-            font-size: 24px; width: 100%; letter-spacing: 2px;
-            text-shadow: 0 0 8px var(--accent-glow);
+            font-size: 24px; width: 100%;
         }
 
         .grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 20px; }
@@ -57,63 +44,40 @@
             text-align: center; padding: 15px; background: rgba(26, 36, 24, 0.4);
         }
         
-        .box-num { font-size: 62px; line-height: 0.8; letter-spacing: -2px; }
-        .box-label { font-size: 28px; line-height: 1; margin-top: 12px; opacity: 0.8; }
+        .box-num { font-size: 62px; line-height: 0.8; }
+        .box-label { font-size: 28px; line-height: 1; margin-top: 12px; }
 
         #hud {
             position: fixed; top: 50%; left: 50%;
             transform: translate(-50%, -50%) scale(0);
             width: 85vw; max-width: 1100px;
-            background: rgba(10, 15, 10, 0.98); 
+            background: rgba(10, 15, 10, 0.95); 
             border: 1px solid var(--accent-neon);
             padding: 40px; z-index: 1000;
             display: flex; flex-direction: column;
-            pointer-events: none; transition: transform 0.15s ease-out;
-            box-shadow: 0 0 80px rgba(0,0,0,1);
+            pointer-events: none; transition: transform 0.1s ease-out;
         }
 
-        .hud-header { font-size: 36px; margin-bottom: 12px; text-align: center; text-transform: uppercase; text-shadow: 0 0 10px var(--accent-glow); }
-        .hud-species { font-size: 22px; margin-bottom: 30px; letter-spacing: 2px; text-align: center; border-bottom: 1px solid var(--border); padding-bottom: 20px; }
+        .hud-header { font-size: 36px; margin-bottom: 12px; text-align: center; text-transform: uppercase; }
+        .hud-species { font-size: 22px; margin-bottom: 30px; text-align: center; border-bottom: 1px solid var(--border); padding-bottom: 20px; }
         .hud-stats-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; margin-bottom: 30px; }
-
-        .stat-module {
-            border: 1px solid var(--border); padding: 20px;
-            background: rgba(255, 255, 255, 0.03);
-            display: flex; justify-content: center; align-items: center;
-            text-align: center; min-height: 85px;
-        }
-
-        .stat-text { font-size: 22px; text-transform: uppercase; line-height: 1.1; }
-
-        .hud-footer {
-            display: flex; justify-content: space-between;
-            font-size: 15px; border-top: 1px solid var(--border);
-            padding-top: 20px; letter-spacing: 2px;
-        }
+        .stat-module { border: 1px solid var(--border); padding: 20px; text-align: center; min-height: 85px; }
+        .stat-text { font-size: 22px; text-transform: uppercase; }
 
         #beam-svg {
             position: fixed; top: 0; left: 0;
             width: 100vw; height: 100vh;
             pointer-events: none; z-index: 900;
-            opacity: 0; transition: opacity 0.1s;
+            opacity: 0;
         }
         
-        /* The projection glow flare */
-        .beam-flare { 
-            fill: rgba(212, 193, 255, 0.08); 
-            stroke: rgba(212, 193, 255, 0.4); 
-            stroke-width: 2; 
-        }
+        .beam-flare { fill: rgba(212, 193, 255, 0.1); stroke: rgba(212, 193, 255, 0.3); stroke-width: 1.5; }
     </style>
 </head>
 <body onclick="hideHud()">
 
-    <a href="https://x.com/watchdoggem" target="_blank" id="avatar-stamp" onclick="event.stopPropagation()">
-        <img src="https://unavatar.io/x/watchdoggem" alt="WATCHDOGGEM">
-    </a>
-
-    <div id="search-container" onclick="event.stopPropagation()">
-        <input type="text" id="filter-input" placeholder="SEARCH / FILTER AUDIT LOG" onkeyup="filterGrid()">
+    <div id="search-container">
+        <input type="text" id="filter-input" placeholder="SEARCH / FILTER AUDIT LOG">
     </div>
 
     <svg id="beam-svg">
@@ -124,18 +88,13 @@
         <div id="h-header" class="hud-header"></div>
         <div class="hud-species">SUBJECTS: RHESUS MACAQUES | CYNOMOLGUS</div>
         <div id="h-stats" class="hud-stats-grid"></div>
-        <div class="hud-footer">
-            <span id="h-source"></span>
-            <span>FDA REQUIRED | NIH FUNDED | USDA OVERSIGHT</span>
-        </div>
     </div>
 
-    <div class="grid" id="audit-grid">
+    <div class="grid">
         <div class="box" 
              data-head="104,801 NON-HUMAN PRIMATES IN RESEARCH"
-             data-stats="100% FATAL ANESTHETIC OVERDOSE; 20% CLINICAL SELF-HARM; 83% SOCIAL ISOLATION; 89% DISTRESSED PACING; 12% NO PAIN RELIEF (COLUMN E); 100% CAGE SEQUESTRATION; 31,000 CAGED BY CLASS A BREEDERS; 13,375 CAGED BY CLASS B DEALERS; $800M+ U.S. DOMESTIC REVENUE; $300M+ TAXPAYER INFRASTRUCTURE"
-             data-src="SOURCE: USDA APHIS 2024 / NIH FINANCIALS"
-             onmouseenter="showHud(this, event)" onmouseleave="hideHud()">
+             data-stats="100% FATAL ANESTHETIC OVERDOSE; 20% CLINICAL SELF-HARM; 83% SOCIAL ISOLATION; 89% DISTRESSED PACING; 12% NO PAIN RELIEF (COLUMN E); 100% CAGE SEQUESTRATION"
+             onmouseenter="showHud(this)" onmouseleave="hideHud()">
             <div class="box-num">104,801</div>
             <div class="box-label">NHP TESTING</div>
         </div>
@@ -146,14 +105,11 @@
         const beamSvg = document.getElementById('beam-svg');
         const flare = document.getElementById('flare-shape');
 
-        function showHud(el, e) {
-            e.stopPropagation();
+        function showHud(el) {
             document.getElementById('h-header').innerText = el.getAttribute('data-head');
-            document.getElementById('h-source').innerText = el.getAttribute('data-src');
             const statsContainer = document.getElementById('h-stats');
             statsContainer.innerHTML = '';
-            
-            el.getAttribute('data-stats').split(';').forEach((stat) => {
+            el.getAttribute('data-stats').split(';').forEach(stat => {
                 const div = document.createElement('div');
                 div.className = 'stat-module';
                 div.innerHTML = `<span class="stat-text">${stat.trim()}</span>`;
@@ -164,19 +120,20 @@
             beamSvg.style.opacity = "1";
             
             const r = el.getBoundingClientRect(); // Small Box
-            const h = hud.getBoundingClientRect(); // Large HUD
+            const h = { // HUD bounds calculated at scale(1)
+                left: window.innerWidth * 0.075, // Matches width: 85vw approx
+                right: window.innerWidth * 0.925,
+                top: (window.innerHeight - hud.offsetHeight) / 2,
+                bottom: (window.innerHeight + hud.offsetHeight) / 2
+            };
 
-            // CORRECTED OUTWARD GROWTH PATH
-            // Following your drawing: Small corners connect to big corners in a continuous loop
+            // CORRECTED CORNER MAPPING: Box corners to HUD corners
+            // Path order: Box TL -> HUD TL -> HUD TR -> Box TR -> Box BR -> HUD BR -> HUD BL -> Box BL
             const points = `
-                ${r.left},${r.top} 
-                ${h.left},${h.top} 
-                ${h.right},${h.top} 
-                ${r.right},${r.top} 
-                ${r.right},${r.bottom} 
-                ${h.right},${h.bottom} 
-                ${h.left},${h.bottom} 
-                ${r.left},${r.bottom}
+                ${r.left},${r.top} ${h.left},${h.top} 
+                ${h.right},${h.top} ${r.right},${r.top} 
+                ${r.right},${r.bottom} ${h.right},${h.bottom} 
+                ${h.left},${h.bottom} ${r.left},${r.bottom}
             `;
             flare.setAttribute('points', points);
         }
@@ -184,15 +141,6 @@
         function hideHud() { 
             hud.style.transform = "translate(-50%, -50%) scale(0)"; 
             beamSvg.style.opacity = "0"; 
-        }
-
-        window.addEventListener('keydown', (e) => { if(e.key === "Escape") hideHud(); });
-
-        function filterGrid() {
-            let q = document.getElementById('filter-input').value.toUpperCase();
-            document.querySelectorAll('.box').forEach(b => {
-                b.style.display = b.innerText.toUpperCase().includes(q) ? 'flex' : 'none';
-            });
         }
     </script>
 </body>
