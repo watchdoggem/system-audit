@@ -77,7 +77,7 @@
         .box-num { font-size: 32px; color: var(--accent-neon); }
         .box-label { font-size: 16px; opacity: 0.7; color: var(--accent-neon); text-transform: uppercase; }
 
-        /* HUD - HYBRID OF B1 & B5 */
+        /* HUD - DYNAMIC SIZE */
         #hud {
             position: fixed;
             top: 50%; left: 50%;
@@ -85,37 +85,36 @@
             width: 94vw; max-width: 1100px;
             background: rgba(4, 6, 4, 0.98);
             border: 1px solid var(--accent-neon);
-            padding: 30px; z-index: 1000; display: flex; flex-direction: column;
+            padding: 25px; z-index: 1000; display: flex; flex-direction: column;
             pointer-events: none;
             transition: transform 0.15s cubic-bezier(0.175, 0.885, 0.32, 1.2);
             box-shadow: 0 0 80px rgba(0,0,0,1);
+            min-height: 50px;
         }
 
-        .hud-header { font-size: 28px; text-align: center; }
-        .hud-species { font-size: 16px; text-align: center; border-bottom: 1px solid var(--border); padding-bottom: 10px; margin-bottom: 20px; opacity: 0.8; }
+        .hud-header { font-size: 26px; text-align: center; line-height: 1.1; }
+        .hud-species { font-size: 15px; text-align: center; border-bottom: 1px solid var(--border); padding-bottom: 10px; margin-bottom: 15px; opacity: 0.8; }
         
-        .hud-stats-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; }
+        .hud-stats-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; }
         .stat-module {
             border: 1px solid var(--border);
-            padding: 15px;
-            background: rgba(212, 193, 255, 0.02); text-align: center; font-size: 16px;
+            padding: 12px;
+            background: rgba(212, 193, 255, 0.02); text-align: center; font-size: 14px;
             text-transform: uppercase;
         }
 
         .hud-footer {
             display: flex; justify-content: space-between;
-            font-size: 14px; border-top: 1px solid var(--border);
-            padding-top: 15px; margin-top: 20px; opacity: 0.6;
+            font-size: 12px; border-top: 1px solid var(--border);
+            padding-top: 12px; margin-top: 15px; opacity: 0.6;
         }
 
         @media (min-width: 800px) {
-            .hud-header { font-size: 42px; }
-            .stat-module { font-size: 22px; padding: 18px; }
-            .hud-species { font-size: 22px; }
-            .hud-footer { font-size: 18px; }
+            .hud-header { font-size: 38px; }
+            .stat-module { font-size: 20px; padding: 18px; }
+            .hud-species { font-size: 20px; }
+            .hud-footer { font-size: 16px; }
         }
-
-        #hud-empty { text-align: center; padding: 100px; font-size: 28px; opacity: 0.2; letter-spacing: 5px; }
 
         /* BEAMS */
         #beam-svg {
@@ -132,15 +131,15 @@
         <div id="search-container">
             <input type="text" id="filter-input" placeholder="SEARCH SYSTEM...">
         </div>
-        <a href="https://x.com/watchdoggem/" class="twitter-link" target="_blank">
-            <img src="https://pbs.twimg.com/profile_images/1865231730071220224/L2tYgB-F_400x400.jpg" alt="WATCHDOGGEM">
+        <a href="https://x.com/watchdoggem" class="twitter-link" target="_blank">
+            <img src="https://unavatar.io/x/watchdoggem" alt="X">
         </a>
     </div>
 
     <svg id="beam-svg"><polygon id="poly-projection" class="beam-path" /></svg>
 
     <div id="hud">
-        <div id="hud-data">
+        <div id="hud-data" style="display:none;">
             <div class="hud-header">104,801 NON-HUMAN PRIMATES IN RESEARCH</div>
             <div class="hud-species">SUBJECTS: RHESUS MACAQUES | CYNOMOLGUS</div>
             
@@ -162,7 +161,7 @@
                 <span>FDA REQUIRED | NIH FUNDED | USDA OVERSIGHT</span>
             </div>
         </div>
-        <div id="hud-empty" style="display:none;">NO DATA RECORDED</div>
+        <div id="hud-blank"></div>
     </div>
 
     <div class="grid" id="main-grid">
@@ -179,7 +178,6 @@
         const projection = document.getElementById('poly-projection');
         let activeBox = null;
 
-        // Populate empty nodes 2-30
         for (let i = 2; i <= 30; i++) {
             const b = document.createElement('div');
             b.className = 'box';
@@ -201,7 +199,8 @@
         function showHud(el, hasData) {
             activeBox = el;
             document.getElementById('hud-data').style.display = hasData ? 'block' : 'none';
-            document.getElementById('hud-empty').style.display = hasData ? 'none' : 'block';
+            // Adjust HUD height: auto for data, or fixed small for blank
+            hud.style.minHeight = hasData ? 'auto' : '100px'; 
             hud.style.transform = "translate(-50%, -50%) scale(1)";
             beamSvg.style.opacity = "1";
             updateBeams();
