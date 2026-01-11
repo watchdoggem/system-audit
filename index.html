@@ -5,10 +5,9 @@
     <title>WATCHDOGGEM | TERMINAL</title>
     <style>
         :root {
-            /* HIGH-TECH COLOR PALETTE */
             --bg-deep: #0a0f0a;
             --surface: #162115;
-            --accent-neon: #d4c1ff; /* Electric Muted Lavender */
+            --accent-neon: #d4c1ff; 
             --accent-glow: rgba(212, 193, 255, 0.4);
             --moss-dark: #2a3b25;
             --border: rgba(212, 193, 255, 0.15);
@@ -25,6 +24,7 @@
             overflow-x: hidden;
         }
 
+        /* Cleaned up Search Bar */
         #search-container {
             display: flex;
             border: 1px solid var(--border);
@@ -32,7 +32,6 @@
             margin-bottom: 30px;
             background: rgba(255, 255, 255, 0.03);
             backdrop-filter: blur(5px);
-            box-shadow: 0 0 15px rgba(0,0,0,0.5);
         }
 
         #filter-input {
@@ -66,29 +65,27 @@
             border-color: var(--accent-neon); 
             background: rgba(212, 193, 255, 0.05);
             box-shadow: 0 0 20px rgba(212, 193, 255, 0.1);
-            transform: translateY(-2px);
         }
 
         .box-num { font-size: 62px; line-height: 0.8; letter-spacing: -2px; }
         .box-label { font-size: 28px; line-height: 1; margin-top: 12px; opacity: 0.8; }
 
-        /* REFINED HUD: Translucent & Professional */
         #hud {
             position: fixed;
             top: 50%; left: 50%;
             transform: translate(-50%, -50%) scale(0);
-            width: 80vw; /* Smaller overall screen footprint */
+            width: 80vw; 
             max-width: 1000px;
-            background: rgba(10, 15, 10, 0.85); /* TRANSLUCENT */
-            backdrop-filter: blur(12px); /* FROSTED GLASS EFFECT */
+            background: rgba(10, 15, 10, 0.85); 
+            backdrop-filter: blur(12px); 
             border: 1px solid var(--accent-neon);
             padding: 40px;
             z-index: 1000;
             display: flex;
             flex-direction: column;
             pointer-events: none;
-            transition: transform 0.2s ease-out, opacity 0.2s;
-            box-shadow: 0 0 60px rgba(0,0,0,0.8), inset 0 0 20px rgba(212, 193, 255, 0.05);
+            transition: transform 0.2s ease-out;
+            box-shadow: 0 0 60px rgba(0,0,0,0.8);
         }
 
         .hud-header { 
@@ -97,7 +94,6 @@
             text-align: center; 
             text-transform: uppercase;
             white-space: nowrap;
-            letter-spacing: 1px;
             text-shadow: 0 0 10px var(--accent-glow);
         }
         
@@ -108,7 +104,6 @@
             text-align: center; 
             border-bottom: 1px solid var(--border);
             padding-bottom: 20px;
-            opacity: 0.9;
         }
         
         .hud-stats-grid {
@@ -127,15 +122,12 @@
             align-items: center;
             text-align: center;
             min-height: 85px;
-            transition: border 0.3s;
         }
 
         .stat-text { 
             font-size: 22px; 
             text-transform: uppercase; 
             line-height: 1.1;
-            word-wrap: break-word;
-            color: var(--accent-neon);
         }
 
         .hud-footer {
@@ -145,10 +137,8 @@
             border-top: 1px solid var(--border);
             padding-top: 20px;
             letter-spacing: 2px;
-            opacity: 0.6;
         }
 
-        /* SVG BEAM: Softened for the Splash effect */
         #beam-svg {
             position: fixed; top: 0; left: 0;
             width: 100vw; height: 100vh;
@@ -160,7 +150,7 @@
 <body>
 
     <div id="search-container">
-        <input type="text" id="filter-input" placeholder="WATCHDOGGEM // SECURE_AUDIT_LOG" onkeyup="filterGrid()">
+        <input type="text" id="filter-input" placeholder="SEARCH / FILTER AUDIT LOG" onkeyup="filterGrid()">
     </div>
 
     <svg id="beam-svg">
@@ -176,7 +166,7 @@
         <div id="h-stats" class="hud-stats-grid"></div>
         <div class="hud-footer">
             <span id="h-source"></span>
-            <span>FDA_REQ | NIH_FUND | USDA_OVERSIGHT</span>
+            <span>FDA REQUIRED | NIH FUNDED | USDA OVERSIGHT</span>
         </div>
     </div>
 
@@ -184,7 +174,7 @@
         <div class="box" 
              data-head="104,801 NON-HUMAN PRIMATES IN RESEARCH"
              data-stats="100% FATAL ANESTHETIC OVERDOSE; 20% CLINICAL SELF-HARM; 83% SOCIAL ISOLATION; 89% DISTRESSED PACING; 12% NO PAIN RELIEF (COLUMN E); 100% CAGE SEQUESTRATION; 31,000 CAGED BY CLASS A BREEDERS; 13,375 CAGED BY CLASS B DEALERS; $800M+ U.S. DOMESTIC REVENUE; $300M+ TAXPAYER INFRASTRUCTURE"
-             data-src="SOURCE: USDA APHIS 2024"
+             data-src="SOURCE: USDA APHIS 2024 / NIH FINANCIALS"
              data-search="104801 NHP MONKEYS" 
              onmouseenter="showHud(this)" onmouseleave="hideHud()">
             <div class="box-num">104,801</div>
