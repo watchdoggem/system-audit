@@ -66,8 +66,8 @@ header{
 
 .x-link {
     flex: 0 0 auto;
-    width: clamp(50px, 10vw, 80px);
-    height: clamp(50px, 10vw, 80px);
+    width: clamp(80px, 12vw, 120px);
+    height: clamp(80px, 12vw, 120px);
     overflow: hidden;
     border-radius: 10px;
     border: 2px solid var(--accent-violet);
@@ -88,15 +88,10 @@ header{
     margin-bottom:1rem;
 }
 .category-button {
-    background:var(--panel-bg);
-    border:2px solid var(--border);
-    border-radius:12px;
-    padding:.5rem 1rem;
-    cursor:pointer;
-    text-transform:uppercase;
-    font-weight:700;
-    transition:.3s;
+    padding: .8rem 1.5rem;  /* taller and wider */
+    font-size: clamp(.8rem, 1.2vw, 1.2rem); /* scales with viewport */
 }
+
 .category-button.active {
     border-color:var(--accent-violet);
     box-shadow:0 0 16px var(--glow);
