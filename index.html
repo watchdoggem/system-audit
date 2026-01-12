@@ -281,20 +281,20 @@ header{
 }
 
 /* MOBILE FIXES */
-@media (max-width: 600px){
+@media (max-width: 800px){
     #hud {
-        width: 90vw;
+        width: min(90vw, 500px); /* shrink on small, cap on bigger */
         padding: 1rem;
     }
     .hud-stats {
-        grid-template-columns: 1fr;
+        grid-template-columns: 1fr; /* stack stats vertically on small screens */
         gap: 0.5rem;
     }
     .stat-item {
         min-height: auto;
     }
     .hud-footer {
-        flex-direction: column;
+        flex-direction: column; /* wrap footer items */
         gap: 0.5rem;
         align-items: flex-start;
     }
