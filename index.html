@@ -92,9 +92,16 @@ header{
     font-size: clamp(.8rem, 1.2vw, 1.2rem); /* scales with viewport */
 }
 
-.category-button.active {
-    border-color:var(--accent-violet);
-    box-shadow:0 0 16px var(--glow);
+.category-button {
+    background: var(--panel-bg);
+    border: 2px solid var(--border);
+    border-radius: 12px;
+    padding: .8rem 1.5rem; /* bigger padding */
+    cursor: pointer;
+    text-transform: uppercase;
+    font-weight: 700;
+    font-size: clamp(.8rem, 1.2vw, 1.2rem); /* bigger font */
+    transition: .3s;
 }
 
 /* GRID */
