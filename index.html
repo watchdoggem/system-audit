@@ -160,20 +160,28 @@ header{
     opacity:.75;
     margin-top:.2em;
 }
-/* MOBILE-SPECIFIC SPLASH TEXT OVERRIDE */
 @media (max-width: 600px) {
-    .splash-top {
-        font-size: clamp(8rem, 16vw, 12rem); 
-        margin-top: 0.8em;
+    .box[data-has-data="true"] .box-content {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        height: 100%;
+        padding: 0.5rem; /* optional */
     }
-    .splash-mid {
-        font-size: clamp(2rem, 8vw, 5rem);
-        margin-top: 0.8em;
+
+    .splash-top, .splash-mid, .splash-bottom {
+        flex: 1;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 100%;
+        margin: 0; /* remove margin-top */
     }
-    .splash-bottom {
-        font-size: clamp(2rem, 8vw, 5rem); 
-        margin-top: 0.8em;
-    }
+
+    .splash-top { font-size: clamp(7rem, 14vw, 10rem); }
+    .splash-mid { font-size: clamp(2rem, 8vw, 5rem); }
+    .splash-bottom { font-size: clamp(2rem, 8vw, 5rem); }
 }
 
 
