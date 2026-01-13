@@ -28,11 +28,6 @@
         left:0;
         padding:1rem;
     }
-
-    .box{
-        aspect-ratio:auto;
-        min-height:160px;
-    }
 }
 
 /* GLOBAL RESET */
@@ -134,10 +129,11 @@ header{
 }
 
 @media (max-width: 500px){
-    .grid{
-        grid-template-columns:1fr;
-        max-width:360px;
-    }
+ .grid{
+    grid-template-columns:1fr !important;
+    max-width:100%;
+}
+
 }
 
 
