@@ -113,13 +113,13 @@ header{
     max-width: 100%; /* prevent overflowing */
     margin: 0 auto;  /* center grid */
 }
-
 @media (max-width: 600px) {
     .grid {
-        grid-template-columns: repeat(3, 1fr); /* keep 3 columns on mobile too */
+        grid-template-columns: repeat(1, 1fr);
         gap: clamp(.5rem, 1vw, 1rem);
     }
 }
+
 
 .box{
     aspect-ratio:1/1;
@@ -352,7 +352,7 @@ header{
 
 <div id="category-bar">
     <div class="category-button" data-category="animal">Animal Harm</div>
-    <div class="category-button" data-category="collections">Collections</div>
+    <div class="category-button" data-category="collections">collections</div>
 </div>
 
 
