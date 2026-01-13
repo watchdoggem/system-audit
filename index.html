@@ -104,16 +104,20 @@ header{
     font-size: clamp(1.5rem, 2vw, 3rem);
 }
 
-
-/* GRID */
-.grid{
-    display: grid;
-    grid-template-columns: repeat(3, 1fr); /* 3 columns for desktop & mobile */
-    gap: clamp(.55rem, .57vw, 1.1rem);
-    max-width: 100%; /* prevent overflowing */
-    margin: 0 auto;  /* center grid */
+#scaler {
+    width: 100%;          /* fill full width */
+    max-width: 1600px;    /* optional: cap at your design width */
+    margin: 0 auto;        /* center content */
+    padding: clamp(.8rem, 1vw, 1.6rem);
+    transform: none;       /* remove previous scale */
 }
 
+.grid{
+    display: grid;
+    grid-template-columns: repeat(3, 1fr); /* always 3 columns */
+    gap: clamp(.55rem, .57vw, 1.1rem);
+    width: 100%;
+}
 @media (max-width: 600px) {
     .grid {
         grid-template-columns: repeat(3, 1fr); /* keep 3 columns on mobile too */
