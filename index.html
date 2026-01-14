@@ -113,13 +113,13 @@ header{
     max-width: 100%; /* prevent overflowing */
     margin: 0 auto;  /* center grid */
 }
+
 @media (max-width: 600px) {
     .grid {
-        grid-template-columns: repeat(1, 1fr);
+        grid-template-columns: repeat(3, 1fr); /* keep 3 columns on mobile too */
         gap: clamp(.5rem, 1vw, 1rem);
     }
 }
-
 
 .box{
     aspect-ratio:1/1;
@@ -352,7 +352,7 @@ header{
 
 <div id="category-bar">
     <div class="category-button" data-category="animal">Animal Harm</div>
-    <div class="category-button" data-category="collections">collections</div>
+    <div class="category-button" data-category="collections">Collections</div>
 </div>
 
 
@@ -470,25 +470,19 @@ function renderGrid() {
 
     applyFilters();
 }
-function applyFilters() {
-    document.querySelectorAll('.box').forEach((box, i) => {
+
+// CATEGORY FILTER
+function applyFilters(){
+    document.querySelectorAll('.box').forEach((box,i)=>{
         const p = panels[i];
-
-        // If this is an empty filler box
-        if (p.empty) {
-            box.style.display = activeCategories.size > 0 ? "none" : "flex";
-            return;
+        const categoryMatch = (activeCategories.size===0 || (!p.empty && p.categories.some(c=>activeCategories.has(c))));
+        if(p.empty && activeCategories.size>0){
+            box.style.display = "none";
+        } else {
+            box.style.display = categoryMatch ? "flex" : "none";
         }
-
-        // Otherwise, real panel: show if it matches any active category
-        const categoryMatch =
-            activeCategories.size === 0 ||
-            p.categories.some(c => activeCategories.has(c));
-
-        box.style.display = categoryMatch ? "flex" : "none";
     });
 }
-
 
 // TOP CATEGORY BUTTON HANDLER
 document.querySelectorAll('.category-button').forEach(btn=>{
@@ -528,8 +522,7 @@ function showHud(el,panel){
     el.classList.add('active');
 
     hud.classList.add('active');
-hud.querySelector('.hud-header').textContent = `${panel.id} ${panel.title}¹`;
-
+    hud.querySelector('.hud-header').textContent = `1 ${panel.title}¹`;
     hud.querySelector('.hud-species').textContent = panel.species.join(" | ");
 
     const statsDiv = hud.querySelector('.hud-stats');
